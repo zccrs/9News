@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/shade.svg</file>
+        <file>images/tab_active_normal_c_inverse.svg</file>
+        <file>images/toolbar.svg</file>
+        <file>images/toolbar_inverse.svg</file>
+        <file>images/tab_active_normal_c.svg</file>
+        <file>images/skin.png</file>
+        <file>images/skin_invert.png</file>
+        <file>images/mask.bmp</file>
+        <file>images/loading.png</file>
+    </qresource>
+</RCC>
