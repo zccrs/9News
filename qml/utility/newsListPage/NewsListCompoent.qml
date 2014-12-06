@@ -153,7 +153,7 @@ Item{
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
-                    command.getNews(newsId)
+                    command.getNews(newsId, titleText.text)
                 }
             }
         }

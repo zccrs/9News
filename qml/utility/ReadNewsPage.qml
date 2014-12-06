@@ -54,7 +54,7 @@ Item{
     }
 
     function textToHtml(text, width){
-        return "<html><style>*{padding:0;margin:0;}body{background-color:#F1F1F1;width:"+width+"px }</style><body>"+text+"</body></html>"
+        return "<html><style>*{padding:0;margin:0;}body{width:"+width+"px }</style><body>"+text+"</body></html>"
     }
 
     onNewsIdChanged: {

@@ -23,7 +23,7 @@ MyPage{
     }
 
     HeaderView{
-
+        id: headerView
         invertedTheme: command.invertedTheme
         height: screen.currentOrientation===Screen.Portrait?72:56
     }
@@ -43,7 +43,7 @@ MyPage{
             iconId: "toolbar-refresh"
         }
         ToolIcon{
-            iconId: "toolbar-menu"
+            iconId: "toolbar-view-menu"
         }
     }
 

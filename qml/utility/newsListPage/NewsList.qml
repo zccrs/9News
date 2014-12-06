@@ -61,7 +61,8 @@ ListView{
         data = JSON.parse(data)
 
         if(data.error==0){
-            ListView.view.model.setProperty(index, "covers", data.covers)
+            if(ListView)
+                ListView.view.model.setProperty(index, "covers", data.covers)
             updateFlipcharts()
         }
     }
