@@ -79,7 +79,7 @@ Item{
     Component{
         id: compoent_titleImage
 
-        MyImage{
+        Image{
             id: titleImage
             source: imageUrl
             width: 60
@@ -100,8 +100,8 @@ Item{
                 from: -titleImage.height/2; to: 0
                 easing.type: Easing.OutQuad
             }
-            onLoadReady: {
-                if(enableAnimation){
+            onStatusChanged: {
+                if(status == Image.Ready&&enableAnimation){
                     imageAnimation.start()
                     opacity = 1
                 }
@@ -117,7 +117,7 @@ Item{
             width: parent.width
             orientation: ListView.Horizontal
             spacing: 5
-            delegate: MyImage{
+            delegate: Image{
                 id: listImage
                 source: imageUrl
                 sourceSize.height: 60
@@ -133,8 +133,8 @@ Item{
                     from: -listImage.implicitHeight/2; to: 0
                     easing.type: Easing.OutQuad
                 }
-                onLoadReady: {
-                    if(enableAnimation){
+                onStatusChanged: {
+                    if(status == Image.Ready&&enableAnimation){
                         imageAnimation.start()
                         opacity = 1
                     }

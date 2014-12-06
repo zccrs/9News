@@ -10,7 +10,7 @@ PageStackWindow
     initialPage: MainPage{}
 
     Binding{
-        target: "theme"
+        target: theme
         property: "inverted"
         value: command.invertedTheme
     }

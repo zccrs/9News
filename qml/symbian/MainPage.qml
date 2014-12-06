@@ -20,7 +20,7 @@ MyPage{
         data = JSON.parse(data)
         if(data.error==0){
             for(var i in data.categorys){
-                metroView.addItem(data.categorys[i], data.categorys[i])
+                metroView.addItem(data.titles[i], data.categorys[i])
             }
         }
     }
@@ -29,8 +29,8 @@ MyPage{
         id: headerView
 
         invertedTheme: command.invertedTheme
-        height: (screen.currentOrientation===Screen.Portrait?
-                     privateStyle.tabBarHeightPortrait:privateStyle.tabBarHeightLandscape)+20
+        height: screen.currentOrientation===Screen.Portrait?
+                     privateStyle.tabBarHeightPortrait:privateStyle.tabBarHeightLandscape
     }
 
     tools: CustomToolBarLayout{

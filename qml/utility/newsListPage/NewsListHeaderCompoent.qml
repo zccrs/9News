@@ -24,7 +24,11 @@ Item{
         mymodel.clear()
         //先清除数据
         for(var i in covers){
-            mymodel.append({"imageUrl": covers[i].thumb, "title": covers[i].topic})
+            mymodel.append({
+                               "imageUrl": covers[i].thumb,
+                               "title": covers[i].topic,
+                               "newsId": covers[i].cid
+                           })
         }
         timerFlipchart.start()
     }
@@ -87,6 +91,14 @@ Item{
                     font.pointSize: 3
                     text: (index+1)+"/"+slideList.count
                     anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            MouseArea{
+                anchors.fill: parent
+
+                onClicked: {
+                    command.getNews(newsId, title)
                 }
             }
         }

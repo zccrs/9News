@@ -18,10 +18,12 @@ Item{
         data = JSON.parse(data)
         if(data.error==0){
             //如果服务器没有返回错误
-            var reg = /\[img\]\d+\[\/img\]/
+            var reg = /\[img=\d{3},\d{3}\][^\[]+/
             var content = data.article.content
+
             var pos = 0
             var imgs = content.match(reg)
+
             for(var i in imgs){
                 var img_pos = content.indexOf(imgs[i])
                 if(img_pos==-1)
@@ -33,10 +35,11 @@ Item{
                             "imageUrl": ""
                             })
 
-                var img_id = imgs[i].substring(5, imgs[i].length-6)
+                var img_url = imgs[i].substring(13, imgs[i].length)
+
                 mymodel.append({
                             "contentType": "image",
-                            "imageUrl": data.article.attachments[img_id].url
+                            "imageUrl": img_url
                             })
                 pos = img_pos+imgs[i].length
             }
@@ -44,14 +47,14 @@ Item{
             if(text!=""){
                 mymodel.append({
                             "contentType": "text",
-                            "contentHtml": textToHtml(text)
+                            "contentHtml": text
                             })
             }
         }
     }
 
-    function textToHtml(text){
-        return "<html><style>*{padding:0;margin:0;}body{background-color:#F1F1F1;width:100%}</style><body>"+text+"</body></html>"
+    function textToHtml(text, width){
+        return "<html><style>*{padding:0;margin:0;}body{background-color:#F1F1F1;width:"+width+"px }</style><body>"+text+"</body></html>"
     }
 
     onNewsIdChanged: {
@@ -70,6 +73,7 @@ Item{
 
         y:-height
         width: parent.width-20
+        height: textTitle.implicitHeight+10
         anchors.horizontalCenter: parent.horizontalCenter
 
         Text{
@@ -113,7 +117,16 @@ Item{
             property string componentData: contentType=="image"?imageUrl:contentHtml
 
             width: parent.width
+            opacity: 0
             sourceComponent: contentType=="image"?componentImage:componentText
+
+            Behavior on opacity {
+                NumberAnimation { duration: 200 }
+            }
+
+            Component.onCompleted: {
+                opacity = 1
+            }
         }
     }
 
@@ -122,14 +135,8 @@ Item{
 
         WebView{
             width: parent.width
-            height: 0
             preferredWidth: width
-
-            html: componentData
-
-            Component.onCompleted: {
-                height  = contentsSize.height+200
-            }
+            html: textToHtml(componentData, width)
         }
     }
 
@@ -138,7 +145,10 @@ Item{
 
         Image{
             source: componentData
-            sourceSize.width: parent.width
+            width: Math.min(parent.width, sourceSize.width)
+            height: width/sourceSize.width*sourceSize.height
+
+            smooth: true
         }
     }
 }

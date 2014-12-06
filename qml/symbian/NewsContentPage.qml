@@ -24,8 +24,7 @@ MyPage{
         id: headerView
 
         invertedTheme: command.invertedTheme
-        height: (screen.currentOrientation===Screen.Portrait?
-                     privateStyle.tabBarHeightPortrait:privateStyle.tabBarHeightLandscape)+20
+        height: newsPage.titleHeight
     }
 
     ReadNewsPage{
@@ -33,7 +32,6 @@ MyPage{
         anchors.fill: parent
         newsId: root.newsId
         newsTitle: root.newsTitle
-        titleHeight: headerView.height
     }
 
     onStatusChanged: {
