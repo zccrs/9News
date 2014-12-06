@@ -35,7 +35,8 @@ ListView{
             return
         }
 
-        root.headerItem.addFlipcharts(covers)
+        root.headerItem.updateFlipcharts(covers)
+        //更新大海报
     }
 
     function getNewsFinished(error, data){//加载新闻完成

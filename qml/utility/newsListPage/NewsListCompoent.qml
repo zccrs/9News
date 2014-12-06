@@ -9,34 +9,17 @@ Item{
     property bool isInited: false
     //此属性记录
 
+    x: enableAnimation?(index%2==0?width:-width):0
     width: parent.width
     height: Math.max(titleText.implicitHeight, loader_titleImage.height)+
             newsInfos.height+loader_imageList.height+10
 
-    Connections{
-        target: command
-        onGetNews:{
-            if(id==newsId){
-                utility.consoleLog("啊，主人要阅读我，但是我还没有准备好呢")
-            }else{
-                rootAnimation.start()
-                //如果不是阅读我就启动动画为被阅读的新闻开路
-            }
-        }
-    }
-
     NumberAnimation on x{
         id: rootAnimation
         duration: 300
-        running: false
-        to: index%2==0?width:-width
+        running: enableAnimation
+        to: 0
         easing.type: Easing.InOutBack
-
-        onRunningChanged: {
-            if(!running){
-                root.x=0
-            }
-        }
     }
     Loader{
         id: loader_titleImage
@@ -58,7 +41,7 @@ Item{
     MouseArea{
         anchors.fill: parent
         onClicked: {
-            command.getNews(newsId)
+            command.getNews(newsId, titleText.text)
         }
     }
     Loader{
