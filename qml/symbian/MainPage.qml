@@ -63,7 +63,9 @@ MyPage{
         ToolButton{
             iconSource: "toolbar-menu"
             platformInverted: command.invertedTheme
-
+            onClicked: {
+                mainMenu.open()
+            }
         }
     }
 
@@ -129,4 +131,29 @@ MyPage{
                            {newsId: newsId, newsTitle: title})
         }
     }
+
+    // define the menu
+     Menu {
+         id: mainMenu
+         // define the items in the menu and corresponding actions
+         platformInverted: command.invertedTheme
+         content: MenuLayout {
+             MenuItem {
+                 text: qsTr("Search")
+                 platformInverted: command.invertedTheme
+             }
+             MenuItem {
+                 text: qsTr("Personal Center")
+                 platformInverted: command.invertedTheme
+             }
+             MenuItem {
+                 text: qsTr("Settings")
+                 platformInverted: command.invertedTheme
+             }
+             MenuItem {
+                 text: qsTr("About")
+                 platformInverted: command.invertedTheme
+             }
+         }
+     }
 }
