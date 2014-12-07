@@ -34,7 +34,7 @@ MyPage{
         }
 
         ToolIcon{
-            iconSource: "qrc:/images/skin"+(command.invertedTheme?".png":"_invert.png")
+            iconSource: "qrc:/images/skin"+(command.invertedTheme?"_invert.png":".png")
             onClicked: {
                 command.invertedTheme=!command.invertedTheme
             }

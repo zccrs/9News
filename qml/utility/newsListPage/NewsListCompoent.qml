@@ -1,7 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 import com.stars.widgets 1.0
-import "../../js/configure.js" as ConfigureScript
 
 Item{
     id: root
@@ -27,8 +26,8 @@ Item{
         anchors.rightMargin: 10
         anchors.top: loader_titleImage.top
         wrapMode: Text.WordWrap
-        color: command.invertedTheme?"black":"#888"
-        font.pointSize: ConfigureScript.style.newsListFontPointSize
+        color: command.invertedTheme?"black":"#ccc"
+        font.pointSize: command.style.newsListFontPointSize
     }
     MouseArea{
         anchors.fill: parent
@@ -58,13 +57,15 @@ Item{
         Text{
             id: newsSource
             anchors.verticalCenter: parent.verticalCenter
-            font.pointSize: ConfigureScript.style.newsInfosFontPointSize
+            font.pointSize: command.style.newsInfosFontPointSize
+            color: "#888"
         }
         Text{
             id: dateTime
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             font.pointSize: newsSource.font.pointSize
+            color: "#888"
         }
     }
 

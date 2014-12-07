@@ -2,7 +2,6 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
 import com.nokia.extras 1.1
-import "../js/configure.js" as ConfigureScript
 
 PageStackWindow
 {
@@ -14,9 +13,5 @@ PageStackWindow
         target: theme
         property: "inverted"
         value: !command.invertedTheme
-    }
-
-    Component.onCompleted: {
-        ConfigureScript.systemType = "Harmattan"
     }
 }

@@ -1,20 +1,13 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import "../../js/configure.js" as ConfigureScript
 
 Item{
     id: root
 
-    property variant loadingImage
-
     width: parent.width
-    height: 160
     clip: true
 
     function updateFlipcharts(covers){//增加大海报
-        if(loadingImage)
-            loadingImage.destroy()
-
         if(typeof covers!="object"){
             root.height = 0
             timerFlipchart.stop()
@@ -34,23 +27,6 @@ Item{
         timerFlipchart.start()
     }
 
-    Behavior on height {
-        NumberAnimation { duration: 200 }
-    }
-
-    Component{
-        id: componentImage
-
-        Image{
-            anchors.centerIn: parent
-            source: "qrc:/images/loading.png"
-        }
-    }
-
-    Component.onCompleted: {
-        loadingImage = componentImage.createObject(root)
-    }
-
     ListView{
         id: slideList
 
@@ -65,6 +41,10 @@ Item{
         delegate: Image {
             sourceSize.width: root.width
             source: imageUrl
+
+            onImplicitHeightChanged: {
+                root.height = implicitHeight+10
+            }
 
             MouseArea{
                 id: mouse
@@ -82,7 +62,7 @@ Item{
                     anchors.left: parent.left
                     anchors.right: newsIndexAndCount.left
                     anchors.margins: 10
-                    font.pointSize: ConfigureScript.style.flipchartsTitleFontPointSize
+                    font.pointSize: command.style.flipchartsTitleFontPointSize
                     anchors.verticalCenter: parent.verticalCenter
                     text: title
                     elide: Text.ElideRight
@@ -91,7 +71,7 @@ Item{
                     id: newsIndexAndCount
                     anchors.right: parent.right
                     anchors.rightMargin: 10
-                    font.pointSize: ConfigureScript.style.flipchartsTitleFontPointSize
+                    font.pointSize: command.style.flipchartsTitleFontPointSize
                     text: (index+1)+"/"+slideList.count
                     anchors.verticalCenter: parent.verticalCenter
                 }

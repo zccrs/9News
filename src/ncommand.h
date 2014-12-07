@@ -2,12 +2,14 @@
 #define NCOMMAND_H
 
 #include <QObject>
+#include <QVariant>
 
 class NCommand : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(SystemType systemType READ systemTye CONSTANT)
     Q_PROPERTY(bool invertedTheme READ invertedTheme WRITE setInvertedTheme NOTIFY invertedThemeChanged)
+    Q_PROPERTY(QVariantMap style READ style CONSTANT)
 
     Q_ENUMS(SystemType)
 
@@ -21,6 +23,7 @@ public:
 
     SystemType systemTye() const;
     bool invertedTheme() const;
+    QVariantMap style() const;
 
 signals:
     void invertedThemeChanged(bool arg);
@@ -32,6 +35,7 @@ public slots:
     QString textToHtml(const QString& text, int width, bool invertedTheme) const;
 private:
     bool m_invertedTheme;
+    QVariantMap m_style;
 };
 
 #endif // NCOMMAND_H

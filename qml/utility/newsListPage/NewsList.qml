@@ -20,7 +20,7 @@ ListView{
     }
     function updateNewsList(){//更新新闻列表
         if(articles==null){
-            utility.httpGet(getNewsFinished, newsUrl)
+            utility.httpGet(root, "getNewsFinished(QVariant,QVariant)", newsUrl)
             return
         }
 
@@ -31,7 +31,7 @@ ListView{
     }
     function updateFlipcharts(){//更新大海报列表
         if(covers==null){
-            utility.httpGet(getImagePosterFinished, imagePosterUrl)
+            utility.httpGet(root, "getImagePosterFinished(QVariant,QVariant)", imagePosterUrl)
             return
         }
 
@@ -46,7 +46,7 @@ ListView{
         data = JSON.parse(data)
 
         if(data.error==0){
-            ListView.view.model.setProperty(index, "articles", data.articles)
+            parentListModel.setProperty(index, "articles", data.articles)
             updateNewsList()
         }
     }
@@ -61,9 +61,10 @@ ListView{
         data = JSON.parse(data)
 
         if(data.error==0){
-            if(ListView)
-                ListView.view.model.setProperty(index, "covers", data.covers)
-            updateFlipcharts()
+            if(parentListModel){
+                parentListModel.setProperty(index, "covers", data.covers)
+                updateFlipcharts()
+            }
         }
     }
 
@@ -73,7 +74,7 @@ ListView{
         contentY = listContentY
     }
     Component.onDestruction: {//当组件被销毁时
-        ListView.view.model.setProperty(index, "listContentY", contentY)
+        parentListModel.setProperty(index, "listContentY", contentY)
         //设置model中存放的属于自己的属性
     }
 }

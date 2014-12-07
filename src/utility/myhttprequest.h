@@ -48,7 +48,7 @@ protected:
 #else
         QScriptValue callbackFun;
 #endif
-        QObject* caller;
+        QPointer<QObject> caller;
         QByteArray slotName;
     };
     struct requestData{

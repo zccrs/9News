@@ -77,6 +77,8 @@ Item{
             width: parent.width
             anchors.verticalCenter: parent.verticalCenter
             wrapMode: Text.WordWrap
+            color: command.invertedTheme?"black":"#ccc"
+            font.pointSize: command.style.metroTitleFontPointSize
         }
 
         NumberAnimation on y{

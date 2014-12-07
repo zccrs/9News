@@ -24,10 +24,12 @@ Item{
 
     function addPage(title, obj){
         titleModel.append({"title":title})
+        obj.parentListModel = pageModel
         pageModel.append(obj)
     }
     function insertPage(index, title, obj){
         titleModel.insert(index, {"title":title})
+        obj.parentListModel = pageModel
         pageModel.insert(index, obj)
     }
     function removePage(index){
@@ -39,10 +41,10 @@ Item{
         pageModel.clear()
     }
     function activation(index){
-        titleBarList.positionViewAtIndex(index, ListView.Contain)
         titleBarList.currentIndex = index
-        pageList.positionViewAtIndex(index, ListView.Beginning)
+        titleBarList.positionViewAtIndex(index, ListView.Beginning)
         pageList.currentIndex = index
+        pageList.positionViewAtIndex(index, ListView.Beginning)
     }
 
     function setTitle(index, title){
