@@ -61,7 +61,7 @@ Item{
         utility.httpGet(getNewsFinished, "http://api.9smart.cn/new/"+newsId)
         //去获取新闻内容
     }
-    onActivePageChanged: {
+    onActivePageChanged: {//如果页面是否活跃的状态改变
         if(activePage&&newsTitle!=""){
             textTitle.text = newsTitle
             titleAnimation.start()

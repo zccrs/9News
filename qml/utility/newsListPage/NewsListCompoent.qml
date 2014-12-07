@@ -58,13 +58,13 @@ Item{
         Text{
             id: newsSource
             anchors.verticalCenter: parent.verticalCenter
-            font.pointSize: 4
+            font.pointSize: ConfigureScript.style.newsInfosFontPointSize
         }
         Text{
             id: dateTime
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            font.pointSize: 4
+            font.pointSize: newsSource.font.pointSize
         }
     }
 

@@ -1,5 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
+import "../../js/configure.js" as ConfigureScript
 
 Item{
     id: root
@@ -79,16 +80,18 @@ Item{
                 clip: true
                 Text{
                     anchors.left: parent.left
-                    anchors.leftMargin: 10
-                    anchors.right: parent.right
-                    font.pointSize: 3
+                    anchors.right: newsIndexAndCount.left
+                    anchors.margins: 10
+                    font.pointSize: ConfigureScript.style.flipchartsTitleFontPointSize
                     anchors.verticalCenter: parent.verticalCenter
                     text: title
+                    elide: Text.ElideRight
                 }
                 Text{
+                    id: newsIndexAndCount
                     anchors.right: parent.right
                     anchors.rightMargin: 10
-                    font.pointSize: 3
+                    font.pointSize: ConfigureScript.style.flipchartsTitleFontPointSize
                     text: (index+1)+"/"+slideList.count
                     anchors.verticalCenter: parent.verticalCenter
                 }
