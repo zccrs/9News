@@ -7,7 +7,9 @@ QML_IMPORT_PATH =
 
 folder_02.source = qml/utility
 folder_02.target = qml
-DEPLOYMENTFOLDERS += folder_02
+folder_03.source = qml/js
+folder_03.target = qml
+DEPLOYMENTFOLDERS += folder_02 folder_03
 
 symbian{
     TARGET.UID3 = 0xE2E87DAE
@@ -76,7 +78,8 @@ OTHER_FILES += \
     qtc_packaging/debian_harmattan/changelog
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    meego.qrc
 
 HEADERS += \
     src/ncommand.h

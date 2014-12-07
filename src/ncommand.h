@@ -29,6 +29,7 @@ signals:
 public slots:
     void setInvertedTheme(bool arg);
     QString fromTime_t ( uint seconds ) const;
+    QString textToHtml(const QString& text, int width, bool invertedTheme) const;
 private:
     bool m_invertedTheme;
 };

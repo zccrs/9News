@@ -31,7 +31,7 @@ Item{
                 var text = content.substring(pos, img_pos)
                 mymodel.append({
                             "contentType": "text",
-                            "contentHtml": textToHtml(text),
+                            "contentHtml": text,
                             "imageUrl": ""
                             })
 
@@ -39,6 +39,7 @@ Item{
 
                 mymodel.append({
                             "contentType": "image",
+                            "contentHtml": "",
                             "imageUrl": img_url
                             })
                 pos = img_pos+imgs[i].length
@@ -47,14 +48,11 @@ Item{
             if(text!=""){
                 mymodel.append({
                             "contentType": "text",
-                            "contentHtml": text
+                            "contentHtml": text,
+                            "imageUrl": ""
                             })
             }
         }
-    }
-
-    function textToHtml(text, width){
-        return "<html><style>*{padding:0;margin:0;}body{background-color:#F1F1F1;width:"+width+"px }</style><body>"+text+"</body></html>"
     }
 
     onNewsIdChanged: {
@@ -101,6 +99,7 @@ Item{
         anchors.top: titleItems.bottom
         anchors.bottom: parent.bottom
         clip: true
+        spacing: 10
 
         model: ListModel{
             id: mymodel
@@ -136,7 +135,7 @@ Item{
         WebView{
             width: parent.width
             preferredWidth: width
-            html: textToHtml(componentData, width)
+            html: command.textToHtml(componentData, width, command.invertedTheme)
         }
     }
 
