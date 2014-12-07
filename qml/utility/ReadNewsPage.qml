@@ -1,6 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import QtWebKit 1.0
+import "../js/api.js" as Api
 
 Item{
     property int newsId: -1
@@ -18,7 +18,7 @@ Item{
         data = JSON.parse(data)
         if(data.error==0){
             //如果服务器没有返回错误
-            var reg = /\[img=\d{3},\d{3}\][^\[]+/
+            var reg = /\[img=\d+,\d+\][^\[]+/
             var content = data.article.content
 
             var pos = 0
@@ -30,38 +30,33 @@ Item{
                     return
                 var text = content.substring(pos, img_pos)
                 mymodel.append({
-                            "contentType": "text",
-                            "contentHtml": textToHtml(text),
-                            "imageUrl": ""
+                            "contentComponent": componentText,
+                            "contentData": text
                             })
 
                 var img_url = imgs[i].substring(13, imgs[i].length)
 
                 mymodel.append({
-                            "contentType": "image",
-                            "imageUrl": img_url
+                            "contentComponent": componentImage,
+                            "contentData": img_url
                             })
                 pos = img_pos+imgs[i].length
             }
             var text = content.substring(pos, content.length)
             if(text!=""){
                 mymodel.append({
-                            "contentType": "text",
-                            "contentHtml": text
+                            "contentComponent": componentText,
+                            "contentData": text
                             })
             }
         }
     }
 
-    function textToHtml(text, width){
-        return "<html><style>*{padding:0;margin:0;}body{width:"+width+"px }</style><body>"+text+"</body></html>"
-    }
-
     onNewsIdChanged: {
-        utility.httpGet(getNewsFinished, "http://api.9smart.cn/new/"+newsId)
+        utility.httpGet(getNewsFinished, Api.getNewsContentUrlById(newsId))
         //去获取新闻内容
     }
-    onActivePageChanged: {
+    onActivePageChanged: {//如果页面是否活跃的状态改变
         if(activePage&&newsTitle!=""){
             textTitle.text = newsTitle
             titleAnimation.start()
@@ -73,7 +68,7 @@ Item{
 
         y:-height
         width: parent.width-20
-        height: textTitle.implicitHeight+10
+        height: textTitle.implicitHeight+20
         anchors.horizontalCenter: parent.horizontalCenter
 
         Text{
@@ -82,6 +77,9 @@ Item{
             width: parent.width
             anchors.verticalCenter: parent.verticalCenter
             wrapMode: Text.WordWrap
+            color: command.invertedTheme?"black":"#ccc"
+            font.pointSize: command.newsTitleFontSize
+            font.bold: true
         }
 
         NumberAnimation on y{
@@ -101,6 +99,7 @@ Item{
         anchors.top: titleItems.bottom
         anchors.bottom: parent.bottom
         clip: true
+        spacing: 10
 
         model: ListModel{
             id: mymodel
@@ -114,11 +113,11 @@ Item{
         Loader{
             id: loaderNewsContent
 
-            property string componentData: contentType=="image"?imageUrl:contentHtml
+            property string componentData: contentData
 
             width: parent.width
             opacity: 0
-            sourceComponent: contentType=="image"?componentImage:componentText
+            sourceComponent: contentComponent
 
             Behavior on opacity {
                 NumberAnimation { duration: 200 }
@@ -133,10 +132,11 @@ Item{
     Component{
         id: componentText
 
-        WebView{
+        Text{
             width: parent.width
-            preferredWidth: width
-            html: textToHtml(componentData, width)
+            wrapMode: Text.WordWrap
+            text: command.textToHtml(componentData, width)
+            font.pointSize: command.newsContentFontSize
         }
     }
 
@@ -147,7 +147,7 @@ Item{
             source: componentData
             width: Math.min(parent.width, sourceSize.width)
             height: width/sourceSize.width*sourceSize.height
-
+            anchors.horizontalCenter: parent.horizontalCenter
             smooth: true
         }
     }

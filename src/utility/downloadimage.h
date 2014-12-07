@@ -14,6 +14,7 @@
 #include <QScriptValue>
 #include <QScriptEngine>
 #endif
+#include <QPointer>
 
 class MyHttpRequest;
 class QNetworkReply;
@@ -47,7 +48,7 @@ private:
 #else
         QScriptValue callbackFun;
 #endif
-        QObject* caller;
+        QPointer<QObject> caller;
         QByteArray slotName;
         QString savePath;
         QString saveName;

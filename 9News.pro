@@ -9,6 +9,8 @@ INCLUDEPATH += src
 
 folder_02.source = qml/utility
 folder_02.target = qml
+folder_03.source = qml/js
+folder_03.target = qml
 
 
 symbian{
@@ -17,8 +19,7 @@ symbian{
 
     folder_01.source = qml/symbian
     folder_01.target = qml
-    DEPLOYMENTFOLDERS += folder_01
-    DEPLOYMENTFOLDERS += folder_02
+    DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03
 
     RESOURCES += symbian.qrc
 }
@@ -28,8 +29,7 @@ contains(MEEGO_EDITION, harmattan){
 
     folder_01.source = qml/meego
     folder_01.target = qml
-    DEPLOYMENTFOLDERS += folder_01
-    DEPLOYMENTFOLDERS += folder_02
+    DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03
 
     OTHER_FILES += \
         qtc_packaging/debian_harmattan/rules \
@@ -39,6 +39,8 @@ contains(MEEGO_EDITION, harmattan){
         qtc_packaging/debian_harmattan/control \
         qtc_packaging/debian_harmattan/compat \
         qtc_packaging/debian_harmattan/changelog
+
+    RESOURCES += meego.qrc
 }
 contains(QT_VERSION, 4.8.6){
     DEFINES += Q_OS_BLACKBERRY
@@ -60,7 +62,6 @@ simulator{
     folder_01.source = qml
     folder_01.target = ./
     DEPLOYMENTFOLDERS += folder_01
-    DEPLOYMENTFOLDERS += folder_02
 
     RESOURCES += symbian.qrc
 }
@@ -104,6 +105,3 @@ RESOURCES += \
 
 HEADERS += \
     src/ncommand.h \
-
-
-

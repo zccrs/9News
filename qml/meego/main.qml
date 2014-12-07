@@ -12,6 +12,6 @@ PageStackWindow
     Binding{
         target: theme
         property: "inverted"
-        value: command.invertedTheme
+        value: !command.invertedTheme
     }
 }

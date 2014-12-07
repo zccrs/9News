@@ -5,6 +5,7 @@ import com.stars.widgets 1.0
 import "../utility"
 import "../utility/metro"
 import "../utility/newsListPage"
+import "../js/api.js" as Api
 
 MyPage{
     id: root
@@ -86,8 +87,8 @@ MyPage{
                 "articles": null,
                 "covers": null,
                 "listContentY": 0,
-                "newsUrl": "http://api.9smart.cn/news"+(category?("?category="+category):""),
-                "imagePosterUrl": "http://api.9smart.cn/covers"+(category?("?category="+category):"")
+                "newsUrl": Api.getNewsUrlByCategory(category),
+                "imagePosterUrl": Api.getPosterUrlByCategory(category)
             }
             addPage(title, obj)
         }
@@ -116,7 +117,7 @@ MyPage{
         Component.onCompleted: {
             metroView.addItem(qsTr("all news"))
             //先去获取全部新闻
-            utility.httpGet(getNewsCategorysFinished, "http://api.9smart.cn/news/categorys")
+            utility.httpGet(getNewsCategorysFinished, Api.newsCategorysUrl)
             //去获取新闻分类
         }
     }

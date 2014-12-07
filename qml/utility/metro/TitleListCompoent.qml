@@ -3,7 +3,7 @@ import QtQuick 1.1
 
 Text{
     id: root
-    property int fontSize: 9
+    property int fontSize: command.style.metroTitleFontPointSize
 
     text: title
     anchors.verticalCenter: parent.verticalCenter
@@ -24,7 +24,7 @@ Text{
             if(deviations<4)
                 return fontSize - deviations*2
             else
-                return 3
+                return fontSize-6
         }
     }
 }

@@ -30,7 +30,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     // Enter the application main event loop.
     return Application::exec();
-#else
+#endif
     QScopedPointer<QApplication> app(createApplication(argc, argv));
 
     app->setApplicationName ("9News");
@@ -60,7 +60,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QSettings settings;
     Utility *utility = Utility::createUtilityClass();
     utility->initUtility(&settings, viewer.engine());
-    QNetworkRequest *httpRequest = utility->getHttpRequest()->getNetworkRequest();
+    //QNetworkRequest *httpRequest = utility->getHttpRequest()->getNetworkRequest();
     //httpRequest->setHeader(QNetworkRequest::ContentTypeHeader, "text/html,application/xhtml+xml");
     //httpRequest->setRawHeader("Accept-Encoding", "gzip");
 
@@ -72,6 +72,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.showExpanded();
 
     return app->exec();
-#endif
+#ifdef Q_OS_BLACKBERRY
     return Application::exec();
+#endif
 }

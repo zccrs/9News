@@ -6,21 +6,12 @@ Item{
     id: root
 
     property int newsId: -1
-    property bool isInited: false
-    //此属性记录
+    //此属性记录新闻Id
 
-    x: enableAnimation?(index%2==0?width:-width):0
     width: parent.width
     height: Math.max(titleText.implicitHeight, loader_titleImage.height)+
             newsInfos.height+loader_imageList.height+10
 
-    NumberAnimation on x{
-        id: rootAnimation
-        duration: 300
-        running: enableAnimation
-        to: 0
-        easing.type: Easing.InOutBack
-    }
     Loader{
         id: loader_titleImage
         property url imageUrl 
@@ -35,8 +26,8 @@ Item{
         anchors.rightMargin: 10
         anchors.top: loader_titleImage.top
         wrapMode: Text.WordWrap
-        color: command.invertedTheme?"black":"#888"
-        font.pointSize: 7
+        color: command.invertedTheme?"black":"#ccc"
+        font.pointSize: command.newsTitleFontSize
     }
     MouseArea{
         anchors.fill: parent
@@ -66,13 +57,15 @@ Item{
         Text{
             id: newsSource
             anchors.verticalCenter: parent.verticalCenter
-            font.pointSize: 4
+            font.pointSize: command.style.newsInfosFontPointSize
+            color: "#888"
         }
         Text{
             id: dateTime
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            font.pointSize: 4
+            font.pointSize: newsSource.font.pointSize
+            color: "#888"
         }
     }
 
@@ -84,15 +77,7 @@ Item{
             source: imageUrl
             width: 60
             height: 60
-            opacity: enableAnimation?0:1
-            Behavior on opacity {
-                NumberAnimation { duration: 100 }
-            }
 
-            Component.onCompleted: {
-                sourceSize = Qt.size(60,60)
-                parent.height = height
-            }
             NumberAnimation on y {
                 id: imageAnimation
                 duration: 100
@@ -103,8 +88,11 @@ Item{
             onStatusChanged: {
                 if(status == Image.Ready&&enableAnimation){
                     imageAnimation.start()
-                    opacity = 1
                 }
+            }
+            Component.onCompleted: {
+                sourceSize = Qt.size(60,60)
+                parent.height = height
             }
         }
     }
@@ -121,10 +109,6 @@ Item{
                 id: listImage
                 source: imageUrl
                 sourceSize.height: 60
-                opacity: enableAnimation?0:1
-                Behavior on opacity {
-                    NumberAnimation { duration: 100 }
-                }
 
                 NumberAnimation on y {
                     id: imageAnimation
@@ -136,7 +120,6 @@ Item{
                 onStatusChanged: {
                     if(status == Image.Ready&&enableAnimation){
                         imageAnimation.start()
-                        opacity = 1
                     }
                 }
             }
@@ -182,10 +165,6 @@ Item{
             }
         }
     }
-    Component.onDestruction: {
-        ListView.view.model.setProperty (index, "enableAnimation", false)
-        //当组件被销毁时把enableAnimation属性置为false，这样下次再被创建时就图片就不会再有动画效果了
-    }
 
     Rectangle{
         width: parent.width
@@ -199,5 +178,10 @@ Item{
         width: parent.width
         height: 1
         color: command.invertedTheme?"#fafafa":"#555"
+    }
+
+    Component.onDestruction: {
+        ListView.view.model.setProperty (index, "enableAnimation", false)
+        //当组件被销毁时把enableAnimation属性置为false，这样下次再被创建时就图片就不会再有动画效果了
     }
 }

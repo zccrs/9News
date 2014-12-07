@@ -52,7 +52,7 @@ void MyHttpRequest::finished(QNetworkReply *reply)
         temp.callbackFun.call (QScriptValue(), list);
 #endif
     }else if(type==ConnectSlot){
-        QObject* obj = temp.caller;
+        QObject *obj = temp.caller;
         QByteArray slotName = temp.slotName;
         
         if(obj!=NULL){
@@ -61,6 +61,7 @@ void MyHttpRequest::finished(QNetworkReply *reply)
             QRegExp reg("^[^(]+");
             reg.indexIn (slotName);
             slotName = reg.cap (0).toLatin1 ();
+
             if(parameterCount==0){//如果形参个数为0个
                 ok = QMetaObject::invokeMethod(obj, slotName);
             }else if(parameterCount==1){
