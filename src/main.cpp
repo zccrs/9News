@@ -1,3 +1,9 @@
+#ifdef Q_OS_BLACKBERRY
+#include <bb/cascades/Application>
+#include <Qt/qdeclarativedebug.h>
+#include "blackberry/applicationui.h"
+using namespace bb::cascades;
+#else
 #include <QtGui/QApplication>
 #include <QDeclarativeEngine>
 #include <QDeclarativeContext>
@@ -11,9 +17,20 @@
 #include "mysvgview.h"
 #include "utility.h"
 #include "myhttprequest.h"
+#endif
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
+#ifdef Q_OS_BLACKBERRY
+    Application app(argc, argv);
+
+    // Create the Application UI object, this is where the main.qml file
+    // is loaded and the application scene is set.
+    new ApplicationUI(&app);
+
+    // Enter the application main event loop.
+    return Application::exec();
+#else
     QScopedPointer<QApplication> app(createApplication(argc, argv));
 
     app->setApplicationName ("9News");
@@ -55,4 +72,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.showExpanded();
 
     return app->exec();
+#endif
+    return Application::exec();
 }
