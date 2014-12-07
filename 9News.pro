@@ -12,16 +12,29 @@ folder_02.target = qml
 folder_03.source = qml/js
 folder_03.target = qml
 
-
 symbian{
-    TARGET.UID3 = 0xE2E87DAE
-    TARGET.CAPABILITY += NetworkServices
-
-    folder_01.source = qml/symbian
+    contains(QT_VERSION, 4.7.3){
+        DEFINES += Q_OS_S60V5
+        folder_01.source = qml/symbian1
+#        RESOURCES += Symbian1-res.qrc
+    } else {
+        folder_01.source = qml/symbian
+#        RESOURCES += Symbian3-res.qrc
+    }
     folder_01.target = qml
     DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03
 
+    TARGET.UID3 = 0xE2E87DAE
+    TARGET.CAPABILITY += NetworkServices
+
     RESOURCES += symbian.qrc
+
+    vendorinfo = "%{\"9Smart\"}" ":\"9Smart\""
+    my_deployment.pkg_prerules += vendorinfo
+    DEPLOYMENT.display_name = 久闻
+    DEPLOYMENT += my_deployment
+
+#    CONFIG += localize_deployment
 }
 
 contains(MEEGO_EDITION, harmattan){
