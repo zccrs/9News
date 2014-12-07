@@ -17,6 +17,10 @@ Item{
     property alias currentPage: pageList.currentItem
     property alias currentPageIndex: pageList.currentIndex
     property alias titleSpacing: titleBarList.spacing
+    property alias pageInteractive: pageList.interactive
+    //此属性设置是否可以左右滑动切换page
+    property alias titleInteractive: titleBarList.interactive
+    //此属性设置是否可以左右滑动和点击标题
 
     function addPage(title, obj){
         titleModel.append({"title":title})
@@ -36,6 +40,8 @@ Item{
     }
     function activation(index){
         titleBarList.positionViewAtIndex(index, ListView.Contain)
+        titleBarList.currentIndex = index
+        pageList.positionViewAtIndex(index, ListView.Beginning)
         pageList.currentIndex = index
     }
 
@@ -52,11 +58,18 @@ Item{
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 10
-        interactive: false
         orientation: ListView.Horizontal
         snapMode :ListView.SnapOneItem
 
-        delegate: TitleListCompoent{}
+        delegate: TitleListCompoent{
+            MouseArea{
+                enabled: titleBarList.interactive
+                anchors.fill: parent
+                onClicked: {
+                    activation(index)
+                }
+            }
+        }
         model: ListModel{
             id: titleModel
         }

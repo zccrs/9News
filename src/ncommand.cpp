@@ -10,7 +10,7 @@ NCommand::NCommand(QObject *parent) :
 NCommand::SystemType NCommand::systemTye() const
 {
 #ifdef HARMATTAN_BOOSTER
-    return Harmattan
+    return Harmattan;
 #else
     return System;
 #endif

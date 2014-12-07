@@ -24,8 +24,8 @@ public:
 
 signals:
     void invertedThemeChanged(bool arg);
-    void getNews(int id);
-    //发送信号告诉qml端用户要阅读第新闻Id为id的新闻
+    void getNews(int newsId, const QString& title);
+    //发送信号告诉qml端用户要阅读第新闻Id为newsId的新闻,title是新闻标题
 public slots:
     void setInvertedTheme(bool arg);
     QString fromTime_t ( uint seconds ) const;

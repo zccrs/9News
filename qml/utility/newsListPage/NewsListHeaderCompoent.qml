@@ -10,12 +10,31 @@ Item{
     height: 160
     clip: true
 
-    function addFlipcharts(covers){//增加大海报
-        loadingImage.destroy()
+    function updateFlipcharts(covers){//增加大海报
+        if(loadingImage)
+            loadingImage.destroy()
+
+        if(typeof covers!="object"){
+            root.height = 0
+            timerFlipchart.stop()
+        }else{
+            root.height = 160
+        }
+
+        mymodel.clear()
+        //先清除数据
         for(var i in covers){
-            mymodel.append({"imageUrl": covers[i].thumb, "title": covers[i].topic})
+            mymodel.append({
+                               "imageUrl": covers[i].thumb,
+                               "title": covers[i].topic,
+                               "newsId": covers[i].cid
+                           })
         }
         timerFlipchart.start()
+    }
+
+    Behavior on height {
+        NumberAnimation { duration: 200 }
     }
 
     Component{
@@ -72,6 +91,14 @@ Item{
                     font.pointSize: 3
                     text: (index+1)+"/"+slideList.count
                     anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            MouseArea{
+                anchors.fill: parent
+
+                onClicked: {
+                    command.getNews(newsId, title)
                 }
             }
         }

@@ -128,20 +128,20 @@ QVariant SelectFilesDialog::firstSelection() const
 {
     if(files.length()>0)
         return files.first();
-    return "undefined";
+    return QVariant();
 }
 
 QVariant SelectFilesDialog::lastSelection() const
 {
     if(files.length()>0)
         return files.last();
-    return "undefined";
+    return QVariant();
 }
 
 QVariant SelectFilesDialog::at(int index) const
 {
     if(index<0||index>=files.length())
-        return "undefined";
+        return QVariant();
     return files[index];
 }
 

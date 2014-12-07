@@ -35,7 +35,8 @@ ListView{
             return
         }
 
-        root.headerItem.addFlipcharts(covers)
+        root.headerItem.updateFlipcharts(covers)
+        //更新大海报
     }
 
     function getNewsFinished(error, data){//加载新闻完成
@@ -60,7 +61,8 @@ ListView{
         data = JSON.parse(data)
 
         if(data.error==0){
-            ListView.view.model.setProperty(index, "covers", data.covers)
+            if(ListView)
+                ListView.view.model.setProperty(index, "covers", data.covers)
             updateFlipcharts()
         }
     }
