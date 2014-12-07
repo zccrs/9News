@@ -15,7 +15,7 @@ public:
     explicit NCommand(QObject *parent = 0);
     
     enum SystemType{
-        System,
+        Symbian,
         Harmattan
     };
 

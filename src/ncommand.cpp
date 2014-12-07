@@ -12,7 +12,7 @@ NCommand::SystemType NCommand::systemTye() const
 #ifdef HARMATTAN_BOOSTER
     return Harmattan;
 #else
-    return System;
+    return Symbian;
 #endif
 }
 

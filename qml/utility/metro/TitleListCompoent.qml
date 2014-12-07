@@ -1,9 +1,10 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
+import "../../js/configure.js" as ConfigureScript
 
 Text{
     id: root
-    property int fontSize: 9
+    property int fontSize: ConfigureScript.style.metroTitleFontPointSize
 
     text: title
     anchors.verticalCenter: parent.verticalCenter
