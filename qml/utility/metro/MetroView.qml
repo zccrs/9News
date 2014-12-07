@@ -56,7 +56,7 @@ Item{
 
     ListView{
         id: titleBarList
-
+        clip: true
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 10
@@ -79,7 +79,6 @@ Item{
 
     ListView{
         id: pageList
-
         clip: true
         width: parent.width
         anchors.top: titleBarList.bottom

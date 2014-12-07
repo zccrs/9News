@@ -27,7 +27,7 @@ Item{
         anchors.top: loader_titleImage.top
         wrapMode: Text.WordWrap
         color: command.invertedTheme?"black":"#ccc"
-        font.pointSize: command.style.newsListFontPointSize
+        font.pointSize: command.newsTitleFontSize
     }
     MouseArea{
         anchors.fill: parent

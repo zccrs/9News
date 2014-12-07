@@ -1,6 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import QtWebKit 1.0
+import "../js/api.js" as Api
 
 Item{
     property int newsId: -1
@@ -18,7 +18,7 @@ Item{
         data = JSON.parse(data)
         if(data.error==0){
             //如果服务器没有返回错误
-            var reg = /\[img=\d{3},\d{3}\][^\[]+/
+            var reg = /\[img=\d+,\d+\][^\[]+/
             var content = data.article.content
 
             var pos = 0
@@ -53,7 +53,7 @@ Item{
     }
 
     onNewsIdChanged: {
-        utility.httpGet(getNewsFinished, "http://api.9smart.cn/new/"+newsId)
+        utility.httpGet(getNewsFinished, Api.getNewsContentUrlById(newsId))
         //去获取新闻内容
     }
     onActivePageChanged: {//如果页面是否活跃的状态改变
@@ -68,7 +68,7 @@ Item{
 
         y:-height
         width: parent.width-20
-        height: textTitle.implicitHeight+10
+        height: textTitle.implicitHeight+20
         anchors.horizontalCenter: parent.horizontalCenter
 
         Text{
@@ -78,7 +78,8 @@ Item{
             anchors.verticalCenter: parent.verticalCenter
             wrapMode: Text.WordWrap
             color: command.invertedTheme?"black":"#ccc"
-            font.pointSize: command.style.metroTitleFontPointSize
+            font.pointSize: command.newsTitleFontSize
+            font.bold: true
         }
 
         NumberAnimation on y{
@@ -131,10 +132,11 @@ Item{
     Component{
         id: componentText
 
-        WebView{
+        Text{
             width: parent.width
-            preferredWidth: width
-            html: command.textToHtml(componentData, width, command.invertedTheme)
+            wrapMode: Text.WordWrap
+            text: command.textToHtml(componentData, width)
+            font.pointSize: command.newsContentFontSize
         }
     }
 
@@ -145,7 +147,7 @@ Item{
             source: componentData
             width: Math.min(parent.width, sourceSize.width)
             height: width/sourceSize.width*sourceSize.height
-
+            anchors.horizontalCenter: parent.horizontalCenter
             smooth: true
         }
     }
