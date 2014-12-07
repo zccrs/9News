@@ -30,26 +30,23 @@ Item{
                     return
                 var text = content.substring(pos, img_pos)
                 mymodel.append({
-                            "contentType": "text",
-                            "contentHtml": text,
-                            "imageUrl": ""
+                            "contentComponent": componentText,
+                            "contentData": text
                             })
 
                 var img_url = imgs[i].substring(13, imgs[i].length)
 
                 mymodel.append({
-                            "contentType": "image",
-                            "contentHtml": "",
-                            "imageUrl": img_url
+                            "contentComponent": componentImage,
+                            "contentData": img_url
                             })
                 pos = img_pos+imgs[i].length
             }
             var text = content.substring(pos, content.length)
             if(text!=""){
                 mymodel.append({
-                            "contentType": "text",
-                            "contentHtml": text,
-                            "imageUrl": ""
+                            "contentComponent": componentText,
+                            "contentData": text
                             })
             }
         }
@@ -113,11 +110,11 @@ Item{
         Loader{
             id: loaderNewsContent
 
-            property string componentData: contentType=="image"?imageUrl:contentHtml
+            property string componentData: contentData
 
             width: parent.width
             opacity: 0
-            sourceComponent: contentType=="image"?componentImage:componentText
+            sourceComponent: contentComponent
 
             Behavior on opacity {
                 NumberAnimation { duration: 200 }
