@@ -30,7 +30,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     // Enter the application main event loop.
     return Application::exec();
-#endif
+#else
     QScopedPointer<QApplication> app(createApplication(argc, argv));
 
     app->setApplicationName ("9News");
@@ -76,7 +76,5 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.showExpanded();
 
     return app->exec();
-#ifdef Q_OS_BLACKBERRY
-    return Application::exec();
 #endif
 }
