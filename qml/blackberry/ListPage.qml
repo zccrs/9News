@@ -1,23 +1,62 @@
-import bb.cascades 1.2
+import bb.cascades 1.3
 Page{
     id:listpage;
     content: Container {
 
 
-    } // end of Container
+    }
+    titleBar: TitleBar {
+        kind: TitleBarKind.Default;
+        title :qsTr( "9News");
+    }
     actions: [
+        ActionItem{
+            title: qsTr("Refresh");
+            ActionBar.placement: ActionBarPlacement.Signature;
+        },
         ActionItem {
-            title: "Next page"
-            ActionBar.placement: ActionBarPlacement.OnBar
+            title: qsTr("Theme");
+            ActionBar.placement: ActionBarPlacement.OnBar;
             onTriggered: {
-                var page = pageDefinition.createObject();
-                navigationPane.push(page);
+                if (Application.themeSupport.theme.colorTheme.style == VisualStyle.Bright) {
+                    Application.themeSupport.setVisualStyle(VisualStyle.Dark);
+                }
+                else {
+                    Application.themeSupport.setVisualStyle(VisualStyle.Bright);
+                }
             }
-
-            attachedObjects: ComponentDefinition {
-                id: pageDefinition;
-                source: "NewsPage.qml"
-            }
+        },
+        ActionItem{
+            title: qsTr("All News");
+            ActionBar.placement: ActionBarPlacement.InOverflow;
+        },
+        ActionItem{
+            title: qsTr("Black Berry");
+            ActionBar.placement: ActionBarPlacement.InOverflow;
+        },
+        ActionItem{
+            title: qsTr("Firefox OS");
+            ActionBar.placement: ActionBarPlacement.InOverflow;
+        },
+        ActionItem{
+            title: qsTr("Meego");
+            ActionBar.placement: ActionBarPlacement.InOverflow;
+        },
+        ActionItem{
+            title: qsTr("Sailfish OS");
+            ActionBar.placement: ActionBarPlacement.InOverflow;
+        },
+        ActionItem{
+            title: qsTr("Tizen");
+            ActionBar.placement: ActionBarPlacement.InOverflow;
+        },
+        ActionItem{
+            title: qsTr("Ubuntu Touch");
+            ActionBar.placement: ActionBarPlacement.InOverflow;
+        },
+        ActionItem{
+            title: qsTr("Application");
+            ActionBar.placement: ActionBarPlacement.InOverflow;
         }
     ]
 }
