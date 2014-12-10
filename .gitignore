@@ -93,3 +93,5 @@ ABLD.BAT
 *.changes
 *.changes
 /debian
+/images.qrc
+/images.qrc
