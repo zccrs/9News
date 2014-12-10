@@ -2,7 +2,19 @@ import bb.cascades 1.3
 Page{
     id:listpage;
     content: Container {
-
+        ListView {
+            dataModel: ArrayDataModel {
+                id: theDataModel
+            }
+            onCreationCompleted: {
+                for ( var a = 0; a < 20; a++ ) {
+                    theDataModel.append("Item" + a);
+                }
+                theDataModel.append(["Appended 1", "Appended 2"]);
+                theDataModel.removeAt(0);
+                theDataModel.insert(0,["Prepended 1", "Prepended 2"]);
+            }
+        }
 
     }
     titleBar: TitleBar {
@@ -10,6 +22,7 @@ Page{
         title :qsTr( "9News");
     }
     actions: [
+        //RepeatPattern{}
         ActionItem{
             title: qsTr("Refresh");
             ActionBar.placement: ActionBarPlacement.Signature;
