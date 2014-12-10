@@ -3,7 +3,7 @@ TARGET = 9News
 # Add more folders to ship with the application, here
 
 # Additional import path used to resolve QML modules in Creator's code model
-QML_IMPORT_PATH =
+QML_IMPORT_PATH =C:/bbndk/target_10_3_1_995/qnx6/x86/usr/lib/qt4/imports/bb/cascades
 
 INCLUDEPATH += src
 
@@ -118,3 +118,9 @@ RESOURCES += \
 
 HEADERS += \
     src/ncommand.h \
+
+DISTFILES += \
+    qml/blackberry/ListPage.qml
+
+OTHER_FILES += \
+    qml/blackberry/NewsPage.qml

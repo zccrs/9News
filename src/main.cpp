@@ -30,7 +30,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     // Enter the application main event loop.
     return Application::exec();
-#endif
+#else
     QScopedPointer<QApplication> app(createApplication(argc, argv));
 
     app->setApplicationName ("9News");
@@ -69,14 +69,12 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #elif defined(Q_OS_S60V5)     //Symbian^1
     viewer.setMainQmlFile(QLatin1String("qml/symbian1/main.qml"));
 #elif defined(Q_WS_SIMULATOR) //Simulator
-    viewer.setMainQmlFile(QLatin1String("qml/symbian1/main.qml"));
+    viewer.setMainQmlFile(QLatin1String("qml/symbian/main.qml"));
 #else                         //Symbian^3
     viewer.setMainQmlFile(QLatin1String("qml/symbian/main.qml"));
 #endif
     viewer.showExpanded();
 
     return app->exec();
-#ifdef Q_OS_BLACKBERRY
-    return Application::exec();
 #endif
 }
