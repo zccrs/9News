@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QUrl>
 
 class NCommand : public QObject
 {
@@ -14,6 +15,7 @@ class NCommand : public QObject
     Q_PROPERTY(int newsContentFontSize READ newsContentFontSize WRITE setNewsContentFontSize NOTIFY newsContentFontSizeChanged)
     //记录新闻内容字体大小的设置
     Q_PROPERTY(int newsTitleFontSize READ newsTitleFontSize WRITE setNewsTitleFontSize NOTIFY newsTitleFontSizeChanged)
+    //记录新闻标题字体的大小
 
     Q_ENUMS(SystemType)
 
@@ -31,6 +33,7 @@ public:
     int newsContentFontSize() const;
     int newsTitleFontSize() const;
 
+
 signals:
     void invertedThemeChanged(bool arg);
     void getNews(int newsId, const QString& title);
@@ -44,7 +47,8 @@ public slots:
     QString textToHtml(const QString& text, int width) const;
     void setNewsContentFontSize(int arg);
     void setNewsTitleFontSize(int arg);
-
+    QUrl getIconSource(const QString& iconName, bool invertedTheme) const;
+    //返回ToolButton中自定义图标的url。例如iconName为skin，则返回"qrc:/images/skin.png"
 private:
     bool m_invertedTheme;
     QVariantMap m_style;

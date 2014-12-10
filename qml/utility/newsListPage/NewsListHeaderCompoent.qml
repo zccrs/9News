@@ -57,13 +57,20 @@ Item{
         }
     }
 
-    ListView{
+    PathView{
         id: slideList
 
         anchors.fill:parent
-        orientation: ListView.Horizontal
-        snapMode :ListView.SnapOneItem
-        boundsBehavior: Flickable.StopAtBounds
+
+        path:Path{
+            startX: -slideList.width*slideList.count/2
+            startY: slideList.height/2
+            PathLine{
+                x: slideList.width*slideList.count/2
+                y: slideList.height/2
+            }
+        }
+
 
         model: ListModel{
             id:mymodel
@@ -152,12 +159,12 @@ Item{
 
             property int number: 0//记录改翻转到第几个大海报
 
-            interval: 500
+            interval: 400
 
             onTriggered: {
                 var temp = slideList.contentX/slideList.width
                 number = (temp+1)%slideList.count
-                slideList.positionViewAtIndex(number,ListView.Beginning)
+                slideList.incrementCurrentIndex ()
                 slideList.interactive = true
             }
         }

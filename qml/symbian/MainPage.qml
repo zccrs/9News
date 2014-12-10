@@ -52,7 +52,7 @@ MyPage{
             }
         }
         ToolButton{
-            iconSource: "qrc:/images/skin"+(command.invertedTheme?"_invert.png":".png")
+            iconSource: command.getIconSource("skin", command.invertedTheme)
             onClicked: {
                 command.invertedTheme=!command.invertedTheme
             }
