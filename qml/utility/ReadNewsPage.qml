@@ -3,10 +3,13 @@ import QtQuick 1.1
 import "../js/api.js" as Api
 
 Item{
+    id: root
+
     property int newsId: -1
     property string newsTitle: ""
     property bool activePage: false
     property alias titleHeight: titleItems.height
+    property Item imagesBrowse
 
     function getNewsFinished(error, data){
         //获取新闻内容完成
@@ -18,11 +21,16 @@ Item{
         data = JSON.parse(data)
         if(data.error==0){
             //如果服务器没有返回错误
+<<<<<<< HEAD
             var reg = /\[img=\d+,\d+\][^\[]+/
+=======
+            var reg = /\[img=\d+,\d+\][^\[]+\[\/img\]/g
+>>>>>>> dev_AfterTheRainOfStars
             var content = data.article.content
 
             var pos = 0
             var imgs = content.match(reg)
+<<<<<<< HEAD
 
             for(var i in imgs){
                 var img_pos = content.indexOf(imgs[i])
@@ -41,8 +49,29 @@ Item{
                             "contentData": img_url
                             })
                 pos = img_pos+imgs[i].length
+=======
+            if(imgs){
+                for(var i=0; i<imgs.length; ++i){
+                    var img_pos = content.indexOf(imgs[i])
+                    var text = content.substring(pos, img_pos)
+
+                    mymodel.append({
+                                "contentComponent": componentText,
+                                "contentData": text
+                                })
+                    var img_url = imgs[i].substring(13, imgs[i].length-6)
+
+                    mymodel.append({
+                                "contentComponent": componentImage,
+                                "contentData": img_url
+                                })
+                    pos = img_pos+imgs[i].length
+                }
+>>>>>>> dev_AfterTheRainOfStars
             }
+
             var text = content.substring(pos, content.length)
+
             if(text!=""){
                 mymodel.append({
                             "contentComponent": componentText,
@@ -149,6 +178,28 @@ Item{
             height: width/sourceSize.width*sourceSize.height
             anchors.horizontalCenter: parent.horizontalCenter
             smooth: true
+
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    main.showToolBar=false
+                    //先关闭状态栏的显示
+                    var obj = Qt.createComponent("ImagesBrowse .qml")
+                    imagesBrowse = obj.createObject(root)
+                    imagesBrowse.imageUrl = parent.source
+                    imagesBrowse.opacity = 1
+                }
+            }
+        }
+    }
+
+    Connections{
+        target: imagesBrowse
+        onClose:{
+            imagesBrowse.destroy()
+            //销毁此控件
+            imagesBrowse = null
+            main.showToolBar=true
         }
     }
 }

@@ -14,7 +14,7 @@ Item{
 
     Loader{
         id: loader_titleImage
-        property url imageUrl 
+        property url imageUrl
     }
 
     Text{
@@ -143,6 +143,7 @@ Item{
     }
 
     Component.onCompleted: {
+        var article = componentData
         if(article){
             newsId = article.aid
             titleText.text = article.topic

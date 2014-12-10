@@ -11,29 +11,70 @@ Item{
         if(typeof covers!="object"){
             root.height = 0
             timerFlipchart.stop()
-        }else{
-            root.height = 160
         }
-
-        mymodel.clear()
         //先清除数据
         for(var i in covers){
-            mymodel.append({
-                               "imageUrl": covers[i].thumb,
-                               "title": covers[i].topic,
-                               "newsId": covers[i].cid
-                           })
+            var obj = {
+                "imageUrl": covers[i].thumb,
+                "title": covers[i].topic,
+                "newsId": covers[i].cid
+            }
+            mymodel.append(obj)
         }
         timerFlipchart.start()
     }
 
+<<<<<<< HEAD
     ListView{
+=======
+    function clearFlipcharts(){
+        mymodel.clear()
+        root.height = 0
+    }
+
+    function show(toHeight){
+        if(root.height==toHeight)
+            return
+
+        if(enableAnimation){//如果允许动画
+            animationHeight.to = toHeight
+            animationHeight.start()
+        }else{
+            root.height = toHeight
+        }
+    }
+
+    NumberAnimation {
+        id: animationHeight
+        running: false
+        target: root
+        duration: 500
+        property: "height"
+        from: 0
+    }
+
+    Connections{
+        target: componentData//此对象在他的父对象中（NewsList的listDelegate的Loader中）
+        onEmitUpdateFlipcharts:{
+            updateFlipcharts(covers)
+        }
+    }
+
+    PathView{
+>>>>>>> dev_AfterTheRainOfStars
         id: slideList
 
         anchors.fill:parent
-        orientation: ListView.Horizontal
-        snapMode :ListView.SnapOneItem
-        boundsBehavior: Flickable.StopAtBounds
+
+        path:Path{
+            startX: -slideList.width*slideList.count/2
+            startY: slideList.height/2
+            PathLine{
+                x: slideList.width*slideList.count/2
+                y: slideList.height/2
+            }
+        }
+
 
         model: ListModel{
             id:mymodel
@@ -43,7 +84,11 @@ Item{
             source: imageUrl
 
             onImplicitHeightChanged: {
+<<<<<<< HEAD
                 root.height = implicitHeight+10
+=======
+                root.show(implicitHeight+10)
+>>>>>>> dev_AfterTheRainOfStars
             }
 
             MouseArea{
@@ -122,12 +167,12 @@ Item{
 
             property int number: 0//记录改翻转到第几个大海报
 
-            interval: 500
+            interval: 400
 
             onTriggered: {
                 var temp = slideList.contentX/slideList.width
                 number = (temp+1)%slideList.count
-                slideList.positionViewAtIndex(number,ListView.Beginning)
+                slideList.incrementCurrentIndex ()
                 slideList.interactive = true
             }
         }
