@@ -9,11 +9,6 @@ NCommand::NCommand(QObject *parent) :
 #ifdef HARMATTAN_BOOSTER
     m_style["metroTitleFontPointSize"] = 22;
     //Metro界面上方大标题的最大字体大小
-<<<<<<< HEAD
-    m_style["newsListFontPointSize"] = 17;
-    //新闻列表中新闻标题的字体大小
-=======
->>>>>>> dev_AfterTheRainOfStars
     m_style["newsInfosFontPointSize"] = 10;
     //新闻列表中新闻来源和发表时间等新闻信息的字体大小
     m_style["flipchartsTitleFontPointSize"] = 10;
@@ -25,11 +20,6 @@ NCommand::NCommand(QObject *parent) :
 #else
     m_style["metroTitleFontPointSize"] = 11;
     //Metro界面上方大标题的最大字体大小
-<<<<<<< HEAD
-    m_style["newsListFontPointSize"] = 7;
-    //新闻列表中新闻标题的字体大小
-=======
->>>>>>> dev_AfterTheRainOfStars
     m_style["newsInfosFontPointSize"] = 5;
     //新闻列表中新闻来源和发表时间等新闻信息的字体大小
     m_style["flipchartsTitleFontPointSize"] = 5;
@@ -113,12 +103,9 @@ void NCommand::setNewsTitleFontSize(int arg)
         emit newsTitleFontSizeChanged(arg);
     }
 }
-<<<<<<< HEAD
-=======
 
 QUrl NCommand::getIconSource(const QString &iconName, bool invertedTheme) const
 {
     QString source = "qrc:/images/"+iconName+(invertedTheme?"_invert.png":".png");
     return source;
 }
->>>>>>> dev_AfterTheRainOfStars

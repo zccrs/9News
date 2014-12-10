@@ -58,10 +58,7 @@ MyPage{
                 "articles": null,
                 "covers": null,
                 "listContentY": 0,
-<<<<<<< HEAD
-=======
                 "enableAnimation": true,
->>>>>>> dev_AfterTheRainOfStars
                 "newsUrl": Api.getNewsUrlByCategory(category),
                 "imagePosterUrl": Api.getPosterUrlByCategory(category)
             }

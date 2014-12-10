@@ -74,15 +74,8 @@ ListView{
         data = JSON.parse(data)
 
         if(data.error==0){
-<<<<<<< HEAD
-            if(parentListModel){
-                parentListModel.setProperty(index, "covers", data.covers)
-                updateFlipcharts()
-            }
-=======
             parentListModel.setProperty(index, "covers", data.covers)
             updateFlipcharts()
->>>>>>> dev_AfterTheRainOfStars
         }
     }
 

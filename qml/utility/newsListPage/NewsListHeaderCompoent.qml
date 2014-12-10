@@ -24,9 +24,6 @@ Item{
         timerFlipchart.start()
     }
 
-<<<<<<< HEAD
-    ListView{
-=======
     function clearFlipcharts(){
         mymodel.clear()
         root.height = 0
@@ -61,7 +58,6 @@ Item{
     }
 
     PathView{
->>>>>>> dev_AfterTheRainOfStars
         id: slideList
 
         anchors.fill:parent
@@ -84,11 +80,7 @@ Item{
             source: imageUrl
 
             onImplicitHeightChanged: {
-<<<<<<< HEAD
-                root.height = implicitHeight+10
-=======
                 root.show(implicitHeight+10)
->>>>>>> dev_AfterTheRainOfStars
             }
 
             MouseArea{
