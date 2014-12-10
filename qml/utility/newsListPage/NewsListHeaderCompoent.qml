@@ -11,20 +11,50 @@ Item{
         if(typeof covers!="object"){
             root.height = 0
             timerFlipchart.stop()
-        }else{
-            root.height = 160
         }
-
-        mymodel.clear()
         //先清除数据
         for(var i in covers){
-            mymodel.append({
-                               "imageUrl": covers[i].thumb,
-                               "title": covers[i].topic,
-                               "newsId": covers[i].cid
-                           })
+            var obj = {
+                "imageUrl": covers[i].thumb,
+                "title": covers[i].topic,
+                "newsId": covers[i].cid
+            }
+            mymodel.append(obj)
         }
         timerFlipchart.start()
+    }
+
+    function clearFlipcharts(){
+        mymodel.clear()
+        root.height = 0
+    }
+
+    function show(toHeight){
+        if(root.height==toHeight)
+            return
+
+        if(enableAnimation){//如果允许动画
+            animationHeight.to = toHeight
+            animationHeight.start()
+        }else{
+            root.height = toHeight
+        }
+    }
+
+    NumberAnimation {
+        id: animationHeight
+        running: false
+        target: root
+        duration: 500
+        property: "height"
+        from: 0
+    }
+
+    Connections{
+        target: componentData//此对象在他的父对象中（NewsList的listDelegate的Loader中）
+        onEmitUpdateFlipcharts:{
+            updateFlipcharts(covers)
+        }
     }
 
     ListView{
@@ -43,7 +73,7 @@ Item{
             source: imageUrl
 
             onImplicitHeightChanged: {
-                root.height = implicitHeight+10
+                root.show(implicitHeight+10)
             }
 
             MouseArea{

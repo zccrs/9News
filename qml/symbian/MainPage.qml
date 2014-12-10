@@ -12,6 +12,8 @@ MyPage{
 
     property bool isQuit: false
     //判断此次点击后退键是否应该退出
+    signal refreshNewsList
+    //发射信号刷新当前新闻列表
 
     function getNewsCategorysFinished(error, data){
         //当获取新闻种类结束后调用此函数
@@ -58,6 +60,10 @@ MyPage{
         ToolButton{
             iconSource: "toolbar-refresh"
             platformInverted: command.invertedTheme
+            onClicked: {
+                refreshNewsList()
+                //发射信号刷新当前新闻列表
+            }
         }
 
         ToolButton{
@@ -89,6 +95,7 @@ MyPage{
                 "articles": null,
                 "covers": null,
                 "listContentY": 0,
+                "enableAnimation": true,
                 "newsUrl": Api.getNewsUrlByCategory(category),
                 "imagePosterUrl": Api.getPosterUrlByCategory(category)
             }
@@ -102,7 +109,7 @@ MyPage{
             height: metroView.height-metroView.titleBarHeight
 
             footer:Item{
-                visible: newsList.count>0
+                visible: newsList.count>1
                 width: parent.width-40
                 height: 60
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -112,6 +119,18 @@ MyPage{
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("load next page")
                     font.pointSize: 7
+
+                    onClicked: {
+                        newsList.addMoreNews()//增加新闻
+                    }
+                }
+            }
+
+            Connections{
+                target: root
+                onRefreshNewsList:{
+                    newsList.updateList()
+                    //如果收到刷新列表的信号就重新获取新闻列表
                 }
             }
         }

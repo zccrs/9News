@@ -14,7 +14,7 @@ Item{
 
     Loader{
         id: loader_titleImage
-        property url imageUrl 
+        property url imageUrl
     }
 
     Text{
@@ -143,6 +143,7 @@ Item{
     }
 
     Component.onCompleted: {
+        var article = componentData
         if(article){
             newsId = article.aid
             titleText.text = article.topic
@@ -178,10 +179,5 @@ Item{
         width: parent.width
         height: 1
         color: command.invertedTheme?"#fafafa":"#555"
-    }
-
-    Component.onDestruction: {
-        ListView.view.model.setProperty (index, "enableAnimation", false)
-        //当组件被销毁时把enableAnimation属性置为false，这样下次再被创建时就图片就不会再有动画效果了
     }
 }
