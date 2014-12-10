@@ -24,12 +24,10 @@ Item{
 
     function addPage(title, obj){
         titleModel.append({"title":title})
-        obj.parentListModel = pageModel
         pageModel.append(obj)
     }
     function insertPage(index, title, obj){
         titleModel.insert(index, {"title":title})
-        obj.parentListModel = pageModel
         pageModel.insert(index, obj)
     }
     function removePage(index){

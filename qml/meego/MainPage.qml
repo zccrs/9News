@@ -34,7 +34,7 @@ MyPage{
         }
 
         ToolIcon{
-            iconSource: "qrc:/images/skin"+(command.invertedTheme?"_invert.png":".png")
+            iconSource: command.getIconSource("skin", command.invertedTheme)
             onClicked: {
                 command.invertedTheme=!command.invertedTheme
             }
@@ -58,6 +58,7 @@ MyPage{
                 "articles": null,
                 "covers": null,
                 "listContentY": 0,
+                "enableAnimation": true,
                 "newsUrl": Api.getNewsUrlByCategory(category),
                 "imagePosterUrl": Api.getPosterUrlByCategory(category)
             }
@@ -71,7 +72,7 @@ MyPage{
             height: metroView.height-metroView.titleBarHeight
 
             footer:Item{
-                visible: newsList.count>0
+                visible: newsList.count>1
                 width: parent.width-40
                 height: 60
                 anchors.horizontalCenter: parent.horizontalCenter

@@ -9,5 +9,7 @@
         <file>images/skin_invert.png</file>
         <file>images/mask.bmp</file>
         <file>images/loading.png</file>
+        <file>images/save.svg</file>
+        <file>images/shadow.png</file>
     </qresource>
 </RCC>
