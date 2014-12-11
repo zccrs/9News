@@ -3,7 +3,7 @@ TARGET = 9News
 # Add more folders to ship with the application, here
 
 # Additional import path used to resolve QML modules in Creator's code model
-QML_IMPORT_PATH =
+
 INCLUDEPATH += src
 
 folder_02.source = qml/utility
@@ -68,6 +68,8 @@ contains(QT_VERSION, 4.8.6){
     DISTFILES += \
         bar-descriptor.xml \
         qml/blackberry/main.qml
+
+    DEPLOYMENTFOLDERS += folder_03
 }
 
 simulator{

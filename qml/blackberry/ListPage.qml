@@ -1,4 +1,5 @@
 import bb.cascades 1.3
+import "../js/api.js" as Api
 Page{
     id:listpage;
     content: Container {
@@ -6,14 +7,37 @@ Page{
             dataModel: ArrayDataModel {
                 id: theDataModel
             }
-            onCreationCompleted: {
-                for ( var a = 0; a < 20; a++ ) {
-                    theDataModel.append("Item" + a);
+            listItemComponents: [
+                            // The second ListItemComponent defines how "listItem" items
+                            // should appear. These items use a Container that includes a
+                            // CheckBox and a Label.
+                            ListItemComponent {
+                                type: "listItem"
+                                Container {
+                                    layout: StackLayout {
+                                        orientation: LayoutOrientation.LeftToRight
+                                    }
+                                    Label {
+                                        text: ListItemData.topic
+
+                                        // Apply a text style to create a title-sized font
+                                        // with normal weight
+                                        textStyle {
+                                            base: SystemDefaults.TextStyles.TitleText
+                                            fontWeight: FontWeight.Normal
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+            function itemType(data, indexPath) {
+                    return "listItem"
                 }
-                theDataModel.append(["Appended 1", "Appended 2"]);
-                theDataModel.removeAt(0);
-                theDataModel.insert(0,["Prepended 1", "Prepended 2"]);
-            }
+
+            onCreationCompleted: {
+                        utility.httpGet(getNewsListFinished, Api.getNewsUrlByCategory());
+                        //去获取新闻分类
+                    }
         }
 
     }
@@ -72,5 +96,19 @@ Page{
             ActionBar.placement: ActionBarPlacement.InOverflow;
         }
     ]
+    function getNewsListFinished(error, data){
+            //当获取新闻种类结束后调用此函数
+            if(error)//如果网络请求出错
+                return
+
+            data = JSON.parse(data)
+
+            if(data.error===0){
+
+                for(var i in data.articles)
+                   { theDataModel.append(data.articles[i]);}
+
+            }
+        }
 }
 

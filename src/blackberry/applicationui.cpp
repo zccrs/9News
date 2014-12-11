@@ -11,7 +11,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 {
     // By default the QmlDocument object is owned by the Application instance
     // and will have the lifespan of the application
-    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
+    QmlDocument *qml = QmlDocument::create("asset:///blackberry/main.qml");
     // Create root object for the UI
     Utility *utility = Utility::createUtilityClass();
     qml->setContextProperty("utility", utility);

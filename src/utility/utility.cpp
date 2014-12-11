@@ -6,6 +6,7 @@
 #include "mynetworkaccessmanagerfactory.h"
 #include "downloadimage.h"
 #include "myhttprequest.h"
+#include "stdio.h"
 
 Utility *Utility::me=NULL;
 Utility *Utility::createUtilityClass()
@@ -115,7 +116,13 @@ void Utility::emitDesktopPosChanged()
 
 void Utility::consoleLog(QString str)
 {
+#ifdef Q_OS_BLACKBERRY
+    QByteArray ba = str.toLatin1();
+    char *cstr=ba.data();
+    printf(cstr);
+#else
     qDebug()<<"c++:"+str;
+#endif
 }
 
 QString Utility::getCookie(QString cookieName)
