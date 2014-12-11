@@ -5,40 +5,22 @@ import com.stars.widgets 1.0
 Item {
     id: root
 
-    property bool platformInverted: false
+    property bool invertedTheme: false
+    property bool backButton: true // deprecated
+
+    onBackButtonChanged: { console.log("warning: ToolBarLayout.backButton is deprecated.") }
+
+    implicitWidth: screen.width
+    implicitHeight: internal.defaultHeightToolBar
+    visible: false
 
     MySvgView{
         id:backg
         width: parent.width
         height: parent.height
-        source: platformInverted?"qrc:/images/toolbar.svg":"qrc:/images/toolbar_inverse.svg"
+        source: invertedTheme?"qrc:/images/toolbar.svg":"qrc:/images/toolbar_inverse.svg"
     }
-    /*Rectangle{
-        anchors.fill: parent
-        color: platformInverted?"#f1f1f1":"black"
 
-        Rectangle{
-            width: parent.width
-            height: 1
-            //anchors.bottom: parent.bottom
-            color: platformInverted?"#ccc":"#333"
-        }
-        Rectangle{
-            y:1
-            width: parent.width
-            height: 1
-            color: platformInverted?"#fafafa":"#555"
-        }
-    }*/
-
-
-    property bool backButton: true // deprecated
-    onBackButtonChanged: { console.log("warning: ToolBarLayout.backButton is deprecated.") }
-
-    implicitWidth: screen.width
-    implicitHeight: internal.defaultHeightToolBar
-
-    visible: false
 
     Connections {
         target: privateStyle
@@ -137,6 +119,7 @@ Item {
             for (var i = 0; i < numChildren; ++i) {
                 // make sure all the children have correct parent, height, and y
                 children[i+1].parent = root
+
                 if (isButtonRow(children[i+1])) {
                     var buttonRow = children[i+1]
                     // ButtonRow frame height is always tool bar's height in

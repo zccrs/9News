@@ -57,44 +57,29 @@ Item{
         }
     }
 
-    PathView{
-        id: slideList
+    Component{
+        id: compoentPathView
+        Item{
+            width: parent.width
+            height: parent.height
 
-        anchors.fill:parent
+            Image {
+                sourceSize.width: parent.width
+                anchors.centerIn: parent
+                source: imageUrl
 
-        path:Path{
-            startX: -slideList.width*slideList.count/2
-            startY: slideList.height/2
-            PathLine{
-                x: slideList.width*slideList.count/2
-                y: slideList.height/2
-            }
-        }
-
-
-        model: ListModel{
-            id:mymodel
-        }
-        delegate: Image {
-            sourceSize.width: root.width
-            source: imageUrl
-
-            onImplicitHeightChanged: {
-                root.show(implicitHeight+10)
+                onImplicitHeightChanged: {
+                    root.show(implicitHeight)
+                }
             }
 
-            MouseArea{
-                id: mouse
-                anchors.fill: parent
-                enabled: false
-            }
             Rectangle{
                 anchors.bottom: parent.bottom
                 width: parent.width
                 height: 30
                 color: "white"
                 opacity: 0.8
-                clip: true
+
                 Text{
                     anchors.left: parent.left
                     anchors.right: newsIndexAndCount.left
@@ -122,6 +107,27 @@ Item{
                 }
             }
         }
+    }
+
+    PathView{
+        id: slideList
+
+        anchors.fill:parent
+
+        path:Path{
+            startX: -slideList.width*slideList.count/2
+            startY: slideList.height/2
+            PathLine{
+                x: slideList.width*slideList.count/2
+                y: slideList.height/2
+            }
+        }
+
+
+        model: ListModel{
+            id:mymodel
+        }
+        delegate: compoentPathView
 
         onMovementStarted: {
             timerFlipchart.stop()

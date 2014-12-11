@@ -2,9 +2,12 @@
 
 var newsCategorysUrl = "http://api.9smart.cn/news/categorys"
 //获取新闻分类的url
-function getNewsUrlByCategory(category){
+function getNewsUrlByCategory(category, keyword, order){
     //返回获取类别为category的新闻的url
-    return "http://api.9smart.cn/news"+(category?("?category="+category):"")
+    return "http://api.9smart.cn/news"+
+            "?category="+(category?category:"")+
+            "&keyword="+(keyword?keyword:"")+
+            "&order="+(order?order:"")
 }
 function getPosterUrlByCategory(category){
     //返回获取类别为category的大海报的url

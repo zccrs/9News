@@ -28,51 +28,90 @@ MyPage{
         }
     }
 
+    tools: ToolBarSwitch{
+        id: toolBarSwitch
+        toolBarComponent: compoentToolBarLayout
+    }
+
+    Component{
+        id: compoentToolBarLayout
+
+        CustomToolBarLayout{
+            invertedTheme: command.invertedTheme
+
+            ToolButton{
+                iconSource: "toolbar-back"
+                platformInverted: command.invertedTheme
+                onClicked: {
+                    if(isQuit){
+                        Qt.quit()
+                    }else{
+                        isQuit = true
+                        main.showBanner(qsTr("Press again to exit"))
+                        timerQuit.start()
+                    }
+                }
+            }
+            ToolButton{
+                iconSource: command.getIconSource("skin", command.invertedTheme)
+                onClicked: {
+                    command.invertedTheme=!command.invertedTheme
+                }
+            }
+            ToolButton{
+                iconSource: "toolbar-refresh"
+                platformInverted: command.invertedTheme
+                onClicked: {
+                    refreshNewsList()
+                    //发射信号刷新当前新闻列表
+                }
+            }
+
+            ToolButton{
+                iconSource: "toolbar-menu"
+                platformInverted: command.invertedTheme
+                onClicked: {
+                    mainMenu.open()
+                }
+            }
+        }
+    }
+
+    Component{
+        id: compoentCommentToolBar
+
+        CommentToolBar{
+            invertedTheme: command.invertedTheme
+
+            onLeftButtonClick: {
+                textArea.closeSoftwareInputPanel()
+                metroView.pageInteractive = true
+                toolBarSwitch.toolBarComponent = compoentToolBarLayout
+                if(metroView.getTitle(metroView.pageCount-1)==qsTr("Searched result")){
+                    metroView.removePage(metroView.pageCount-1)
+                    metroView.activation(0)
+                }
+            }
+            onRightButtonClick: {
+                if(metroView.getTitle(metroView.pageCount-1)==qsTr("Searched result")){
+                    metroView.removePage(metroView.pageCount-1)
+                }
+                if(textAreaContent!=""){
+                    metroView.addItem(qsTr("Searched result"), "", textAreaContent)
+                    metroView.activation(metroView.pageCount-1)
+                    metroView.pageInteractive = false
+                    textArea.closeSoftwareInputPanel()
+                }
+            }
+        }
+    }
+
     HeaderView{
         id: headerView
 
         invertedTheme: command.invertedTheme
         height: screen.currentOrientation===Screen.Portrait?
                      privateStyle.tabBarHeightPortrait:privateStyle.tabBarHeightLandscape
-    }
-
-    tools: CustomToolBarLayout{
-        platformInverted: command.invertedTheme
-        ToolButton{
-            iconSource: "toolbar-back"
-            platformInverted: command.invertedTheme
-            onClicked: {
-                if(isQuit){
-                    Qt.quit()
-                }else{
-                    isQuit = true
-                    main.showBanner(qsTr("Press again to exit"))
-                    timerQuit.start()
-                }
-            }
-        }
-        ToolButton{
-            iconSource: command.getIconSource("skin", command.invertedTheme)
-            onClicked: {
-                command.invertedTheme=!command.invertedTheme
-            }
-        }
-        ToolButton{
-            iconSource: "toolbar-refresh"
-            platformInverted: command.invertedTheme
-            onClicked: {
-                refreshNewsList()
-                //发射信号刷新当前新闻列表
-            }
-        }
-
-        ToolButton{
-            iconSource: "toolbar-menu"
-            platformInverted: command.invertedTheme
-            onClicked: {
-                mainMenu.open()
-            }
-        }
     }
 
     Timer{
@@ -90,14 +129,14 @@ MyPage{
         titleBarHeight: headerView.height
         titleSpacing: 25
 
-        function addItem(title, category){
+        function addItem(title, category, keyword, order){
             var obj = {
                 "articles": null,
                 "covers": null,
                 "listContentY": 0,
                 "enableAnimation": true,
-                "newsUrl": Api.getNewsUrlByCategory(category),
-                "imagePosterUrl": Api.getPosterUrlByCategory(category)
+                "newsUrl": Api.getNewsUrlByCategory(category, keyword, order),
+                "imagePosterUrl": keyword?"":Api.getPosterUrlByCategory(category)
             }
             addPage(title, obj)
         }
@@ -160,6 +199,10 @@ MyPage{
              MenuItem {
                  text: qsTr("Search")
                  platformInverted: command.invertedTheme
+
+                 onClicked: {
+                     toolBarSwitch.toolBarComponent = compoentCommentToolBar
+                 }
              }
              MenuItem {
                  text: qsTr("Personal Center")

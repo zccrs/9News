@@ -7,10 +7,10 @@ Text{
 
     text: title
     anchors.verticalCenter: parent.verticalCenter
-    opacity: 1-Math.abs(currentPageIndex-index)/10
+    opacity: 1-Math.abs(ListView.view.currentIndex-index)/10
 
     color: {
-        if(currentPageIndex==index){
+        if(ListView.isCurrentItem){
             return command.invertedTheme?"black":"white"
         }else{
             return command.invertedTheme?"#666":"#ddd"
@@ -18,9 +18,9 @@ Text{
     }
 
     font{
-        bold: currentPageIndex == index
+        bold: ListView.isCurrentItem
         pointSize: {
-            var deviations = Math.abs(currentPageIndex-index)
+            var deviations = Math.abs(ListView.view.currentIndex-index)
             if(deviations<4)
                 return fontSize - deviations*2
             else

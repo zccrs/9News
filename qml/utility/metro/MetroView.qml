@@ -14,10 +14,10 @@ Item{
     property alias delegate: pageList.delegate
     property alias titleBarHeight: titleBarList.height
     property alias pageCount: pageList.count
-    property alias currentPage: pageList.currentItem
+    //property alias currentPage: pageList.currentItem
     property alias currentPageIndex: pageList.currentIndex
     property alias titleSpacing: titleBarList.spacing
-    property alias pageInteractive: pageList.interactive
+    property bool pageInteractive: true
     //此属性设置是否可以左右滑动切换page
     property alias titleInteractive: titleBarList.interactive
     //此属性设置是否可以左右滑动和点击标题
@@ -60,6 +60,7 @@ Item{
         anchors.margins: 10
         orientation: ListView.Horizontal
         snapMode :ListView.SnapOneItem
+        interactive: pageInteractive
 
         delegate: TitleListCompoent{
             MouseArea{
@@ -84,6 +85,7 @@ Item{
         orientation: ListView.Horizontal
         snapMode :ListView.SnapOneItem
         boundsBehavior: Flickable.StopAtBounds
+        interactive: pageInteractive
 
         model: ListModel{
             id: pageModel

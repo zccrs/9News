@@ -28,20 +28,24 @@ PageStackWindow{
         anchors.topMargin: privateStyle.statusBarHeight
         anchors.left: parent.left
         source: "qrc:/images/mask_leftTop.png"
+        z: 1
     }
     Image{
         anchors.top: parent.top
         anchors.topMargin: privateStyle.statusBarHeight
         anchors.right: parent.right
         source: "qrc:/images/mask_rightTop.png"
+        z: 1
     }
     Image{
         anchors.bottom: parent.bottom
         source: "qrc:/images/mask_leftBottom.png"
+        z: 1
     }
     Image{
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         source: "qrc:/images/mask_rightBottom.png"
+        z: 1
     }
 }
