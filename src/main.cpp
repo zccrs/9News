@@ -17,6 +17,7 @@ using namespace bb::cascades;
 #include "mysvgview.h"
 #include "utility.h"
 #include "myhttprequest.h"
+#include "monitormouseevent.h"
 #endif
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
@@ -50,6 +51,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     qmlRegisterType<MyImage>("com.stars.widgets", 1, 0, "MyImage");
     qmlRegisterType<MySvgView>("com.stars.widgets", 1, 0, "MySvgView");
     qmlRegisterType<NCommand>("com.news.utility", 1, 0, "NCommand");
+    qmlRegisterType<MonitorMouseEvent>("com.stars.utility", 1, 0, "MonitorMouseEvent");
 
     QmlApplicationViewer viewer;
     //viewer.setOrientation(QmlApplicationViewer::ScreenOrientationLockPortrait);

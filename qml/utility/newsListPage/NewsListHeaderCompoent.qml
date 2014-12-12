@@ -4,15 +4,25 @@ import QtQuick 1.1
 Item{
     id: root
 
+    property bool isBusy: false
+    //记录是否是忙碌的，例如正在下载大海报
+
     width: parent.width
     clip: true
 
-    function updateFlipcharts(covers){//增加大海报
-        if(typeof covers!="object"){
-            root.height = 0
-            timerFlipchart.stop()
+    function loadFlipcharts(){//加载大海报列表
+        if(isBusy){
+            return
+            //如果忙碌就return
         }
-        //先清除数据
+
+        if(covers==null){
+            isBusy=true
+            //设置为忙碌的
+            utility.httpGet(root, "getImagePosterFinished(QVariant,QVariant)", imagePosterUrl)
+            return
+        }
+
         for(var i in covers){
             var obj = {
                 "imageUrl": covers[i].thumb,
@@ -24,9 +34,31 @@ Item{
         timerFlipchart.start()
     }
 
-    function clearFlipcharts(){
+    function getImagePosterFinished(error, data){//下载大海报完毕
+        isBusy = false
+        //取消忙碌状态
+
+        if(error){
+            return
+        }
+        data = JSON.parse(data)
+
+        if(data.error==0){
+            parentListModel.setProperty(index, "covers", data.covers)
+            loadFlipcharts()
+        }
+    }
+
+    function updateFlipcharts(covers){//刷新大海报
+        if(isBusy){
+            return
+            //如果忙碌就return
+        }
+
         mymodel.clear()
         root.height = 0
+        parentListModel.setProperty(index, "covers", null)
+        loadFlipcharts()
     }
 
     function show(toHeight){
@@ -51,8 +83,9 @@ Item{
     }
 
     Connections{
-        target: componentData//此对象在他的父对象中（NewsList的listDelegate的Loader中）
-        onEmitUpdateFlipcharts:{
+        target: componentData
+        //此对象由他的父对象提供（NewsList->listDelegate的Loader中）
+        onUpdateFlipcharts:{
             updateFlipcharts(covers)
         }
     }
@@ -201,5 +234,9 @@ Item{
                 easing.type: Easing.InOutBack
             }
         }
+    }
+
+    Component.onCompleted: {
+        loadFlipcharts()//加载大海报
     }
 }

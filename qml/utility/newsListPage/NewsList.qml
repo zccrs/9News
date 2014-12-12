@@ -1,14 +1,15 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
+import com.stars.utility 1.0
 
 ListView{
     id: root
 
     property ListModel parentListModel: ListView.view.model
-    signal emitUpdateFlipcharts(variant covers)
-    signal emitClearFlipcharts
+    property bool isBusy: false
 
-    header: componentListHeader
+    signal updateFlipcharts
+
     delegate: listDelegate
     spacing: 10
 
@@ -16,8 +17,15 @@ ListView{
         id: mymodel
     }
 
-    function updateNewsList(){//更新新闻列表
+    function loadNewsList(){//加载新闻列表
+        if(isBusy){
+            return
+            //如果忙碌就return
+        }
+
         if(articles==null){
+            isBusy = true
+            //设置为忙碌的
             utility.httpGet(root, "getNewsFinished(QVariant,QVariant)", newsUrl)
             return
         }
@@ -29,30 +37,26 @@ ListView{
             //model_enableAnimation属性是记录是否开启图片动画
         }
     }
-    function updateFlipcharts(){//更新大海报列表
-        if(covers==null){
-            utility.httpGet(root, "getImagePosterFinished(QVariant,QVariant)", imagePosterUrl)
-            return
-        }
-
-        emitUpdateFlipcharts(covers)
-        //更新大海报
-    }
 
     function updateList(){//更新新闻列表
+        if(isBusy){
+            return
+            //如果忙碌就return
+        }
+
         parentListModel.setProperty(index, "enableAnimation", true)
         //将允许动画设置为true
-
         parentListModel.setProperty(index, "articles", null)
-        parentListModel.setProperty(index, "covers", null)
         parentListModel.setProperty(index, "listContentY", 0)
         mymodel.clear()
-        emitClearFlipcharts()
-        updateNewsList()
         updateFlipcharts()
+        loadNewsList()
     }
 
     function getNewsFinished(error, data){//加载新闻完成
+        isBusy = false
+        //取消忙碌状态
+
         if(error){
             return
         }
@@ -60,23 +64,15 @@ ListView{
 
         if(data.error==0){
             parentListModel.setProperty(index, "articles", data.articles)
-            updateNewsList()
+            loadNewsList()
         }
     }
     function addMoreNews(){//加载更多新闻
-
-    }
-
-    function getImagePosterFinished(error, data){//加载大海报完毕
-        if(error){
+        if(isBusy){
             return
         }
-        data = JSON.parse(data)
-
-        if(data.error==0){
-            parentListModel.setProperty(index, "covers", data.covers)
-            updateFlipcharts()
-        }
+        //isBusy = true
+        //设置为忙碌的
     }
 
     Component{
@@ -115,9 +111,8 @@ ListView{
         mymodel.append({"model_componentData": root,
                            "model_enableAnimation": enableAnimation,
                            "contentComponent": componentListHeader})
-
-        updateNewsList()
-        updateFlipcharts()//更新大海报列表
+        //将大海报添加进来
+        loadNewsList()//加载新闻
         contentY = listContentY
     }
     Component.onDestruction: {//当组件被销毁时
@@ -125,5 +120,18 @@ ListView{
         //设置model中存放的属于自己的属性
         parentListModel.setProperty(index, "enableAnimation", false)
         //将允许动画设置为false
+    }
+
+    MonitorMouseEvent{
+        anchors.fill: parent
+
+        target: root
+
+        onMousePress: {
+            console.log("press")
+        }
+        onMouseRelease: {
+            console.log("release")
+        }
     }
 }

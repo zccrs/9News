@@ -1,6 +1,7 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 import com.stars.widgets 1.0
+import com.stars.utility 1.0
 
 Item{
     id: root
