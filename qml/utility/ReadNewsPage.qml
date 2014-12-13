@@ -1,7 +1,11 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
+<<<<<<< HEAD
 import com.star.utility 1.0
 import com.star.widgets 1.0
+=======
+import com.stars.utility 1.0
+>>>>>>> 5eadeb2e4c633312e53c5ed6b7be596665fabe33
 import "../js/api.js" as Api
 
 Item{
