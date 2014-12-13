@@ -21,53 +21,47 @@ Item{
     width: parent.width;
     height: Math.max(toolBarHeight, contentField.height+5);
 
-    Item{
-        id: rootItem
+    MySvgView{
+        id:background
         width: parent.width
         height: parent.height
+        source: invertedTheme?"qrc:/images/toolbar.svg":"qrc:/images/toolbar_inverse.svg"
+    }
 
-        MySvgView{
-            id:background
-            width: parent.width
-            height: parent.height
-            source: invertedTheme?"qrc:/images/toolbar.svg":"qrc:/images/toolbar_inverse.svg"
+    ToolButton{
+        id: leftButton
+        anchors.left: parent.left
+        anchors.leftMargin: parent.width===640?20:0
+        anchors.bottom: parent.bottom
+        platformInverted: invertedTheme
+        iconSource: "toolbar-back"
+
+        onClicked: {
+            leftButtonClick()
         }
+    }
+    TextArea{
+        id: contentField
 
-        ToolButton{
-            id: leftButton
-            anchors.left: parent.left
-            anchors.leftMargin: parent.width===640?20:0
-            anchors.bottom: parent.bottom
-            platformInverted: invertedTheme
-            iconSource: "toolbar-back"
+        platformInverted: invertedTheme
+        placeholderText: "请输入评论内容"
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.right: rightButton.left
+        anchors.left: leftButton.right
+        anchors.margins: 10
 
-            onClicked: {
-                leftButtonClick()
-            }
-        }
-        TextArea{
-            id: contentField
+    }
+    ToolButton{
+        id:rightButton
 
-            platformInverted: invertedTheme
-            placeholderText: "请输入评论内容"
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.right: rightButton.left
-            anchors.left: leftButton.right
-            anchors.margins: 10
+        anchors.right: parent.right
+        anchors.rightMargin: parent.width===640?20:0
+        anchors.bottom: parent.bottom
+        platformInverted: invertedTheme
+        iconSource: invertedTheme?"qrc:/images/message_send_inverse.svg":"qrc:/images/message_send.svg"
 
-        }
-        ToolButton{
-            id:rightButton
-
-            anchors.right: parent.right
-            anchors.rightMargin: parent.width===640?20:0
-            anchors.bottom: parent.bottom
-            platformInverted: invertedTheme
-            iconSource: invertedTheme?"qrc:/images/message_send_inverse.svg":"qrc:/images/message_send.svg"
-
-            onClicked: {
-                rightButtonClick()
-            }
+        onClicked: {
+            rightButtonClick()
         }
     }
 

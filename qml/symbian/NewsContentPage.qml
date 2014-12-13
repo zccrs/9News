@@ -10,7 +10,8 @@ MyPage{
     property string newsTitle
 
     tools: CustomToolBarLayout{
-        platformInverted: command.invertedTheme
+        invertedTheme: command.invertedTheme
+
         ToolButton{
             iconSource: "toolbar-back"
             platformInverted: command.invertedTheme
@@ -18,6 +19,11 @@ MyPage{
                 pageStack.pop()
             }
         }
+    }
+
+    onStatusChanged: {
+        if(status===PageStatus.Active)
+            newsPage.newsTitle = newsTitle
     }
 
     HeaderView{
@@ -32,9 +38,24 @@ MyPage{
         anchors.fill: parent
         newsId: root.newsId
         newsTitle: root.newsTitle
+
+        BusyIndicator {
+            id: busyIndicator
+            running: visible
+            visible: newsPage.isBusy
+            anchors.centerIn: parent
+            width: 50
+            height: 50
+        }
     }
 
-    onStatusChanged: {
-        newsPage.activePage = status===PageStatus.Active
+    ScrollBar {
+        platformInverted: command.invertedTheme
+        flickableItem: newsPage.contentList
+        anchors {
+            right: parent.right
+            top: parent.top
+            topMargin: newsPage.titleHeight
+        }
     }
 }

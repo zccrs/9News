@@ -59,11 +59,11 @@ MyPage{
                 }
             }
             ToolButton{
-                iconSource: "toolbar-refresh"
+                iconSource: "toolbar-search"
                 platformInverted: command.invertedTheme
                 onClicked: {
-                    refreshNewsList()
-                    //发射信号刷新当前新闻列表
+                    toolBarSwitch.toolBarComponent = compoentCommentToolBar
+                    //搜索新闻
                 }
             }
 
@@ -141,29 +141,11 @@ MyPage{
             addPage(title, obj)
         }
 
-        delegate: NewsList{
+        delegate: NewsListPage{
             id: newsList
 
             width: metroView.width
             height: metroView.height-metroView.titleBarHeight
-
-            footer:Item{
-                visible: newsList.count>1
-                width: parent.width-40
-                height: 60
-                anchors.horizontalCenter: parent.horizontalCenter
-                Button{
-                    platformInverted: command.invertedTheme
-                    width: parent.width
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("load next page")
-                    font.pointSize: 7
-
-                    onClicked: {
-                        newsList.addMoreNews()//增加新闻
-                    }
-                }
-            }
 
             Connections{
                 target: root
@@ -196,14 +178,6 @@ MyPage{
          // define the items in the menu and corresponding actions
          platformInverted: command.invertedTheme
          content: MenuLayout {
-             MenuItem {
-                 text: qsTr("Search")
-                 platformInverted: command.invertedTheme
-
-                 onClicked: {
-                     toolBarSwitch.toolBarComponent = compoentCommentToolBar
-                 }
-             }
              MenuItem {
                  text: qsTr("Personal Center")
                  platformInverted: command.invertedTheme

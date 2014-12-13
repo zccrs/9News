@@ -104,4 +104,4 @@ RESOURCES += \
     images.qrc
 
 HEADERS += \
-    src/ncommand.h \
+    src/ncommand.h

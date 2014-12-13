@@ -1,17 +1,28 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
+import com.stars.utility 1.0
 import "../js/api.js" as Api
 
 Item{
     id: root
 
     property int newsId: -1
-    property string newsTitle: ""
-    property bool activePage: false
+    //记录新闻id
+    property alias newsTitle: textTitle.text
+    //记录新闻标题
     property alias titleHeight: titleItems.height
+    //记录新闻标题的高度
+    property alias contentList: newsContentList
+    //指向新闻内容List
     property Item imagesBrowse
+    //指向图片浏览器
+    property bool isBusy: false
+    //记录是否忙碌，如正在加载新闻内容
 
     function getNewsFinished(error, data){
+        isBusy = false
+        //取消忙碌状态
+
         //获取新闻内容完成
         if(error){
             return
@@ -57,14 +68,10 @@ Item{
     }
 
     onNewsIdChanged: {
+        isBusy = true
+        //设置正在忙碌
         utility.httpGet(getNewsFinished, Api.getNewsContentUrlById(newsId))
         //去获取新闻内容
-    }
-    onActivePageChanged: {//如果页面是否活跃的状态改变
-        if(activePage&&newsTitle!=""){
-            textTitle.text = newsTitle
-            titleAnimation.start()
-        }
     }
 
     Item{
@@ -84,6 +91,10 @@ Item{
             color: command.invertedTheme?"black":"#ccc"
             font.pointSize: command.newsTitleFontSize
             font.bold: true
+
+            onTextChanged: {
+                titleAnimation.start()
+            }
         }
 
         NumberAnimation on y{
