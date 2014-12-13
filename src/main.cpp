@@ -69,7 +69,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #elif defined(Q_OS_S60V5)     //Symbian^1
     viewer.setMainQmlFile(QLatin1String("qml/symbian1/main.qml"));
 #elif defined(Q_WS_SIMULATOR) //Simulator
-    viewer.setMainQmlFile(QLatin1String("qml/symbian/main.qml"));
+    viewer.setMainQmlFile(QLatin1String("qml/symbian1/main.qml"));
 #else                         //Symbian^3
     viewer.setMainQmlFile(QLatin1String("qml/symbian/main.qml"));
 #endif
