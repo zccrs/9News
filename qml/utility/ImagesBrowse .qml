@@ -1,5 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
+import com.star.widgets 1.0
 
 Item{
     id:image_zoom
@@ -51,13 +52,13 @@ Item{
             width: Math.max(imagePreview.width * imagePreview.scale, imageFlickable.width)
             height: Math.max(imagePreview.height * imagePreview.scale, imageFlickable.height)
 
-            Image {
+            MyImage {
                 id: imagePreview
                 property real prevScale
 
                 anchors.centerIn: parent
-                fillMode: Image.PreserveAspectFit
-                asynchronous: true
+                //fillMode: Image.PreserveAspectFit
+                //asynchronous: true
                 source: imageUrl
                 smooth: true
 

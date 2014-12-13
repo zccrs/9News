@@ -5,6 +5,7 @@
 #include <QVariant>
 #include <QUrl>
 
+class Utility;
 class NCommand : public QObject
 {
     Q_OBJECT
@@ -40,11 +41,11 @@ signals:
     //发送信号告诉qml端用户要阅读第新闻Id为newsId的新闻,title是新闻标题
     void newsContentFontSizeChanged(int arg);
     void newsTitleFontSizeChanged(int arg);
+    void showBanner(const QString& message);
 
 public slots:
     void setInvertedTheme(bool arg);
     QString fromTime_t ( uint seconds ) const;
-    QString textToHtml(const QString& text, int width) const;
     void setNewsContentFontSize(int arg);
     void setNewsTitleFontSize(int arg);
     QUrl getIconSource(const QString& iconName, bool invertedTheme) const;
@@ -54,6 +55,7 @@ private:
     QVariantMap m_style;
     int m_newsContentFontSize;
     int m_newsTitleFontSize;
+    Utility* utility;
 };
 
 #endif // NCOMMAND_H

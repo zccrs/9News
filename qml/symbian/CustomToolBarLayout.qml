@@ -1,6 +1,6 @@
 import QtQuick 1.1
 import "." 1.1
-import com.stars.widgets 1.0
+import com.star.widgets 1.0
 
 Item {
     id: root

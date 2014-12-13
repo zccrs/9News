@@ -12,20 +12,24 @@ MonitorMouseEvent::MonitorMouseEvent(QDeclarativeItem *parent) :
 #endif
 {
     m_target = NULL;
-    setAcceptedMouseButtons(Qt::LeftButton);
 }
 
-QObject *MonitorMouseEvent::target() const
+QDeclarativeItem *MonitorMouseEvent::target() const
 {
     return m_target;
 }
 
-void MonitorMouseEvent::setTarget(QObject *arg)
+void MonitorMouseEvent::setTarget(QDeclarativeItem *arg)
 {
     if(arg!=m_target){
-        m_target = arg;
-        if(arg)
+        if(arg){
+            setAcceptedMouseButtons(Qt::LeftButton);
             arg->installEventFilter(this);
+        }else if(m_target){
+            m_target->removeEventFilter(this);
+            setAcceptedMouseButtons(Qt::NoButton);
+        }
+        m_target = arg;
         setParent(arg);
         emit targetChanged(arg);
     }

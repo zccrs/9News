@@ -16,7 +16,7 @@ class MonitorMouseEvent : public QDeclarativeItem
 {
     Q_OBJECT
 
-    Q_PROPERTY(QObject* target READ target WRITE setTarget NOTIFY targetChanged)
+    Q_PROPERTY(QDeclarativeItem* target READ target WRITE setTarget NOTIFY targetChanged)
 public:
 #if(QT_VERSION>=0x050000)
     explicit MonitorMouseEvent(QQuickPaintedItem *parent = 0);
@@ -24,19 +24,19 @@ public:
     explicit MonitorMouseEvent(QDeclarativeItem *parent = 0);
 #endif
     
-    QObject* target() const;
+    QDeclarativeItem* target() const;
 
 signals:
-    void targetChanged(QObject* arg);
+    void targetChanged(QDeclarativeItem* arg);
 
     void mousePress(QPointF pos);
     void mouseRelease(QPointF pos);
     void mouseDoubleClicked(QPointF pos);
 public slots:
-    void setTarget(QObject* arg);
+    void setTarget(QDeclarativeItem* arg);
 
 private:
-    QObject* m_target;
+    QDeclarativeItem* m_target;
 #if(QT_VERSION>=0x050000)
 #else
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

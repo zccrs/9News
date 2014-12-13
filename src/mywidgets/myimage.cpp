@@ -23,6 +23,7 @@ MyImage::MyImage(QDeclarativeItem *parent) :
     m_grayscale = false;
     m_source = "";
     m_sourceSize = QSize(0,0);
+    m_defaultSize = QSize(0,0);
     pixmap = NULL;
     reply = NULL;
 
@@ -209,10 +210,11 @@ void MyImage::setSource(QUrl arg)
 {
     if (!m_cache||m_source != arg) {
         setStatus(Loading);
+        bool can_emit = m_source==arg;
         m_source = arg;
         reLoad();
         //加载图片
-        if(m_source != arg)
+        if(can_emit)
             emit sourceChanged(arg);
     }
 }

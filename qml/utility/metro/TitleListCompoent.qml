@@ -3,7 +3,7 @@ import QtQuick 1.1
 
 Text{
     id: root
-    property int fontSize: command.style.metroTitleFontPointSize
+    property int fontSize: 7
 
     text: title
     anchors.verticalCenter: parent.verticalCenter

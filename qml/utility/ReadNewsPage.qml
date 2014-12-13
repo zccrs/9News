@@ -1,6 +1,7 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.stars.utility 1.0
+import com.star.utility 1.0
+import com.star.widgets 1.0
 import "../js/api.js" as Api
 
 Item{
@@ -130,7 +131,6 @@ Item{
 
             property string componentData: contentData
 
-            width: parent.width
             opacity: 0
             sourceComponent: contentComponent
 
@@ -148,9 +148,9 @@ Item{
         id: componentText
 
         Text{
-            width: parent.width
+            width: newsContentList.width
             wrapMode: Text.WordWrap
-            text: command.textToHtml(componentData, width)
+            text: componentData
             font.pointSize: command.newsContentFontSize
         }
     }
@@ -158,15 +158,23 @@ Item{
     Component{
         id: componentImage
 
-        Image{
-            source: componentData
-            width: Math.min(parent.width, sourceSize.width)
-            height: width/sourceSize.width*sourceSize.height
-            anchors.horizontalCenter: parent.horizontalCenter
+        MyImage{
+            source: "qrc:/images/loading.png"
+            width: Math.min(newsContentList.width, defaultSize.width)
+            height: width/defaultSize.width*defaultSize.height
+            x: newsContentList.width/2-width/2
             smooth: true
+            onLoadReady: {
+                if(source!="qrc:/images/loading.png"){
+                    mouse.enabled = true
+                }
+            }
+
 
             MouseArea{
+                id: mouse
                 anchors.fill: parent
+                enabled: false
                 onClicked: {
                     main.showToolBar=false
                     //先关闭状态栏的显示
@@ -175,6 +183,10 @@ Item{
                     imagesBrowse.imageUrl = parent.source
                     imagesBrowse.opacity = 1
                 }
+            }
+
+            Component.onCompleted: {
+                source = componentData
             }
         }
     }

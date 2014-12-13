@@ -1,25 +1,14 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.stars.widgets 1.0
+import com.star.widgets 1.0
 
 Item{
     property bool invertedTheme: false
     property alias title: mytext.text
+    property alias font: mytext.font
 
     width: parent.width
 
-    /*MySvgView{
-        id: image
-        source: "qrc:/images/tab_active_normal_c"+(invertedTheme?"_inverse.svg":".svg")
-        width: parent.width
-        height: parent.height
-    }
-    MySvgView{
-        id: image_shade
-        source: "qrc:/images/shade.svg"
-        width: parent.width
-        anchors.bottom: parent.bottom
-    }*/
     Rectangle{
         width: parent.width
         height: 1

@@ -19,6 +19,8 @@ Item{
         if(covers==null){
             isBusy=true
             //设置为忙碌的
+            timerFlipchart.stop()
+            //先停止动画
             utility.httpGet(root, "getImagePosterFinished(QVariant,QVariant)", imagePosterUrl)
             return
         }
@@ -39,6 +41,7 @@ Item{
         //取消忙碌状态
 
         if(error){
+            command.showBanner(qsTr("Flipcharts update failed, will try again."))
             return
         }
         data = JSON.parse(data)
@@ -46,19 +49,9 @@ Item{
         if(data.error==0){
             parentListModel.setProperty(index, "covers", data.covers)
             loadFlipcharts()
+        }else{
+            command.showBanner(data.error)
         }
-    }
-
-    function updateFlipcharts(covers){//刷新大海报
-        if(isBusy){
-            return
-            //如果忙碌就return
-        }
-
-        mymodel.clear()
-        root.height = 0
-        parentListModel.setProperty(index, "covers", null)
-        loadFlipcharts()
     }
 
     function show(toHeight){
@@ -80,14 +73,6 @@ Item{
         duration: 500
         property: "height"
         from: 0
-    }
-
-    Connections{
-        target: componentData
-        //此对象由他的父对象提供（NewsList->listDelegate的Loader中）
-        onUpdateFlipcharts:{
-            updateFlipcharts(covers)
-        }
     }
 
     Component{

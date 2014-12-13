@@ -35,7 +35,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QScopedPointer<QApplication> app(createApplication(argc, argv));
 
     app->setApplicationName ("9News");
-    app->setOrganizationName ("Stars");
+    app->setOrganizationName ("9smart");
     app->setApplicationVersion ("0.0.1");
 
 #if defined(Q_WS_SIMULATOR)
@@ -47,21 +47,21 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QNetworkProxy::setApplicationProxy(proxy);
 #endif
 
-    qmlRegisterType<SelectFilesDialog>("com.stars.widgets", 1, 0, "FilesDialog");
-    qmlRegisterType<MyImage>("com.stars.widgets", 1, 0, "MyImage");
-    qmlRegisterType<MySvgView>("com.stars.widgets", 1, 0, "MySvgView");
+    qmlRegisterType<SelectFilesDialog>("com.star.widgets", 1, 0, "FilesDialog");
+    qmlRegisterType<MyImage>("com.star.widgets", 1, 0, "MyImage");
+    qmlRegisterType<MySvgView>("com.star.widgets", 1, 0, "MySvgView");
     qmlRegisterType<NCommand>("com.news.utility", 1, 0, "NCommand");
-    qmlRegisterType<MonitorMouseEvent>("com.stars.utility", 1, 0, "MonitorMouseEvent");
+    qmlRegisterType<MonitorMouseEvent>("com.star.utility", 1, 0, "MonitorMouseEvent");
 
     QmlApplicationViewer viewer;
     //viewer.setOrientation(QmlApplicationViewer::ScreenOrientationLockPortrait);
 
-    viewer.engine()->rootContext()->setContextProperty("fileDialog", new SelectFilesDialog());
-    viewer.engine()->rootContext()->setContextProperty("command", new NCommand());
-
     QSettings settings;
     Utility *utility = Utility::createUtilityClass();
     utility->initUtility(&settings, viewer.engine());
+
+    viewer.engine()->rootContext()->setContextProperty("fileDialog", new SelectFilesDialog());
+    viewer.engine()->rootContext()->setContextProperty("command", new NCommand());
     //QNetworkRequest *httpRequest = utility->getHttpRequest()->getNetworkRequest();
     //httpRequest->setHeader(QNetworkRequest::ContentTypeHeader, "text/html,application/xhtml+xml");
     //httpRequest->setRawHeader("Accept-Encoding", "gzip");

@@ -21,6 +21,7 @@ Item{
     //此属性设置是否可以左右滑动切换page
     property alias titleInteractive: titleBarList.interactive
     //此属性设置是否可以左右滑动和点击标题
+    property int titleMaxFontSize: 7
 
     function addPage(title, obj){
         titleModel.append({"title":title})
@@ -51,9 +52,14 @@ Item{
     function getTitle(index){
         return titleModel.get(index).title
     }
+    function setProperty(index, name, value){
+        if(index<pageModel.count)
+        pageModel.setProperty(index, name, value)
+    }
 
     ListView{
         id: titleBarList
+
         clip: true
         anchors.left: parent.left
         anchors.right: parent.right
@@ -63,6 +69,7 @@ Item{
         interactive: pageInteractive
 
         delegate: TitleListCompoent{
+            fontSize: titleMaxFontSize
             MouseArea{
                 enabled: titleBarList.interactive
                 anchors.fill: parent
