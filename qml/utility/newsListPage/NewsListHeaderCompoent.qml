@@ -102,7 +102,7 @@ Item{
                     anchors.left: parent.left
                     anchors.right: newsIndexAndCount.left
                     anchors.margins: 10
-                    font.pointSize: command.style.flipchartsTitleFontPointSize
+                    font.pixelSize: command.style.flipchartsTitleFontPixelSize
                     anchors.verticalCenter: parent.verticalCenter
                     text: title
                     elide: Text.ElideRight
@@ -111,7 +111,7 @@ Item{
                     id: newsIndexAndCount
                     anchors.right: parent.right
                     anchors.rightMargin: 10
-                    font.pointSize: command.style.flipchartsTitleFontPointSize
+                    font.pixelSize: command.style.flipchartsTitleFontPixelSize
                     text: (index+1)+"/"+slideList.count
                     anchors.verticalCenter: parent.verticalCenter
                 }

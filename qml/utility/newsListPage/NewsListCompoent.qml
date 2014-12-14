@@ -2,6 +2,7 @@
 import QtQuick 1.1
 import com.star.widgets 1.0
 import com.star.utility 1.0
+import "../"
 
 Item{
     id: root
@@ -28,7 +29,7 @@ Item{
         anchors.top: loader_titleImage.top
         wrapMode: Text.WordWrap
         color: command.invertedTheme?"black":"#ccc"
-        font.pointSize: command.newsTitleFontSize
+        font.pixelSize: command.newsTitleFontSize
     }
     MouseArea{
         anchors.fill: parent
@@ -58,14 +59,14 @@ Item{
         Text{
             id: newsSource
             anchors.verticalCenter: parent.verticalCenter
-            font.pointSize: command.style.newsInfosFontPointSize
+            font.pixelSize: command.style.newsInfosFontPixelSize
             color: "#888"
         }
         Text{
             id: dateTime
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            font.pointSize: newsSource.font.pointSize
+            font.pixelSize: newsSource.font.pixelSize
             color: "#888"
         }
     }
@@ -76,8 +77,10 @@ Item{
         Image{
             id: titleImage
             source: imageUrl
-            width: 60
-            height: 60
+            sourceSize{
+                width: titleImage.width
+                height: titleImage.height
+            }
 
             NumberAnimation on y {
                 id: imageAnimation
@@ -109,7 +112,7 @@ Item{
             delegate: Image{
                 id: listImage
                 source: imageUrl
-                sourceSize.height: 60
+                sourceSize.height: parent.height
 
                 NumberAnimation on y {
                     id: imageAnimation
@@ -155,12 +158,12 @@ Item{
             if(thumbs){
                 if(thumbs.length==1){
                     loader_titleImage.x = 10
-                    loader_titleImage.width = 50
-                    loader_titleImage.height = 50
+                    loader_titleImage.width = command.style.titleImageWidth
+                    loader_titleImage.height = command.style.titleImageWidth
                     loader_titleImage.imageUrl = thumbs[0].thumburl
                     loader_titleImage.sourceComponent = compoent_titleImage
                 }else{
-                    loader_imageList.height = 50
+                    loader_imageList.height = command.style.titleImagesListHeight
                     loader_imageList.thumbs = thumbs
                     loader_imageList.sourceComponent = compoent_imageList
                 }
@@ -168,17 +171,9 @@ Item{
         }
     }
 
-    Rectangle{
-        width: parent.width
-        height: 1
-        anchors.bottom: line.top
-        color: command.invertedTheme?"#ccc":"#333"
-    }
-    Rectangle{
-        id: line
+    CuttingLine{
         anchors.bottom: parent.bottom
         width: parent.width
-        height: 1
-        color: command.invertedTheme?"#fafafa":"#555"
+        invertedTheme: command.invertedTheme
     }
 }

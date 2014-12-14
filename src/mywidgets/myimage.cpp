@@ -74,15 +74,15 @@ void MyImage::chromaticToGrayscale(QImage &image)
 QString MyImage::imageFormatToString(const QByteArray &array)
 {
     QByteArray str = array.toHex ();
-        if(str.mid (2,6)=="504e47")
-            return "png";
-        if(str.mid (12,8)=="4a464946")
-            return "jpg";
-        if(str.left (6)=="474946")
-            return "gif";
-        if(str.left (4)=="424d")
-            return "bmp";
-        return "";
+    if(str.mid (2,6)=="504e47")
+        return "png";
+    if(str.mid (12,8)=="4a464946")
+        return "jpg";
+    if(str.left (6)=="474946")
+        return "gif";
+    if(str.left (4)=="424d")
+        return "bmp";
+    return "";
 }
 
 void MyImage::downloadImage(const QUrl &url)
@@ -328,7 +328,7 @@ void MyImage::setDefaultSize(QSize arg)
     }
 }
 
-bool MyImage::save(const QString fileName) const
+bool MyImage::save(const QString& fileName) const
 {
     if(pixmap!=NULL){
         return pixmap->save(fileName);

@@ -22,7 +22,7 @@ MyPage{
     HeaderView{
         id: header
         invertedTheme: command.invertedTheme
-        font.pointSize: command.style.metroTitleFontPointSize
+        font.pixelSize: command.style.metroTitleFontPixelSize
         title: qsTr("about")
         height: screen.currentOrientation===Screen.Portrait?
                      privateStyle.tabBarHeightPortrait:privateStyle.tabBarHeightLandscape

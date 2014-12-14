@@ -18,6 +18,7 @@ using namespace bb::cascades;
 #include "utility.h"
 #include "myhttprequest.h"
 #include "monitormouseevent.h"
+#include "selectfilesdialog.h"
 #endif
 
 Q_DECL_EXPORT int main(int argc, char *argv[])

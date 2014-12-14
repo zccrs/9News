@@ -65,26 +65,6 @@ MyPage{
             addPage(title, obj)
         }
 
-        delegate: NewsList{
-            id: newsList
-
-            width: metroView.width
-            height: metroView.height-metroView.titleBarHeight
-
-            footer:Item{
-                visible: newsList.count>1
-                width: parent.width-40
-                height: 60
-                anchors.horizontalCenter: parent.horizontalCenter
-                Button{
-                    width: parent.width
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("load next page")
-                    font.pointSize: 7
-                }
-            }
-        }
-
         Component.onCompleted: {
             metroView.addItem(qsTr("all news"))
             //先去获取全部新闻

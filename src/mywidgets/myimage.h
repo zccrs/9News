@@ -81,8 +81,8 @@ public slots:
     void reLoad();
     void setSourceSize(QSize arg);
     void setDefaultSize(QSize arg);
+    bool save(const QString& fileName) const;
 
-    bool save(const QString fileName) const;
 private slots:
     void onDownImageFinished(QNetworkReply* reply);
 

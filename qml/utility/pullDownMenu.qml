@@ -7,12 +7,13 @@ Item{
 
     property ListView listView
     property bool invertedTheme: false
-    property int menuItemPointSize: 8
+    property int menuItemPixelSize: 22
     property int currentIndex: listMenu.currentIndex
+    property int menuItemHeight: 30
 
     signal trigger(int index)
 
-    height: listMenu.count*(30+listMenu.spacing)
+    height: listMenu.count*(menuItemHeight+listMenu.spacing)
 
     function addMenu(menuText, iconSource){
         var obj = {
@@ -102,18 +103,24 @@ Item{
                 anchors.leftMargin: iconSource!=""?10:0
                 wrapMode: Text.WordWrap
                 text: menuText
-                color: active?"black":"#888"
+                color: active?(invertedTheme?"white":"black"):"#888"
                 scale: active?1.2:1
 
                 font{
                     bold: active
-                    pointSize: menuItemPointSize
+                    pixelSize: menuItemPixelSize
                 }
 
                 Behavior on scale{
                     NumberAnimation{
-                        duration: 200
+                        duration: 300
                     }
+                }
+            }
+
+            Component.onCompleted: {
+                if(height>menuItemHeight){
+                    menuItemHeight = height
                 }
             }
         }

@@ -79,7 +79,7 @@ MyPage{
             ToolButton{
                 iconSource: command.getIconSource("skin", command.invertedTheme)
                 onClicked: {
-                    command.invertedTheme=!command.invertedTheme
+                    command.invertedTheme =! command.invertedTheme
                 }
             }
             ToolButton{
@@ -106,6 +106,9 @@ MyPage{
 
         TextAreaToolBar{
             property string oldText: ""
+            //记录上次输入的搜索内容
+            property int currentNewsPage: 0
+            //记录是在哪个新闻页面点击的搜索
 
             invertedTheme: command.invertedTheme
             rightButtonIconSource: "toolbar-search"
@@ -116,7 +119,7 @@ MyPage{
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
                 if(metroView.getTitle(metroView.currentPageIndex)==qsTr("Searched result")){
                     metroView.removePage(metroView.currentPageIndex)
-                    metroView.activation(0)
+                    metroView.activation(currentNewsPage)
                 }
             }
             onRightButtonClick: {
@@ -136,6 +139,11 @@ MyPage{
                     textArea.closeSoftwareInputPanel()
                 }
             }
+
+            Component.onCompleted: {
+                currentNewsPage = metroView.currentPageIndex
+                //记录下来当前页面
+            }
         }
     }
 
@@ -143,8 +151,7 @@ MyPage{
         id: headerView
 
         invertedTheme: command.invertedTheme
-        height: screen.currentOrientation===Screen.Portrait?
-                     privateStyle.tabBarHeightPortrait:privateStyle.tabBarHeightLandscape
+        height: metroView.titleBarHeight
     }
 
     Timer{
@@ -159,9 +166,9 @@ MyPage{
     MetroView{
         id: metroView
         anchors.fill: parent
-        titleBarHeight: headerView.height
+        //titleBarHeight: headerView.height
         titleSpacing: 25
-        titleMaxFontSize: command.style.metroTitleFontPointSize
+        titleMaxFontSize: command.style.metroTitleFontPixelSize
 
         function addItem(title, category, keyword, order){
             var obj = {
@@ -229,6 +236,10 @@ MyPage{
              MenuItem {
                  text: qsTr("Settings")
                  platformInverted: command.invertedTheme
+
+                 onClicked: {
+                     pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
+                 }
              }
              MenuItem {
                  text: qsTr("About")

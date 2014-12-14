@@ -90,7 +90,7 @@ Item{
             anchors.verticalCenter: parent.verticalCenter
             wrapMode: Text.WordWrap
             color: command.invertedTheme?"black":"#ccc"
-            font.pointSize: command.newsTitleFontSize
+            font.pixelSize: command.newsTitleFontSize
             font.bold: true
 
             onTextChanged: {
@@ -151,7 +151,7 @@ Item{
             width: newsContentList.width
             wrapMode: Text.WordWrap
             text: componentData
-            font.pointSize: command.newsContentFontSize
+            font.pixelSize: command.newsContentFontSize
         }
     }
 
@@ -159,6 +159,8 @@ Item{
         id: componentImage
 
         MyImage{
+            id: myimage
+
             source: "qrc:/images/loading.png"
             width: Math.min(newsContentList.width, defaultSize.width)
             height: width/defaultSize.width*defaultSize.height
@@ -176,10 +178,10 @@ Item{
                 anchors.fill: parent
                 enabled: false
                 onClicked: {
+                    var obj = Qt.createComponent("ImagesBrowse.qml")
+                    imagesBrowse = obj.createObject(root)
                     main.showToolBar=false
                     //先关闭状态栏的显示
-                    var obj = Qt.createComponent("ImagesBrowse .qml")
-                    imagesBrowse = obj.createObject(root)
                     imagesBrowse.imageUrl = parent.source
                     imagesBrowse.opacity = 1
                 }
@@ -198,6 +200,17 @@ Item{
             //销毁此控件
             imagesBrowse = null
             main.showToolBar=true
+        }
+        onSaveImage:{
+            var fileName = new Date
+            var reg = /\D/g
+            fileName = fileName.toISOString().replace(reg, "")+".png"
+            fileName = command.imagesSavePath+"/"+fileName
+            if(imagesBrowse.currentImage.save(fileName)){
+                command.showBanner(qsTr("Save finished"))
+            }else{
+                command.showBanner(qsTr("Save error"))
+            }
         }
     }
 }

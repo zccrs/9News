@@ -69,12 +69,17 @@ Item{
         interactive: pageInteractive
 
         delegate: TitleListCompoent{
-            fontSize: titleMaxFontSize
+            font.pixelSize: titleMaxFontSize
             MouseArea{
                 enabled: titleBarList.interactive
                 anchors.fill: parent
                 onClicked: {
                     activation(index)
+                }
+            }
+            Component.onCompleted: {
+                if(implicitHeight>titleBarList.implicitHeight-10){
+                    titleBarList.implicitHeight = implicitHeight+10
                 }
             }
         }

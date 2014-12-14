@@ -9,24 +9,15 @@ Item{
 
     width: parent.width
 
-    Rectangle{
-        width: parent.width
-        height: 1
-        anchors.bottom: line.top
-        color: invertedTheme?"#ccc":"#333"
-    }
-    Rectangle{
-        id: line
+    CuttingLine{
         anchors.bottom: parent.bottom
         width: parent.width
-        height: 1
-        color: invertedTheme?"#fafafa":"#555"
+        invertedTheme: parent.invertedTheme
     }
 
     Text{
         id: mytext
         anchors.verticalCenter: parent.verticalCenter
         x:10
-        font.pointSize: 7
     }
 }

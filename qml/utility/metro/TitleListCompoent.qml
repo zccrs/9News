@@ -3,7 +3,6 @@ import QtQuick 1.1
 
 Text{
     id: root
-    property int fontSize: 7
 
     text: title
     anchors.verticalCenter: parent.verticalCenter
@@ -19,12 +18,19 @@ Text{
 
     font{
         bold: ListView.isCurrentItem
-        pointSize: {
-            var deviations = Math.abs(ListView.view.currentIndex-index)
-            if(deviations<4)
-                return fontSize - deviations*2
-            else
-                return fontSize-6
+    }
+
+    scale:{
+        var deviations = Math.abs(ListView.view.currentIndex-index)
+        if(deviations<4)
+            return 1-deviations/5
+        else
+            return 0.4
+    }
+
+    Behavior on scale{
+        NumberAnimation{
+            duration: 300
         }
     }
 }
