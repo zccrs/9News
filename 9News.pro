@@ -3,7 +3,6 @@ TARGET = 9News
 # Add more folders to ship with the application, here
 
 # Additional import path used to resolve QML modules in Creator's code model
-QML_IMPORT_PATH =C:/bbndk/target_10_3_1_995/qnx6/x86/usr/lib/qt4/imports/bb/cascades
 
 INCLUDEPATH += src
 
@@ -69,6 +68,8 @@ contains(QT_VERSION, 4.8.6){
     DISTFILES += \
         bar-descriptor.xml \
         qml/blackberry/main.qml
+
+    DEPLOYMENTFOLDERS += folder_03
 }
 
 simulator{
