@@ -4,6 +4,7 @@
 #include <QDeclarativeEngine>
 #include <QDeclarativeContext>
 #include <QDeclarativeView>
+#include <QtDeclarative>
 #include <QFile>
 #include <QGraphicsObject>
 #ifdef Q_OS_SYMBIAN
@@ -14,6 +15,8 @@
 SelectFilesDialog::SelectFilesDialog() :
     QObject(0)
 {
+    qmlRegisterType<SelectFilesDialog>("com.star.utility", 1, 0, "FilesDialog");
+
     m_chooseType = FileType;
     m_chooseMode = MultipleChoice;
     m_inverseTheme = false;
@@ -94,15 +97,6 @@ int SelectFilesDialog::exec(const QString initPath, const QString &nameFilters,
     eventLoop = &loop;
     connect(this, SIGNAL(closeLoop()), &loop, SLOT(quit()));
 
-    QDeclarativeView qmlView;
-    this->qmlView = &qmlView;
-    qmlView.engine()->rootContext()->setContextProperty("fileDialog", this);
-#ifdef HARMATTAN_BOOSTER
-    qmlView.setSource(QUrl("qrc:/selectfilesdialog/meego.qml"));
-#else
-    qmlView.setSource(QUrl("qrc:/selectfilesdialog/symbian.qml"));
-#endif
-
     if(initPath=="")
         dir.setPath(QDir::currentPath());
     else
@@ -115,6 +109,14 @@ int SelectFilesDialog::exec(const QString initPath, const QString &nameFilters,
         dir.setNameFilters(temp_list);
     }
 
+    QDeclarativeView qmlView;
+    this->qmlView = &qmlView;
+    qmlView.engine()->rootContext()->setContextProperty("fileDialog", this);
+#ifdef HARMATTAN_BOOSTER
+    qmlView.setSource(QUrl("qrc:/selectfilesdialog/meego.qml"));
+#else
+    qmlView.setSource(QUrl("qrc:/selectfilesdialog/symbian.qml"));
+#endif
     qmlView.showFullScreen();
 
     int result = eventLoop->exec(QEventLoop::DialogExec);

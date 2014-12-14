@@ -14,13 +14,14 @@ Item{
     property alias delegate: pageList.delegate
     property alias titleBarHeight: titleBarList.height
     property alias pageCount: pageList.count
-    property alias currentPage: pageList.currentItem
+    //property alias currentPage: pageList.currentItem
     property alias currentPageIndex: pageList.currentIndex
     property alias titleSpacing: titleBarList.spacing
-    property alias pageInteractive: pageList.interactive
+    property bool pageInteractive: true
     //此属性设置是否可以左右滑动切换page
     property alias titleInteractive: titleBarList.interactive
     //此属性设置是否可以左右滑动和点击标题
+    property int titleMaxFontSize: 7
 
     function addPage(title, obj){
         titleModel.append({"title":title})
@@ -51,22 +52,34 @@ Item{
     function getTitle(index){
         return titleModel.get(index).title
     }
+    function setProperty(index, name, value){
+        if(index<pageModel.count)
+        pageModel.setProperty(index, name, value)
+    }
 
     ListView{
         id: titleBarList
+
         clip: true
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 10
         orientation: ListView.Horizontal
         snapMode :ListView.SnapOneItem
+        interactive: pageInteractive
 
         delegate: TitleListCompoent{
+            font.pixelSize: titleMaxFontSize
             MouseArea{
                 enabled: titleBarList.interactive
                 anchors.fill: parent
                 onClicked: {
                     activation(index)
+                }
+            }
+            Component.onCompleted: {
+                if(implicitHeight>titleBarList.implicitHeight-10){
+                    titleBarList.implicitHeight = implicitHeight+10
                 }
             }
         }
@@ -84,6 +97,7 @@ Item{
         orientation: ListView.Horizontal
         snapMode :ListView.SnapOneItem
         boundsBehavior: Flickable.StopAtBounds
+        interactive: pageInteractive
 
         model: ListModel{
             id: pageModel

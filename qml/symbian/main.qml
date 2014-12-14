@@ -12,15 +12,16 @@ PageStackWindow{
 
     initialPage: MainPage{}
 
-    function showBanner(string){
-        banner.text = string
-        banner.open()
+    Label {
+        text:"久闻"
+        x:10
+        font.pixelSize: 18
     }
 
     InfoBanner {
         id: banner
         timeout: 2000
-        platformInverted: main.platformInverted
+        platformInverted: command.invertedTheme
     }
 
     Image{
@@ -28,20 +29,32 @@ PageStackWindow{
         anchors.topMargin: privateStyle.statusBarHeight
         anchors.left: parent.left
         source: "qrc:/images/mask_leftTop.png"
+        z: 1
     }
     Image{
         anchors.top: parent.top
         anchors.topMargin: privateStyle.statusBarHeight
         anchors.right: parent.right
         source: "qrc:/images/mask_rightTop.png"
+        z: 1
     }
     Image{
         anchors.bottom: parent.bottom
         source: "qrc:/images/mask_leftBottom.png"
+        z: 1
     }
     Image{
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         source: "qrc:/images/mask_rightBottom.png"
+        z: 1
+    }
+
+    Connections{
+        target: command
+        onShowBanner:{
+            banner.text = message
+            banner.open()
+        }
     }
 }

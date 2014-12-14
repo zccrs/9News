@@ -3,14 +3,13 @@ import QtQuick 1.1
 
 Text{
     id: root
-    property int fontSize: command.style.metroTitleFontPointSize
 
     text: title
     anchors.verticalCenter: parent.verticalCenter
-    opacity: 1-Math.abs(currentPageIndex-index)/10
+    opacity: 1-Math.abs(ListView.view.currentIndex-index)/10
 
     color: {
-        if(currentPageIndex==index){
+        if(ListView.isCurrentItem){
             return command.invertedTheme?"black":"white"
         }else{
             return command.invertedTheme?"#666":"#ddd"
@@ -18,13 +17,20 @@ Text{
     }
 
     font{
-        bold: currentPageIndex == index
-        pointSize: {
-            var deviations = Math.abs(currentPageIndex-index)
-            if(deviations<4)
-                return fontSize - deviations*2
-            else
-                return fontSize-6
+        bold: ListView.isCurrentItem
+    }
+
+    scale:{
+        var deviations = Math.abs(ListView.view.currentIndex-index)
+        if(deviations<4)
+            return 1-deviations/5
+        else
+            return 0.4
+    }
+
+    Behavior on scale{
+        NumberAnimation{
+            duration: 300
         }
     }
 }

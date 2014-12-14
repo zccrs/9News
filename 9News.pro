@@ -117,6 +117,7 @@ RESOURCES += \
     images.qrc
 
 HEADERS += \
+<<<<<<< HEAD
     src/ncommand.h \
 
 DISTFILES += \
@@ -124,3 +125,6 @@ DISTFILES += \
 
 OTHER_FILES += \
     qml/blackberry/NewsPage.qml
+=======
+    src/ncommand.h
+>>>>>>> dev_AfterTheRainOfStars

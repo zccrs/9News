@@ -11,5 +11,11 @@
         <file>images/loading.png</file>
         <file>images/save.svg</file>
         <file>images/shadow.png</file>
+        <file>images/back.svg</file>
+        <file>images/back_inverse.svg</file>
+        <file>images/message_send.svg</file>
+        <file>images/message_send_inverse.svg</file>
+        <file>images/logo_grounding.png</file>
+        <file>images/logo.svg</file>
     </qresource>
 </RCC>

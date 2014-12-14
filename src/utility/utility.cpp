@@ -378,3 +378,8 @@ void Utility::removePath(QString dirPath, bool deleteHidden/*=false*/, bool dele
     QtConcurrent::run(myRemovePath, dirPath, deleteHidden, deleteSelf);
 #endif
 }
+
+QString Utility::homePath() const
+{
+    return QDir::homePath();
+}
