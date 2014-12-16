@@ -118,7 +118,7 @@ ListView{
         }
         isBusy = true
         //设置为忙碌的
-        var newUrl = Api.getMoreNewsUrlByCurrentUrl(newsUrl, lastNewsId-1)
+        var newUrl = Api.getMoreNewsUrlByCurrentUrl(newsUrl, lastNewsId)
         parentListModel.setProperty(index, "newsUrl", newUrl)
         //设置新的url
 
@@ -248,6 +248,15 @@ ListView{
             addMenu(qsTr("Popularity order"))
             addMenu(qsTr("Immediate refresh"))
         }
+    }
+
+    ToTopIcon{
+        target: root
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        width: command.style.toUpIconWidth
+        z:1
     }
 
     Component.onCompleted: {

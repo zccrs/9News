@@ -77,7 +77,7 @@ MyPage{
                 }
             }
             ToolButton{
-                iconSource: command.getIconSource("skin", command.invertedTheme)
+                iconSource: command.getIconSource(command.invertedTheme, "skin", "png")
                 onClicked: {
                     command.invertedTheme =! command.invertedTheme
                 }
@@ -114,6 +114,8 @@ MyPage{
             rightButtonIconSource: "toolbar-search"
 
             onLeftButtonClick: {
+                main.pageStack.toolBar.height = toolBarHeight
+                //还原状态栏的高度
                 textArea.closeSoftwareInputPanel()
                 metroView.pageInteractive = true
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
@@ -166,7 +168,6 @@ MyPage{
     MetroView{
         id: metroView
         anchors.fill: parent
-        //titleBarHeight: headerView.height
         titleSpacing: 25
         titleMaxFontSize: command.style.metroTitleFontPixelSize
 
@@ -223,6 +224,10 @@ MyPage{
              MenuItem {
                  text: qsTr("Personal Center")
                  platformInverted: command.invertedTheme
+
+                 onClicked: {
+                     pageStack.push(Qt.resolvedUrl("./usercenter/UserCenterPage.qml"))
+                 }
              }
              MenuItem {
                  text: qsTr("Refresh All News Categorys")

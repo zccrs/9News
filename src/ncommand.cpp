@@ -15,14 +15,17 @@ NCommand::NCommand(QObject *parent) :
     //新闻列表中新闻来源和发表时间等新闻信息的字体大小
     m_style["flipchartsTitleFontPixelSize"] = 16;
     //大海报上新闻标题的字体大小
-    m_newsContentFontSize = utility->value("newsContentFontSize", 26).toInt();
-    //新闻内容字体大小
-    m_newsTitleFontSize = utility->value("newsTitleFontSize", 24).toInt();
-    //新闻标题字体大小
     m_style["titleImageWidth"] = 80;
     //新闻标题图的宽度（标题左边的图）
     m_style["titleImagesListHeight"] = 80;
     //新闻标题标题下面的横排图片的ListView的高度
+    m_style["toUpIconWidth"] = 80;
+    //新闻列表中一键返回顶部的图标按钮的宽度
+
+    m_newsContentFontSize = utility->value("newsContentFontSize", 26).toInt();
+    //新闻内容字体大小
+    m_newsTitleFontSize = utility->value("newsTitleFontSize", 24).toInt();
+    //新闻标题字体大小
 #else
     m_style["metroTitleFontPixelSize"] = 28;
     //Metro界面上方大标题的最大字体大小
@@ -34,6 +37,9 @@ NCommand::NCommand(QObject *parent) :
     //新闻标题图的宽度（标题左边的图）
     m_style["titleImagesListHeight"] = 60;
     //新闻标题标题下面的横排图片的ListView的高度
+    m_style["toUpIconWidth"] = 50;
+    //新闻列表中一键返回顶部的图标按钮的宽度
+
     m_newsContentFontSize = utility->value("newsContentFontSize", 22).toInt();
     //新闻内容字体大小
     m_newsTitleFontSize = utility->value("newsTitleFontSize", 20).toInt();
@@ -146,9 +152,13 @@ void NCommand::setNewsTitleFontSize(int arg)
     }
 }
 
-QUrl NCommand::getIconSource(const QString &iconName, bool invertedTheme) const
+QUrl NCommand::getIconSource(bool invertedTheme, const QString &iconName, const QString &format) const
 {
-    QString source = "qrc:/images/"+iconName+(invertedTheme?"_invert.png":".png");
+#ifdef HARMATTAN_BOOSTER
+    QString source = "qrc:/images/"+iconName+"_meego"+(invertedTheme?"_inverse.":".")+format;
+#else
+    QString source = "qrc:/images/"+iconName+"_symbian"+(invertedTheme?".":"_inverse.")+format;
+#endif
     return source;
 }
 

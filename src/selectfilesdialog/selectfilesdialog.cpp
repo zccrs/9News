@@ -83,8 +83,12 @@ bool SelectFilesDialog::showImageContent() const
     return m_showImageContent;
 }
 
-int SelectFilesDialog::exec(const QString initPath, const QString &nameFilters,
-                            Filters filters, SortFlags sortflags)
+QString SelectFilesDialog::nameFilters() const
+{
+    return m_nameFilters;
+}
+
+int SelectFilesDialog::exec(const QString initPath, Filters filters, SortFlags sortflags)
 {
     if(!eventLoop.isNull()){
         this->qmlView->showFullScreen();
@@ -104,10 +108,6 @@ int SelectFilesDialog::exec(const QString initPath, const QString &nameFilters,
 
     dir.setFilter((QDir::Filters)((int)filters));
     dir.setSorting((QDir::SortFlags)((int)sortflags));
-    if(nameFilters!=""){
-        QStringList temp_list = nameFilters.split(";");
-        dir.setNameFilters(temp_list);
-    }
 
     QDeclarativeView qmlView;
     this->qmlView = &qmlView;
@@ -159,6 +159,10 @@ QVariantList SelectFilesDialog::getCurrentFilesInfo() const
     foreach(QFileInfo file_info, dir.entryInfoList()){
         if(file_info.fileName()=="."||file_info.fileName()=="..")
             continue;
+
+        if(file_info.isFile()&&(!containsNameFilters(file_info.fileName()))){
+            continue;
+        }
 
         QVariantMap temp_map;
         temp_map["name"] = file_info.fileName();
@@ -366,7 +370,32 @@ QString SelectFilesDialog::sizeConvert(const qint64 &size) const
     }
 }
 
+bool SelectFilesDialog::containsNameFilters(const QString &fileName) const
+{
+    if(m_nameFilters=="")
+        return true;
+
+    QStringList name_filters = m_nameFilters.split(";");
+
+    foreach (QString temp_str, name_filters) {
+        QRegExp reg(temp_str);
+        if(reg.exactMatch(fileName)){
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void SelectFilesDialog::close()
 {
     emit closeLoop();
+}
+
+void SelectFilesDialog::setNameFilters(QString arg)
+{
+    if (m_nameFilters != arg) {
+        m_nameFilters = arg;
+        emit nameFiltersChanged(arg);
+    }
 }

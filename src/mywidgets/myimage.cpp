@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QPixmapCache>
+#include <cmath>
 
 QCache<QString, QPixmap> MyImage::pixmapCache;
 
@@ -11,6 +12,7 @@ QCache<QString, QPixmap> MyImage::pixmapCache;
 MyImage::MyImage(QQuickItem *parent) :
     QQuickPaintedItem(parent)
 #else
+#include <QGraphicsBlurEffect>
 MyImage::MyImage(QDeclarativeItem *parent) :
     QDeclarativeItem(parent)
 #endif
@@ -26,6 +28,10 @@ MyImage::MyImage(QDeclarativeItem *parent) :
     m_defaultSize = QSize(0,0);
     pixmap = NULL;
     reply = NULL;
+
+    //QGraphicsBlurEffect *effect = new QGraphicsBlurEffect(this);
+    //effect->setBlurRadius(10);
+    //setGraphicsEffect(effect);
 
     connect(&manager, SIGNAL(finished(QNetworkReply*)), SLOT(onDownImageFinished(QNetworkReply*)));
 }

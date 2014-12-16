@@ -19,6 +19,30 @@ MyPage{
                 pageStack.pop()
             }
         }
+
+        ToolButton{
+            iconSource: command.getIconSource(command.invertedTheme, "edit")
+            platformInverted: command.invertedTheme
+            onClicked: {
+
+            }
+        }
+
+        ToolButton{
+            iconSource: command.getIconSource(command.invertedTheme, "comment")
+            platformInverted: command.invertedTheme
+            onClicked: {
+
+            }
+        }
+
+        ToolButton{
+            iconSource: "toolbar-menu"
+            platformInverted: command.invertedTheme
+            onClicked: {
+                mainMenu.open()
+            }
+        }
     }
 
     onStatusChanged: {
@@ -56,6 +80,39 @@ MyPage{
             right: parent.right
             top: parent.top
             topMargin: newsPage.titleHeight
+        }
+    }
+
+    Menu {
+        id: mainMenu
+        // define the items in the menu and corresponding actions
+        platformInverted: command.invertedTheme
+        content: MenuLayout {
+            MenuItem {
+                text: qsTr("Use open browser")
+                platformInverted: command.invertedTheme
+
+                ToolButton{
+                    text: "Copy url"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 10
+                    platformInverted: command.invertedTheme
+
+                }
+
+                onClicked: {
+
+                }
+            }
+            MenuItem {
+                text: qsTr("Like")
+                platformInverted: command.invertedTheme
+
+                onClicked: {
+
+                }
+            }
         }
     }
 }

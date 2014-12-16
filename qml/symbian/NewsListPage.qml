@@ -9,7 +9,7 @@ NewsList{
     BusyIndicator {
         id: busyIndicator
         running: visible
-        visible: root.isBusy
+        visible: false//root.isBusy
         anchors.centerIn: parent
         width: 50
         height: 50

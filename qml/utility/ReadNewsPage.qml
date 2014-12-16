@@ -35,6 +35,8 @@ Item{
             //如果服务器没有返回错误
             var reg = /\[img=\d+,\d+\][^\[]+\[\/img\]/g
             var content = data.article.content
+            newsSource.text = data.article.source
+            dateTime.text = command.fromTime_t(data.article.dateline)
 
             var pos = 0
             var imgs = content.match(reg)
@@ -80,14 +82,14 @@ Item{
 
         y:-height
         width: parent.width-20
-        height: textTitle.implicitHeight+20
+        height: textTitle.implicitHeight+newsInfos.height+10
         anchors.horizontalCenter: parent.horizontalCenter
 
         Text{
             id: textTitle
 
             width: parent.width
-            anchors.verticalCenter: parent.verticalCenter
+            y: 10
             wrapMode: Text.WordWrap
             color: command.invertedTheme?"black":"#ccc"
             font.pixelSize: command.newsTitleFontSize
@@ -105,6 +107,29 @@ Item{
             easing.type: Easing.OutElastic
             to: 0
         }
+
+        Item{
+            id: newsInfos
+
+            width: parent.width
+            height: newsSource.implicitHeight+10
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+
+            Text{
+                id: newsSource
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: command.style.newsInfosFontPixelSize
+                color: "#888"
+            }
+            Text{
+                id: dateTime
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: newsSource.font.pixelSize
+                color: "#888"
+            }
+        }
     }
 
     ListView{
@@ -121,6 +146,15 @@ Item{
             id: mymodel
         }
         delegate: newsContentListDelegate
+    }
+
+    ToTopIcon{
+        target: newsContentList
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        width: command.style.toUpIconWidth
+        z:1
     }
 
     Component{
@@ -152,6 +186,7 @@ Item{
             wrapMode: Text.WordWrap
             text: componentData
             font.pixelSize: command.newsContentFontSize
+            color: command.invertedTheme?"black":"#ccc"
         }
     }
 

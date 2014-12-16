@@ -18,8 +18,13 @@ Item{
 
     clip: true
     visible: false
-    width: parent.width;
-    height: Math.max(toolBarHeight, contentField.height+5);
+    width: parent.width
+    height: Math.max(toolBarHeight, contentField.height+5)
+
+    onHeightChanged: {
+        main.pageStack.toolBar.height = height
+        //设置状态栏的高度
+    }
 
     MySvgView{
         id:background

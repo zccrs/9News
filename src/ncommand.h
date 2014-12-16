@@ -77,7 +77,7 @@ public slots:
     QString fromTime_t ( uint seconds ) const;
     void setNewsContentFontSize(int arg);
     void setNewsTitleFontSize(int arg);
-    QUrl getIconSource(const QString& iconName, bool invertedTheme) const;
+    QUrl getIconSource(bool invertedTheme, const QString &iconName, const QString &format="svg") const;
     //返回ToolButton中自定义图标的url。例如iconName为skin，则返回"qrc:/images/skin.png"
     void setNoPicturesMode(bool arg);
     void setWifiMode(bool arg);

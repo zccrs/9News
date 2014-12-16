@@ -4,5 +4,13 @@
         <file>images/mask_leftTop.png</file>
         <file>images/mask_rightBottom.png</file>
         <file>images/mask_rightTop.png</file>
+        <file>images/comment_symbian.svg</file>
+        <file>images/comment_symbian_inverse.svg</file>
+        <file>images/edit_symbian.svg</file>
+        <file>images/edit_symbian_inverse.svg</file>
+        <file>images/skin_symbian.png</file>
+        <file>images/skin_symbian_inverse.png</file>
+        <file>images/toolbar_symbian.svg</file>
+        <file>images/toolbar_symbian_inverse.svg</file>
     </qresource>
 </RCC>

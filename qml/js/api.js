@@ -1,5 +1,7 @@
 .pragma library
 
+var loginUrl = ""
+//用户登录url
 var newsCategorysUrl = "http://api.9smart.cn/news/categorys"
 //获取新闻分类的url
 function getNewsUrlByCategory(category, keyword, order){

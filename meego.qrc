@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>images/meegoBackground.png</file>
+        <file>images/comment_meego.svg</file>
+        <file>images/comment_meego_inverse.svg</file>
+        <file>images/skin_meego.png</file>
+        <file>images/skin_meego_inverse.png</file>
     </qresource>
 </RCC>

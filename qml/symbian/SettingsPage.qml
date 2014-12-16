@@ -158,12 +158,24 @@ MyPage{
             anchors.horizontalCenter: parent.horizontalCenter
             annotation: qsTr("Font pixel size")
         }
+
+        Text{
+            id: textReference1
+
+            anchors.top: cut_off.bottom
+            anchors.topMargin: 10
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Reference Text")
+            font.pixelSize: titleFontSize.value
+            color: command.invertedTheme?"#000":"#ccc"
+        }
+
         MySlider {
             id: titleFontSize
 
             value: command.newsTitleFontSize
             invertedTheme: command.invertedTheme
-            anchors.top: cut_off.bottom
+            anchors.top: textReference1.bottom
             anchors.topMargin: 10
             anchors.left: parent.left
             anchors.right: parent.right
@@ -175,13 +187,25 @@ MyPage{
             stepSize: 1
             KeyNavigation.up: auto_updata_app
             KeyNavigation.down: contentFontSize
-         }
+        }
+
+        Text{
+            id: textReference2
+
+            anchors.top: titleFontSize.bottom
+            anchors.topMargin: 10
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Reference Text")
+            font.pixelSize: contentFontSize.value
+            color: command.invertedTheme?"#000":"#ccc"
+        }
+
         MySlider {
             id: contentFontSize
 
             value: command.newsContentFontSize
             invertedTheme: command.invertedTheme
-            anchors.top: titleFontSize.bottom
+            anchors.top: textReference2.bottom
             anchors.topMargin: 20
             anchors.left: parent.left
             anchors.right: parent.right
@@ -231,7 +255,7 @@ MyPage{
             }
         }
 
-        CuttingLine{
+        /*CuttingLine{
             id:cut_off3
 
             annotation: qsTr("Background Image path")
@@ -240,38 +264,15 @@ MyPage{
             anchors.topMargin: 10
             width: parent.width-20
             anchors.horizontalCenter: parent.horizontalCenter
-        }
+        }*/
 
-        Text{
-            id: backgroundImagePath
-
-            text: command.backgroundImage==""?qsTr("null"):command.backgroundImage
-            anchors.top: cut_off3.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.margins: 10
-            color: command.invertedTheme?"#000":"#ccc"
-            elide: Text.ElideMiddle
-        }
-
-        MouseArea{
-            anchors.top: cut_off3.top
-            anchors.bottom: backgroundImagePath.bottom
-            width: parent.width
-            onClicked: {
-                var path = selectPath()
-                if(path){
-                    backgroundImagePath.text = path.filePath
-                }
-            }
-        }
 
         CuttingLine{
             id:cut_off4
 
             annotation: qsTr("Preferences settings")
             invertedTheme: command.invertedTheme
-            anchors.top: backgroundImagePath.bottom
+            anchors.top: imageSavePath.bottom
             anchors.topMargin: 10
             width: parent.width-20
             anchors.horizontalCenter: parent.horizontalCenter
@@ -354,9 +355,6 @@ MyPage{
         command.signature = signature_input.text
         if(imageSavePath.text!=qsTr("null")){
             command.imagesSavePath = imageSavePath.text
-        }
-        if(backgroundImagePath.text!=qsTr("null")){
-            command.backgroundImage = backgroundImagePath.text
         }
     }
 }

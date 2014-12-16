@@ -18,7 +18,7 @@ Item {
         id:backg
         width: parent.width
         height: parent.height
-        source: invertedTheme?"qrc:/images/toolbar.svg":"qrc:/images/toolbar_inverse.svg"
+        source: command.getIconSource(invertedTheme, "toolbar", "svg")
     }
 
 
