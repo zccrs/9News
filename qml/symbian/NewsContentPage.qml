@@ -9,40 +9,10 @@ MyPage{
     property int newsId: -1
     property string newsTitle
 
-    tools: CustomToolBarLayout{
-        invertedTheme: command.invertedTheme
+    tools: ToolBarSwitch{
+        id: toolBarSwitch
 
-        ToolButton{
-            iconSource: "toolbar-back"
-            platformInverted: command.invertedTheme
-            onClicked: {
-                pageStack.pop()
-            }
-        }
-
-        ToolButton{
-            iconSource: command.getIconSource(command.invertedTheme, "edit")
-            platformInverted: command.invertedTheme
-            onClicked: {
-
-            }
-        }
-
-        ToolButton{
-            iconSource: command.getIconSource(command.invertedTheme, "comment")
-            platformInverted: command.invertedTheme
-            onClicked: {
-
-            }
-        }
-
-        ToolButton{
-            iconSource: "toolbar-menu"
-            platformInverted: command.invertedTheme
-            onClicked: {
-                mainMenu.open()
-            }
-        }
+        toolBarComponent: compoentToolBarLayout
     }
 
     onStatusChanged: {
@@ -55,6 +25,72 @@ MyPage{
 
         invertedTheme: command.invertedTheme
         height: newsPage.titleHeight
+    }
+
+    Component{
+        id: compoentToolBarLayout
+
+        CustomToolBarLayout{
+            invertedTheme: command.invertedTheme
+
+            ToolButton{
+                iconSource: "toolbar-back"
+                platformInverted: command.invertedTheme
+                onClicked: {
+                    pageStack.pop()
+                }
+            }
+
+            ToolButton{
+                iconSource: command.getIconSource(command.invertedTheme, "edit")
+                platformInverted: command.invertedTheme
+                onClicked: {
+                    toolBarSwitch.toolBarComponent = compoentCommentToolBar
+                }
+            }
+
+            ToolButton{
+                iconSource: command.getIconSource(command.invertedTheme, "comment")
+                platformInverted: command.invertedTheme
+                onClicked: {
+
+                }
+            }
+
+            ToolButton{
+                iconSource: "toolbar-menu"
+                platformInverted: command.invertedTheme
+                onClicked: {
+                    mainMenu.open()
+                }
+            }
+        }
+    }
+
+    Component{
+        id: compoentCommentToolBar
+
+        TextAreaToolBar{
+            property string oldText: ""
+            //记录上次输入的搜索内容
+            property int currentNewsPage: 0
+            //记录是在哪个新闻页面点击的搜索
+
+            invertedTheme: command.invertedTheme
+            rightButtonIconSource: "toolbar-search"
+
+            onLeftButtonClick: {
+                main.pageStack.toolBar.height = toolBarHeight
+                //还原状态栏的高度
+                textArea.closeSoftwareInputPanel()
+                metroView.pageInteractive = true
+                toolBarSwitch.toolBarComponent = compoentToolBarLayout
+            }
+            onRightButtonClick: {
+                if(textAreaContent=="")
+                    return//如果搜索内容没有变化或者为空则不搜索
+            }
+        }
     }
 
     ReadNewsPage{

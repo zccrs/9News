@@ -242,7 +242,7 @@ Item{
             fileName = fileName.toISOString().replace(reg, "")+".png"
             fileName = command.imagesSavePath+"/"+fileName
             if(imagesBrowse.currentImage.save(fileName)){
-                command.showBanner(qsTr("Save finished"))
+                command.showBanner(qsTr("Saved:")+fileName)
             }else{
                 command.showBanner(qsTr("Save error"))
             }
