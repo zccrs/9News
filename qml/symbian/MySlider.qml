@@ -9,7 +9,8 @@ Item {
     property alias maximumValue: sli.maximumValue
     property alias value: sli.value
     property alias inverted: sli.inverted
-    property bool invertedTheme: false
+    property alias textColor: sliderText.color
+    property bool invertedTheme: command.style.sliderInverted
 
     width: parent.width
     height: sliderText.height+20
@@ -21,7 +22,6 @@ Item {
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         verticalAlignment: Text.AlignVCenter
-        color: invertedTheme?"#000":"#ccc"
     }
     Slider {
         id:sli

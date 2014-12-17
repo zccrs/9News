@@ -14,17 +14,25 @@ folder_03.target = qml
 
 
 symbian{
+    QT += webkit
+
     TARGET.UID3 = 0xE2E87DAE
     TARGET.CAPABILITY += NetworkServices
 
     folder_01.source = qml/symbian
     folder_01.target = qml
-    DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03
+    folder_05.source = qml/theme
+    folder_05.target = qml
+    folder_04.source = theme
+    folder_04.target = ./
+    DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03 folder_04 folder_05
 
     RESOURCES += symbian.qrc
 }
 
 contains(MEEGO_EDITION, harmattan){
+    QT += webkit
+
     CONFIG += qdeclarative-boostable
 
     folder_01.source = qml/meego
@@ -59,9 +67,13 @@ contains(QT_VERSION, 4.8.6){
 }
 
 simulator{
+    QT += webkit
+
     folder_01.source = qml
     folder_01.target = ./
-    DEPLOYMENTFOLDERS += folder_01
+    folder_04.source = theme
+    folder_04.target = ./
+    DEPLOYMENTFOLDERS += folder_01 folder_04
 
     RESOURCES += symbian.qrc
 }
@@ -97,11 +109,12 @@ qtcAddDeployment()
 include(src/utility/utility.pri)
 include(src/selectfilesdialog/selectfilesdialog.pri)
 include(src/mywidgets/mywidgets.pri)
-
+include(src/yeatse/yeatse.pri)
 
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    theme.qrc
 
 HEADERS += \
     src/ncommand.h

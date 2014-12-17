@@ -23,7 +23,6 @@ MyPage{
     HeaderView{
         id: headerView
 
-        invertedTheme: command.invertedTheme
         height: newsPage.titleHeight
     }
 
@@ -31,27 +30,27 @@ MyPage{
         id: compoentToolBarLayout
 
         CustomToolBarLayout{
-            invertedTheme: command.invertedTheme
+            invertedTheme: command.style.toolBarInverted
 
             ToolButton{
                 iconSource: "toolbar-back"
-                platformInverted: command.invertedTheme
+                platformInverted: command.style.toolBarInverted
                 onClicked: {
                     pageStack.pop()
                 }
             }
 
             ToolButton{
-                iconSource: command.getIconSource(command.invertedTheme, "edit")
-                platformInverted: command.invertedTheme
+                iconSource: command.getIconSource(platformInverted, "edit")
+                platformInverted: command.style.toolBarInverted
                 onClicked: {
                     toolBarSwitch.toolBarComponent = compoentCommentToolBar
                 }
             }
 
             ToolButton{
-                iconSource: command.getIconSource(command.invertedTheme, "comment")
-                platformInverted: command.invertedTheme
+                iconSource: command.getIconSource(platformInverted, "comment")
+                platformInverted: command.style.toolBarInverted
                 onClicked: {
 
                 }
@@ -59,7 +58,7 @@ MyPage{
 
             ToolButton{
                 iconSource: "toolbar-menu"
-                platformInverted: command.invertedTheme
+                platformInverted: command.style.toolBarInverted
                 onClicked: {
                     mainMenu.open()
                 }
@@ -76,14 +75,13 @@ MyPage{
             property int currentNewsPage: 0
             //记录是在哪个新闻页面点击的搜索
 
-            invertedTheme: command.invertedTheme
+            invertedTheme: command.style.toolBarInverted
             rightButtonIconSource: "toolbar-search"
 
             onLeftButtonClick: {
                 main.pageStack.toolBar.height = toolBarHeight
                 //还原状态栏的高度
                 textArea.closeSoftwareInputPanel()
-                metroView.pageInteractive = true
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
             }
             onRightButtonClick: {
@@ -110,7 +108,7 @@ MyPage{
     }
 
     ScrollBar {
-        platformInverted: command.invertedTheme
+        platformInverted: command.style.scrollBarInverted
         flickableItem: newsPage.contentList
         anchors {
             right: parent.right
@@ -122,18 +120,18 @@ MyPage{
     Menu {
         id: mainMenu
         // define the items in the menu and corresponding actions
-        platformInverted: command.invertedTheme
+        platformInverted: command.style.menuInverted
         content: MenuLayout {
             MenuItem {
                 text: qsTr("Use open browser")
-                platformInverted: command.invertedTheme
+                platformInverted: mainMenu.platformInverted
 
                 ToolButton{
                     text: "Copy url"
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: 10
-                    platformInverted: command.invertedTheme
+                    platformInverted: mainMenu.platformInverted
 
                 }
 
@@ -143,7 +141,7 @@ MyPage{
             }
             MenuItem {
                 text: qsTr("Like")
-                platformInverted: command.invertedTheme
+                platformInverted: mainMenu.platformInverted
 
                 onClicked: {
 

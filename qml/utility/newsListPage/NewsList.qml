@@ -181,7 +181,7 @@ ListView{
                 text: qsTr("load more...")
                 anchors.centerIn: parent
                 visible: newsList.count>1
-                color: newsList.isBusy?"#888":command.invertedTheme?"black":"#ccc"
+                color: newsList.isBusy?command.style.inactiveFontColor:command.style.newsTitleFontColor
 
                 MouseArea{
                     anchors.fill: parent

@@ -3,7 +3,6 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 import com.star.widgets 1.0
 import "../utility"
-import "../utility/metro"
 import "../utility/newsListPage"
 import "../js/api.js" as Api
 
@@ -61,11 +60,11 @@ MyPage{
         id: compoentToolBarLayout
 
         CustomToolBarLayout{
-            invertedTheme: command.invertedTheme
+            invertedTheme: command.style.toolBarInverted
 
             ToolButton{
                 iconSource: "toolbar-back"
-                platformInverted: command.invertedTheme
+                platformInverted: command.style.toolBarInverted
                 onClicked: {
                     if(isQuit){
                         Qt.quit()
@@ -77,14 +76,15 @@ MyPage{
                 }
             }
             ToolButton{
-                iconSource: command.getIconSource(command.invertedTheme, "skin", "png")
+                platformInverted: command.style.toolBarInverted
+                iconSource: command.getIconSource(command.style.toolBarInverted, "skin", "png")
                 onClicked: {
-                    command.invertedTheme =! command.invertedTheme
+                    command.themeSwitch()
                 }
             }
             ToolButton{
                 iconSource: "toolbar-search"
-                platformInverted: command.invertedTheme
+                platformInverted: command.style.toolBarInverted
                 onClicked: {
                     toolBarSwitch.toolBarComponent = compoentCommentToolBar
                     //搜索新闻
@@ -93,7 +93,7 @@ MyPage{
 
             ToolButton{
                 iconSource: "toolbar-menu"
-                platformInverted: command.invertedTheme
+                platformInverted: command.style.toolBarInverted
                 onClicked: {
                     mainMenu.open()
                 }
@@ -110,8 +110,13 @@ MyPage{
             property int currentNewsPage: 0
             //记录是在哪个新闻页面点击的搜索
 
-            invertedTheme: command.invertedTheme
+            invertedTheme: command.style.toolBarInverted
             rightButtonIconSource: "toolbar-search"
+
+            onHeightChanged: {
+                main.pageStack.toolBar.height = height
+                //设置状态栏的高度
+            }
 
             onLeftButtonClick: {
                 main.pageStack.toolBar.height = toolBarHeight
@@ -152,7 +157,6 @@ MyPage{
     HeaderView{
         id: headerView
 
-        invertedTheme: command.invertedTheme
         height: metroView.titleBarHeight
     }
 
@@ -167,6 +171,7 @@ MyPage{
 
     MetroView{
         id: metroView
+
         anchors.fill: parent
         titleSpacing: 25
         titleMaxFontSize: command.style.metroTitleFontPixelSize
@@ -219,11 +224,11 @@ MyPage{
      Menu {
          id: mainMenu
          // define the items in the menu and corresponding actions
-         platformInverted: command.invertedTheme
+         platformInverted: command.style.menuInverted
          content: MenuLayout {
              MenuItem {
                  text: qsTr("Personal Center")
-                 platformInverted: command.invertedTheme
+                 platformInverted: mainMenu.platformInverted
 
                  onClicked: {
                      pageStack.push(Qt.resolvedUrl("./usercenter/UserCenterPage.qml"))
@@ -231,7 +236,7 @@ MyPage{
              }
              MenuItem {
                  text: qsTr("Refresh All News Categorys")
-                 platformInverted: command.invertedTheme
+                 platformInverted: mainMenu.platformInverted
 
                  onClicked: {
                      updateAllNewsCategorys()
@@ -240,7 +245,7 @@ MyPage{
              }
              MenuItem {
                  text: qsTr("Settings")
-                 platformInverted: command.invertedTheme
+                 platformInverted: mainMenu.platformInverted
 
                  onClicked: {
                      pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
@@ -248,7 +253,7 @@ MyPage{
              }
              MenuItem {
                  text: qsTr("About")
-                 platformInverted: command.invertedTheme
+                 platformInverted: mainMenu.platformInverted
                  onClicked: {
                      pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
                  }

@@ -12,5 +12,6 @@
         <file>images/logo_grounding.png</file>
         <file>images/logo.svg</file>
         <file>images/up.svg</file>
+        <file>images/cuttingLine.png</file>
     </qresource>
 </RCC>

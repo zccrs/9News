@@ -9,11 +9,11 @@ import "../../utility"
 MyPage{
 
     tools: CustomToolBarLayout{
-        invertedTheme: command.invertedTheme
+        invertedTheme: command.style.toolBarInverted
 
         ToolButton{
             iconSource: "toolbar-back"
-            platformInverted: command.invertedTheme
+            platformInverted: command.style.toolBarInverted
             onClicked: {
                 pageStack.pop()
             }
@@ -22,7 +22,8 @@ MyPage{
 
     HeaderView{
         id: header
-        invertedTheme: command.invertedTheme
+
+        textColor: command.style.newsContentFontColor
         font.pixelSize: command.style.metroTitleFontPixelSize
         title: qsTr("Personal center")
         height: screen.currentOrientation===Screen.Portrait?

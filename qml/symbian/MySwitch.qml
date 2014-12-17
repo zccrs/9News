@@ -5,7 +5,8 @@ import com.nokia.symbian 1.1
 Item{
     property string switch_text:""
     property alias checked: off_on.checked
-    property bool invertedTheme: false
+    property alias textColor: switchText.color
+    property bool invertedTheme: command.style.switchInverted
 
     signal trigger(bool checked)
 

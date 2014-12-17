@@ -103,7 +103,8 @@ Item{
                 anchors.leftMargin: iconSource!=""?10:0
                 wrapMode: Text.WordWrap
                 text: menuText
-                color: active?(invertedTheme?"white":"black"):"#888"
+                color: active?command.style.metroActiveTitleFontColor:
+                               command.style.metroInactiveTitleFontColor
                 scale: active?1.2:1
 
                 font{

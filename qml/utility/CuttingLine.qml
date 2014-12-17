@@ -2,34 +2,23 @@
 import QtQuick 1.1
 
 Item{
-    property bool invertedTheme: false
     property alias annotation: text_annotation.text
+    property alias textColor: text_annotation.color
 
     height: annotation!=""?text_annotation.implicitHeight:2
     width: parent.width
 
-    Item{
+    Image{
         anchors.left: text_annotation.right
         anchors.leftMargin: annotation==""?0:10
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         height: 2
-
-        Rectangle{
-            height: 1
-            width: parent.width
-            color: invertedTheme?"#ccc":"#333"
-        }
-        Rectangle{
-            anchors.bottom: parent.bottom
-            width: parent.width
-            height: 1
-            color: invertedTheme?"#fafafa":"#555"
-        }
+        sourceSize.width: width
+        source: command.getIconSource(true, "cuttingLine", "png", true)
     }
 
     Text{
         id: text_annotation
-        color: "#888"
     }
 }

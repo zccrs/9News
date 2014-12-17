@@ -91,7 +91,7 @@ Item{
             width: parent.width
             y: 10
             wrapMode: Text.WordWrap
-            color: command.invertedTheme?"black":"#ccc"
+            color: command.style.newsContentFontColor
             font.pixelSize: command.newsTitleFontSize
             font.bold: true
 
@@ -120,14 +120,14 @@ Item{
                 id: newsSource
                 anchors.verticalCenter: parent.verticalCenter
                 font.pixelSize: command.style.newsInfosFontPixelSize
-                color: "#888"
+                color: command.style.newsInfoFontColor
             }
             Text{
                 id: dateTime
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 font.pixelSize: newsSource.font.pixelSize
-                color: "#888"
+                color: newsSource.color
             }
         }
     }
@@ -186,7 +186,7 @@ Item{
             wrapMode: Text.WordWrap
             text: componentData
             font.pixelSize: command.newsContentFontSize
-            color: command.invertedTheme?"black":"#ccc"
+            color: command.style.newsContentFontColor
         }
     }
 

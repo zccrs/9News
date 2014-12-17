@@ -14,13 +14,14 @@ Item {
     implicitHeight: internal.defaultHeightToolBar
     visible: false
 
-    MySvgView{
+    Image{
         id:backg
-        width: parent.width
-        height: parent.height
-        source: command.getIconSource(invertedTheme, "toolbar", "svg")
-    }
 
+        opacity: command.style.toolBarOpacity
+        anchors.fill: parent
+        sourceSize.width: width
+        source: command.style.toolBarBackgroundImage
+    }
 
     Connections {
         target: privateStyle

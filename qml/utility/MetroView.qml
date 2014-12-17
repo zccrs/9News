@@ -68,21 +68,7 @@ Item{
         snapMode :ListView.SnapOneItem
         interactive: pageInteractive
 
-        delegate: TitleListCompoent{
-            font.pixelSize: titleMaxFontSize
-            MouseArea{
-                enabled: titleBarList.interactive
-                anchors.fill: parent
-                onClicked: {
-                    activation(index)
-                }
-            }
-            Component.onCompleted: {
-                if(implicitHeight>titleBarList.implicitHeight-10){
-                    titleBarList.implicitHeight = implicitHeight+10
-                }
-            }
-        }
+        delegate: titleListDelegate
         model: ListModel{
             id: titleModel
         }
@@ -105,6 +91,57 @@ Item{
 
         onFlickEnded: {
             activation(contentX/width)
+        }
+    }
+
+    Component{
+        id: titleListDelegate
+
+        Text{
+            id: root
+
+            text: title
+            anchors.verticalCenter: parent.verticalCenter
+            opacity: 1-Math.abs(ListView.view.currentIndex-index)/10
+            font.pixelSize: titleMaxFontSize
+            color: {
+                if(ListView.isCurrentItem){
+                    return command.style.metroActiveTitleFontColor
+                }else{
+                    return command.style.metroInactiveTitleFontColor
+                }
+            }
+
+            font{
+                bold: ListView.isCurrentItem
+            }
+
+            scale:{
+                var deviations = Math.abs(ListView.view.currentIndex-index)
+                if(deviations<4)
+                    return 1-deviations/5
+                else
+                    return 0.4
+            }
+
+            Behavior on scale{
+                NumberAnimation{
+                    duration: 300
+                }
+            }
+
+            MouseArea{
+                enabled: titleBarList.interactive
+                anchors.fill: parent
+                onClicked: {
+                    activation(index)
+                }
+            }
+            Component.onCompleted: {
+                if(implicitHeight>titleBarList.implicitHeight-10){
+                    titleBarList.implicitHeight = implicitHeight+20
+                }
+            }
         }
     }
 }

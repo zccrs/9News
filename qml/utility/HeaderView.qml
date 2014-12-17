@@ -3,16 +3,15 @@ import QtQuick 1.1
 import com.star.widgets 1.0
 
 Item{
-    property bool invertedTheme: false
     property alias title: mytext.text
     property alias font: mytext.font
+    property alias textColor: mytext.color
 
     width: parent.width
 
     CuttingLine{
         anchors.bottom: parent.bottom
         width: parent.width
-        invertedTheme: parent.invertedTheme
     }
 
     Text{

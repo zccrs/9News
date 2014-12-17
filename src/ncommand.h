@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVariant>
 #include <QUrl>
+#include <QSettings>
 
 class Utility;
 class NCommand : public QObject
@@ -11,9 +12,7 @@ class NCommand : public QObject
     Q_OBJECT
     Q_PROPERTY(SystemType systemType READ systemTye CONSTANT)
     //当前系统类型
-    Q_PROPERTY(bool invertedTheme READ invertedTheme WRITE setInvertedTheme NOTIFY invertedThemeChanged)
-    //是否是反色主题
-    Q_PROPERTY(QVariantMap style READ style CONSTANT)
+    Q_PROPERTY(QVariantMap style READ style NOTIFY styleChanged FINAL)
     //记录qml界面某些控件的属性，例如Text的字体大小和颜色等等
     Q_PROPERTY(int newsContentFontSize READ newsContentFontSize WRITE setNewsContentFontSize NOTIFY newsContentFontSizeChanged)
     //记录新闻内容字体大小的设置
@@ -31,8 +30,8 @@ class NCommand : public QObject
     //是否自动检测更新
     Q_PROPERTY(QString imagesSavePath READ imagesSavePath WRITE setImagesSavePath NOTIFY imagesSavePathChanged)
     //下载图片的保存地址
-    Q_PROPERTY(QString backgroundImage READ backgroundImage WRITE setBackgroundImage NOTIFY backgroundImageChanged)
-    //程序背景图的路径
+    Q_PROPERTY(QString theme READ theme WRITE setTheme NOTIFY themeChanged)
+    //记录当前主题
 
     Q_ENUMS(SystemType)
 
@@ -45,7 +44,6 @@ public:
     };
 
     SystemType systemTye() const;
-    bool invertedTheme() const;
     QVariantMap style() const;
     int newsContentFontSize() const;
     int newsTitleFontSize() const;
@@ -55,10 +53,9 @@ public:
     bool fullscreenMode() const;
     bool checkUpdate() const;
     QString imagesSavePath() const;
-    QString backgroundImage() const;
+    QString theme() const;
 
 signals:
-    void invertedThemeChanged(bool arg);
     void getNews(int newsId, const QString& title);
     //发送信号告诉qml端用户要阅读第新闻Id为newsId的新闻,title是新闻标题
     void newsContentFontSizeChanged(int arg);
@@ -70,14 +67,15 @@ signals:
     void fullscreenModeChanged(bool arg);
     void checkUpdateChanged(bool arg);
     void imagesSavePathChanged(QString arg);
-    void backgroundImageChanged(QString arg);
+    void styleChanged(QVariantMap arg);
+    void themeChanged(QString arg);
 
 public slots:
-    void setInvertedTheme(bool arg);
     QString fromTime_t ( uint seconds ) const;
     void setNewsContentFontSize(int arg);
     void setNewsTitleFontSize(int arg);
-    QUrl getIconSource(bool invertedTheme, const QString &iconName, const QString &format="svg") const;
+    QUrl getIconSource(QVariant invertedTheme, const QString &iconName,
+                       const QString &format="svg", bool utility=false) const;
     //返回ToolButton中自定义图标的url。例如iconName为skin，则返回"qrc:/images/skin.png"
     void setNoPicturesMode(bool arg);
     void setWifiMode(bool arg);
@@ -85,10 +83,23 @@ public slots:
     void setFullscreenMode(bool arg);
     void setCheckUpdate(bool arg);
     void setImagesSavePath(QString arg);
-    void setBackgroundImage(QString arg);
+    void themeSwitch();
+    void setTheme(const QString& arg);
+    bool setTheme(int index);
+    QVariantList themesName() const;
 
 private:
-    bool m_invertedTheme;
+    struct ThemeInfo{
+        QString filePath;
+        QString themeName;
+        ThemeInfo(){}
+        ThemeInfo(const QString& path, const QString name)
+        {
+            filePath = path;
+            themeName = name;
+        }
+    };
+
     QVariantMap m_style;
     int m_newsContentFontSize;
     int m_newsTitleFontSize;
@@ -99,7 +110,13 @@ private:
     bool m_fullscreenMode;
     bool m_checkUpdate;
     QString m_imagesSavePath;
-    QString m_backgroundImage;
+    QString m_theme;
+    QList<ThemeInfo> themeList;
+    int currentThemeIndex;//记录当前使用的是第几个主题
+
+    void getCustomThemeList();
+    void setStyleProperty(const QString &name, const QSettings &settings, const QVariant defaultValue);
+    void updateStyle(const QSettings& settings);
 };
 
 #endif // NCOMMAND_H

@@ -6,14 +6,4 @@ import com.star.widgets 1.0
 Page{
     width: screen.width
     orientationLock : PageOrientation.LockPortrait
-
-    /*Image {
-        id: backgroundImage
-        //source: "file:///"+command.backgroundImage
-        //width: parent.width
-        //height: width/implicitWidth*implicitHeight
-        //sourceSize.width: width
-        //opacity: 0.7
-        anchors.centerIn: parent
-    }*/
 }

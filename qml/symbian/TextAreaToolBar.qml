@@ -7,7 +7,9 @@ Item{
     id:comment
 
     property bool invertedTheme: false
-    property int toolBarHeight: screen.width < screen.height?privateStyle.toolBarHeightPortrait:privateStyle.toolBarHeightLandscape
+    property int toolBarHeight: screen.width < screen.height?
+                                    privateStyle.toolBarHeightPortrait:
+                                    privateStyle.toolBarHeightLandscape
     property alias leftButtonIconSource: leftButton.iconSource
     property alias rightButtonIconSource: rightButton.iconSource
     property alias textAreaContent: contentField.text
@@ -21,20 +23,18 @@ Item{
     width: parent.width
     height: Math.max(toolBarHeight, contentField.height+5)
 
-    onHeightChanged: {
-        main.pageStack.toolBar.height = height
-        //设置状态栏的高度
-    }
+    Image{
+        id:backg
 
-    MySvgView{
-        id:background
-        width: parent.width
-        height: parent.height
-        source: invertedTheme?"qrc:/images/toolbar.svg":"qrc:/images/toolbar_inverse.svg"
+        opacity: command.style.toolBarOpacity
+        anchors.fill: parent
+        sourceSize.width: width
+        source: command.style.toolBarBackgroundImage
     }
 
     ToolButton{
         id: leftButton
+
         anchors.left: parent.left
         anchors.leftMargin: parent.width===640?20:0
         anchors.bottom: parent.bottom
@@ -63,7 +63,7 @@ Item{
         anchors.rightMargin: parent.width===640?20:0
         anchors.bottom: parent.bottom
         platformInverted: invertedTheme
-        iconSource: invertedTheme?"qrc:/images/message_send_inverse.svg":"qrc:/images/message_send.svg"
+        iconSource: command.getIconSource(invertedTheme, "message_send", "svg", true)
 
         onClicked: {
             rightButtonClick()
