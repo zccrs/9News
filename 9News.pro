@@ -21,11 +21,9 @@ symbian{
 
     folder_01.source = qml/symbian
     folder_01.target = qml
-    folder_05.source = qml/theme
-    folder_05.target = qml
-    folder_04.source = theme
+    folder_04.source = theme_symbian
     folder_04.target = ./
-    DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03 folder_04 folder_05
+    DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03 folder_04
 
     RESOURCES += symbian.qrc
 }
@@ -37,7 +35,9 @@ contains(MEEGO_EDITION, harmattan){
 
     folder_01.source = qml/meego
     folder_01.target = qml
-    DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03
+    folder_04.source = theme_meego
+    folder_04.target = ./
+    DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03 folder_04
 
     OTHER_FILES += \
         qtc_packaging/debian_harmattan/rules \
@@ -71,7 +71,7 @@ simulator{
 
     folder_01.source = qml
     folder_01.target = ./
-    folder_04.source = theme
+    folder_04.source = theme_symbian
     folder_04.target = ./
     DEPLOYMENTFOLDERS += folder_01 folder_04
 

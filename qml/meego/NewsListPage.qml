@@ -1,6 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.nokia.symbian 1.1
+import com.nokia.meego 1.1
 import "../utility/newsListPage"
 
 NewsList{
@@ -11,16 +11,16 @@ NewsList{
         running: visible
         visible: isBusy
         anchors.centerIn: parent
-        width: 50
-        height: 50
+        width: 100
+        height: 100
+
+        platformStyle: BusyIndicatorStyle {
+                 period: 800
+                 size: "large"
+             }
     }
 
-    ScrollBar {
-        platformInverted: command.style.scrollBarInverted
+    ScrollDecorator {
         flickableItem: root
-        anchors {
-            right: parent.right
-            top: parent.top
-        }
     }
 }

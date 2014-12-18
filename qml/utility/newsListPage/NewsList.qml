@@ -182,6 +182,7 @@ ListView{
                 anchors.centerIn: parent
                 visible: newsList.count>1
                 color: newsList.isBusy?command.style.inactiveFontColor:command.style.newsTitleFontColor
+                font.pixelSize: command.newsTitleFontSize
 
                 MouseArea{
                     anchors.fill: parent

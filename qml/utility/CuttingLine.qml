@@ -15,10 +15,11 @@ Item{
         anchors.verticalCenter: parent.verticalCenter
         height: 2
         sourceSize.width: width
-        source: command.getIconSource(true, "cuttingLine", "png", true)
+        source: "qrc:/images/cuttingLine.png"
     }
 
     Text{
         id: text_annotation
+        font.pixelSize: command.newsTitleFontSize
     }
 }

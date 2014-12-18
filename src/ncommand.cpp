@@ -127,7 +127,7 @@ QUrl NCommand::getIconSource(QVariant invertedTheme, const QString &iconName,
 #ifdef HARMATTAN_BOOSTER
     QString source = "qrc:/images/"+iconName+
             (utility?"":"_meego")+
-            (invertedTheme.toBool()?"_inverse.":".")+format;
+            (invertedTheme.toBool()?".":"_inverse.")+format;
 #else
     QString source = "qrc:/images/"+iconName+
             (utility?"":"_symbian")+
@@ -248,7 +248,11 @@ QString NCommand::readFile(const QUrl fileName) const
 
 void NCommand::getCustomThemeList()
 {
-    QDir dir("./theme");
+#ifdef HARMATTAN_BOOSTER
+    QDir dir("/opt/9News/theme_meego");
+#else
+    QDir dir("./theme_symbian");
+#endif
     dir.setFilter(QDir::Files);
     QStringList namesFilter;
     namesFilter<<"*.ini";
@@ -296,8 +300,7 @@ void NCommand::updateStyle(const QSettings& settings)
     setStyleProperty("toUpIconWidth", settings, 50);
     //新闻列表中一键返回顶部的图标按钮的宽度
 #endif
-
-    setStyleProperty("invertedTheme", settings, true);
+    setStyleProperty("invertedTheme", settings, false);
     //是否是暗色主题
     setStyleProperty("backgroundImage", settings, "");
     //背景图片的地址，如果是本地文件要加上file:///前缀，并且最好使用绝对路径

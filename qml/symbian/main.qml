@@ -2,7 +2,6 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import com.nokia.extras 1.1
-import com.yeatse.widgets 1.0
 
 PageStackWindow{
     id:main

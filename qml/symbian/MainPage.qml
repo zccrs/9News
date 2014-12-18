@@ -11,10 +11,10 @@ MyPage{
 
     property bool isQuit: false
     //判断此次点击后退键是否应该退出
-    signal refreshNewsList
-    //发射信号刷新当前新闻列表
     property bool isBusy: false
     //记录是否正在忙碌，例如正在获取新闻分类
+    signal refreshNewsList
+    //发射信号刷新当前新闻列表
 
     function getNewsCategorysFinished(error, data){
         isBusy = false
