@@ -109,7 +109,7 @@ qtcAddDeployment()
 include(src/utility/utility.pri)
 include(src/selectfilesdialog/selectfilesdialog.pri)
 include(src/mywidgets/mywidgets.pri)
-include(src/yeatse/yeatse.pri)
+#include(src/yeatse/yeatse.pri)
 
 
 RESOURCES += \

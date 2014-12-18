@@ -3,9 +3,7 @@ QT += webkit
 INCLUDEPATH += $$PWD
 
 HEADERS += \
-    $$PWD/qwebviewitem.h \
-    $$PWD/flickcharm.h
+    $$PWD/qwebviewitem.h
 
 SOURCES += \
-    $$PWD/qwebviewitem.cpp \
-    $$PWD/flickcharm.cpp
+    $$PWD/qwebviewitem.cpp

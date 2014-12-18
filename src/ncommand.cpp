@@ -234,6 +234,18 @@ QVariantList NCommand::themesName() const
     return list;
 }
 
+QString NCommand::readFile(const QUrl fileName) const
+{
+    QFile file(fileName.toLocalFile());
+    if(file.open(QIODevice::ReadOnly)){
+        QString temp_str = QString::fromUtf8(file.readAll());
+        file.close();
+        return temp_str;
+    }
+
+    return "";
+}
+
 void NCommand::getCustomThemeList()
 {
     QDir dir("./theme");
@@ -309,6 +321,7 @@ void NCommand::updateStyle(const QSettings& settings)
     //控制工具栏背景图的不透明度
     setStyleProperty("cuttingLineVisible", settings, true);
     //控制分割线是否显示,只对新闻列表有用
+    setStyleProperty("webViewBackgroundImage", settings, true);
     setStyleProperty("toolBarInverted", settings, true);
     //控制工具栏图标的invertedTheme
     setStyleProperty("toolBarBackgroundImage", settings, getIconSource(

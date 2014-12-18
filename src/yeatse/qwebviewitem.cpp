@@ -1,4 +1,4 @@
-#include "qwebviewitem.h"
+#include "QWebViewitem.h"
 #include <QDesktopServices>
 #include <QNetworkRequest>
 #include <QtGui/QGraphicsSceneMouseEvent>
@@ -10,7 +10,7 @@
 #include <QDir>
 #include <cmath>
 #include <QtDeclarative/QDeclarativeEngine>
-#include "flickcharm.h"
+#include <QWebView>
 
 WebPage::WebPage(QObject *parent)
     : QWebPage(parent)
@@ -92,9 +92,6 @@ void QWebViewProxyWidget::init()
     webPage = new WebPage(webView);
     webView->setPage(webPage);
 
-    charm = new FlickCharm(this);
-    charm->activateOn(webView);
-
     webView->setAttribute(Qt::WA_OpaquePaintEvent, true);
     webView->setAttribute(Qt::WA_NoSystemBackground, true);
     webView->setAttribute(Qt::WA_InputMethodEnabled, true);
@@ -119,16 +116,6 @@ QWebView* QWebViewProxyWidget::view() const
 QWebFrame* QWebViewProxyWidget::frame() const
 {
     return webView->page()->mainFrame();
-}
-
-void QWebViewProxyWidget::lockMoving()
-{
-    charm->deactivateFrom(webView);
-}
-
-void QWebViewProxyWidget::unlockMoving()
-{
-    charm->activateOn(webView);
 }
 
 QWebViewDownloader::QWebViewDownloader(QObject *parent)
@@ -267,6 +254,8 @@ void QWebViewItem::componentComplete()
     QDeclarativeItem::componentComplete();
     // Load url or html after component completed
     QWebPage* page = proxy->view()->page();
+    page->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);//竖向
+    page->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);//横向
     page->setNetworkAccessManager(qmlEngine(this)->networkAccessManager());
 
     if (!m_pendingHtml.isEmpty()){
@@ -369,16 +358,6 @@ void QWebViewItem::geometryChanged(const QRectF &newGeometry, const QRectF &oldG
     proxy->setGeometry(QRectF(newGeometry.x(), newGeometry.y(), w, h));
     proxy->view()->page()->setPreferredContentsSize(newGeometry.size().toSize());
     QDeclarativeItem::geometryChanged(newGeometry, oldGeometry);
-}
-
-void QWebViewItem::lockMoving()
-{
-    proxy->lockMoving();
-}
-
-void QWebViewItem::unlockMoving()
-{
-    proxy->unlockMoving();
 }
 
 void QWebViewItem::doDownload(const QNetworkRequest &request)

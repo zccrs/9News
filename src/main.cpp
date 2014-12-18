@@ -11,7 +11,7 @@ using namespace bb::cascades;
 #include <QDebug>
 #include <QSettings>
 #include <QWebSettings>
-#include "qwebviewitem.h"
+//#include "qwebviewitem.h"
 #include "qmlapplicationviewer.h"
 #include "selectfilesdialog.h"
 #include "ncommand.h"
@@ -55,7 +55,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     qmlRegisterType<MySvgView>("com.star.widgets", 1, 0, "MySvgView");
     qmlRegisterType<NCommand>("com.news.utility", 1, 0, "NCommand");
     qmlRegisterType<MonitorMouseEvent>("com.star.utility", 1, 0, "MonitorMouseEvent");
-    qmlRegisterType<QWebViewItem>("com.yeatse.widgets", 1, 0, "WebView");
+    //qmlRegisterType<QWebViewItem>("com.yeatse.widgets", 1, 0, "WebView");
 
     QWebSettings::globalSettings ()->setAttribute (QWebSettings::LocalContentCanAccessRemoteUrls,true);
     QmlApplicationViewer viewer;

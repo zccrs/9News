@@ -11,8 +11,6 @@
 #include <QtWebKit/QWebFrame>
 #include <QNetworkReply>
 
-class FlickCharm;
-
 class WebPage : public QWebPage
 {
     Q_OBJECT
@@ -47,16 +45,11 @@ public:
     QWebView* view() const;
     QWebFrame* frame() const;
 
-    void lockMoving();
-    void unlockMoving();
-
 private:
     void init();
-
 private:
     QWebView* webView;
     QWebPage* webPage;
-    FlickCharm* charm;
 };
 
 class QWebViewDownloader : public QObject
@@ -119,8 +112,6 @@ public:
     QAction *forwardAction() const;
     QAction *stopAction() const;
 
-    Q_INVOKABLE void lockMoving();
-    Q_INVOKABLE void unlockMoving();
     Q_INVOKABLE void abortDownload();
     Q_INVOKABLE QVariant evaluateJavaScript ( const QString & scriptSource );
     Q_INVOKABLE void setScrollPosition(QPoint point);
