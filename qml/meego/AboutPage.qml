@@ -6,7 +6,7 @@ import "../utility"
 MyPage{
     id: root
 
-    tools: ToolBarLayout{
+    tools: CustomToolBarLayout{
         ToolIcon{
             iconId: "toolbar-back"
 
@@ -47,6 +47,7 @@ MyPage{
             wrapMode: Text.WordWrap
             text: command.readFile(fileName)
             font.pixelSize: command.newsContentFontSize
+            color: command.style.newsContentFontColor
 
             onLinkActivated: {
                 Qt.openUrlExternally(link)

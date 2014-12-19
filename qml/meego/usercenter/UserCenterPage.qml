@@ -8,7 +8,7 @@ import "../../utility"
 
 MyPage{
 
-    tools: ToolBarLayout{
+    tools: CustomToolBarLayout{
         ToolIcon{
             iconId: "toolbar-back"
             onClicked: {

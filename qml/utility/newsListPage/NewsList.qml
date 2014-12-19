@@ -225,6 +225,8 @@ ListView{
         }
     }*/
     PullDownMenu{
+        id: pullDownMenu
+
         width: parent.width
         listView: root
         menuItemPixelSize: command.newsTitleFontSize
@@ -247,7 +249,14 @@ ListView{
 
         Component.onCompleted: {
             addMenu(qsTr("Popularity order"))
-            addMenu(qsTr("Immediate refresh"))
+        }
+
+        Timer{
+            running: true
+            interval: 100
+            onTriggered: {
+                parent.addMenu(qsTr("Immediate refresh"))
+            }
         }
     }
 

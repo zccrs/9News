@@ -62,7 +62,7 @@ MyPage{
     Component{
         id: compoentToolBarLayout
 
-        ToolBarLayout{
+        CustomToolBarLayout{
             ToolIcon{
                 iconId: "toolbar-home"
                 onClicked: {

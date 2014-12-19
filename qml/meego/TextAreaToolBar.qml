@@ -7,7 +7,7 @@ Item{
     id:comment
 
     property bool invertedTheme: false
-    property int toolBarHeight: main.__statusBarHeight
+    property int toolBarHeight: screen.currentOrientation===Screen.Portrait?72:56
     property alias leftButtonIconSource: leftButton.iconSource
     property alias leftButtonIconId: leftButton.iconId
     property alias rightButtonIconSource: rightButton.iconSource
@@ -22,6 +22,15 @@ Item{
     visible: false
     width: parent.width
     height: Math.max(toolBarHeight, contentField.height+5)
+
+    Image{
+        id:backg
+
+        opacity: command.style.toolBarOpacity
+        anchors.fill: parent
+        sourceSize.width: width
+        source: command.style.toolBarBackgroundImage
+    }
 
     ToolIcon{
         id: leftButton

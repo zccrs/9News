@@ -49,6 +49,7 @@ MyPage{
             anchors.horizontalCenter: parent.horizontalCenter
             wrapMode: Text.WordWrap
             text: command.readFile(fileName)
+            color: command.style.newsContentFontColor
 
             onLinkActivated: {
                 Qt.openUrlExternally(link)

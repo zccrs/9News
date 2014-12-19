@@ -327,8 +327,13 @@ void NCommand::updateStyle(const QSettings& settings)
     setStyleProperty("webViewBackgroundImage", settings, true);
     setStyleProperty("toolBarInverted", settings, true);
     //控制工具栏图标的invertedTheme
-    setStyleProperty("toolBarBackgroundImage", settings, getIconSource(
-                         m_style["toolBarInverted"], "toolbar", "svg"));
+#ifdef HARMATTAN_BOOSTER
+    QString temp_str = m_style["toolBarInverted"].toBool()?"-inverted":"";
+    QUrl defaule_backImage = "image://theme/meegotouch-toolbar-portrait"+temp_str+"-background";
+#else
+    QUrl defaule_backImage = getIconSource(m_style["toolBarInverted"], "toolbar", "svg");
+#endif
+    setStyleProperty("toolBarBackgroundImage", settings, defaule_backImage);
     //工具栏背景图路径
     setStyleProperty("menuInverted", settings, true);
     //控制菜单的invertedTheme

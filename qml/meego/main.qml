@@ -7,6 +7,7 @@ import "inheritProperties.js" as Saa
 PageStackWindow
 {
     id:main
+
     showStatusBar:true
     initialPage: MainPage{}
 
@@ -14,6 +15,11 @@ PageStackWindow
         background: command.style.backgroundImage
         portraitBackground: command.style.backgroundImage
         landscapeBackground: command.style.backgroundImage
+    }
+
+    function updateStyle(){
+        theme.inverted = !command.style.invertedTheme
+        main.children[0].opacity = command.style.backgroundImageOpacity
     }
 
     InfoBanner {
@@ -31,33 +37,17 @@ PageStackWindow
         }
     }
 
-    Binding{
-        target: theme
-        property: "inverted"
-        value: command.style.invertedTheme
-    }
     Connections{
         target: command
         onStyleChanged:{
-            theme.inverted = !command.style.invertedTheme
-            console.log(toolBarStyle.background)
-            console.log(style.portraitBackground)
+            updateStyle()
         }
     }
 
-    Binding{
-        target: pageStack.toolBar
-        property: "platformStyle"
-
-        value: ToolBarStyle{
-            id: toolBarStyle
-
-            property url oldBackImage: "image://theme/meegotouch-toolbar-" +
-                                       ((screen.currentOrientation == Screen.Portrait || screen.currentOrientation == Screen.PortraitInverted) ? "portrait" : "landscape") +
-                                       __invertedString + "-background"
-            background: command.style.toolBarBackgroundImage!=""?
-                            command.style.toolBarBackgroundImage:
-                            oldBackImage
-        }
+    Component.onCompleted: {
+        var toolBar_backImage = pageStack.toolBar.children[4]
+        toolBar_backImage.source = ""
+        toolBar_backImage.height = 72
+        updateStyle()
     }
 }
