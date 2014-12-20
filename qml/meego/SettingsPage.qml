@@ -20,7 +20,8 @@ MyPage{
     }
 
     tools: CustomToolBarLayout{
-        ToolIcon{
+        MyToolIcon{
+            invertedTheme: command.style.toolBarInverted
             iconId: "toolbar-back"
             onClicked: {
                 pageStack.pop()
@@ -44,7 +45,7 @@ MyPage{
         width: parent.width
         clip: true
 
-        contentHeight: logo.height+textVersion.implicitHeight+checkForUpdateButton.height+760
+        contentHeight: logo.height+textVersion.implicitHeight+checkForUpdateButton.height+800
 
         Behavior on contentY{
             NumberAnimation{duration: 200}
@@ -332,7 +333,7 @@ MyPage{
             color: command.style.newsContentFontColor
         }
 
-        Button{
+        MyButton{
             id: checkForUpdateButton
 
             anchors.horizontalCenter: parent.horizontalCenter

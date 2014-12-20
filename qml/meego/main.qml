@@ -12,13 +12,17 @@ PageStackWindow
     initialPage: MainPage{}
 
     style: PageStackWindowStyle{
+        __invertedString: command.style.invertedTheme? "-inverted" : ""
         background: command.style.backgroundImage
         portraitBackground: command.style.backgroundImage
         landscapeBackground: command.style.backgroundImage
     }
 
     function updateStyle(){
-        theme.inverted = !command.style.invertedTheme
+        if(command.style.invertedTheme==true)
+            theme.inverted = false
+        else
+            theme.inverted = true
         main.children[0].opacity = command.style.backgroundImageOpacity
     }
 
@@ -40,6 +44,7 @@ PageStackWindow
     Connections{
         target: command
         onStyleChanged:{
+            console.log("fdsafds")
             updateStyle()
         }
     }

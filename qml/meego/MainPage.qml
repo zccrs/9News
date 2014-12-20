@@ -63,25 +63,25 @@ MyPage{
         id: compoentToolBarLayout
 
         CustomToolBarLayout{
-            ToolIcon{
+            MyToolIcon{
                 iconId: "toolbar-home"
                 onClicked: {
                     metroView.activation(0)
                 }
             }
-            ToolIcon{
+            MyToolIcon{
                 iconSource: command.getIconSource(command.style.toolBarInverted, "skin", "png")
                 onClicked: {
                     command.themeSwitch()
                 }
             }
-            ToolIcon{
+            MyToolIcon{
                 iconId: "toolbar-search"
                 onClicked: {
                     toolBarSwitch.toolBarComponent = compoentCommentToolBar
                 }
             }
-            ToolIcon{
+            MyToolIcon{
                 iconId: "toolbar-view-menu"
                 onClicked: {
                     mainMenu.open()
@@ -195,30 +195,30 @@ MyPage{
     }
 
     // define the menu
-     Menu {
+     MyMenu {
          id: mainMenu
          // define the items in the menu and corresponding actions
          content: MenuLayout {
-             MenuItem {
+             MyMenuItem {
                  text: qsTr("Personal Center")
                  onClicked: {
                      pageStack.push(Qt.resolvedUrl("./usercenter/UserCenterPage.qml"))
                  }
              }
-             MenuItem {
+             MyMenuItem {
                  text: qsTr("Refresh All News Categorys")
                  onClicked: {
                      updateAllNewsCategorys()
                      //更新所有分类的新闻
                  }
              }
-             MenuItem {
+             MyMenuItem {
                  text: qsTr("Settings")
                  onClicked: {
                      pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
                  }
              }
-             MenuItem {
+             MyMenuItem {
                  text: qsTr("About")
                  onClicked: {
                      pageStack.push(Qt.resolvedUrl("AboutPage.qml"))

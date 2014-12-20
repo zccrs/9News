@@ -24,29 +24,29 @@ MyPage{
     Component{
         id: compoentToolBarLayout
 
-        ToolBarLayout{
-            ToolIcon{
+        CustomToolBarLayout{
+            MyToolIcon{
                 iconId: "toolbar-back"
                 onClicked: {
                     pageStack.pop()
                 }
             }
 
-            ToolIcon{
+            MyToolIcon{
                 iconId: "toolbar-edit"
                 onClicked: {
                     toolBarSwitch.toolBarComponent = compoentCommentToolBar
                 }
             }
 
-            ToolIcon{
+            MyToolIcon{
                 iconSource: command.getIconSource(command.style.toolBarInverted, "comment")
                 onClicked: {
 
                 }
             }
 
-            ToolIcon{
+            MyToolIcon{
                 iconId: "toolbar-view-menu"
 
                 onClicked: {
@@ -66,7 +66,7 @@ MyPage{
             //记录是在哪个新闻页面点击的搜索
 
             invertedTheme: command.style.toolBarInverted
-            rightButtonIconId: "toolbar-search"
+            rightButtonIconId: command.getIconSource(invertedTheme, "message_send", "svg", true)
 
             onLeftButtonClick: {
                 main.pageStack.toolBar.height = toolBarHeight
@@ -106,24 +106,25 @@ MyPage{
         }
     }
 
-    Menu {
+    MyMenu {
         id: mainMenu
         // define the items in the menu and corresponding actions
         content: MenuLayout {
-            MenuItem {
+            MyMenuItem {
                 text: qsTr("Use open browser")
-                ToolButton{
+                MyToolButton{
                     text: "Copy url"
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: 10
+                    invertedTheme: mainMenu.invertedTheme
                 }
 
                 onClicked: {
 
                 }
             }
-            MenuItem {
+            MyMenuItem {
                 text: qsTr("Like")
                 onClicked: {
 

@@ -196,7 +196,7 @@ void NCommand::themeSwitch()
     setTheme(index);
 }
 
-void NCommand::setTheme(const QString& arg)
+bool NCommand::setTheme(const QString& arg)
 {
     if (m_theme != arg) {
         int i;
@@ -204,8 +204,10 @@ void NCommand::setTheme(const QString& arg)
             if(themeList[i].themeName == arg)
                 break;
         }
-        setTheme(i);
+        return setTheme(i);
     }
+
+    return true;
 }
 
 bool NCommand::setTheme(int index)
@@ -219,6 +221,7 @@ bool NCommand::setTheme(int index)
     updateStyle(settings);
     m_theme = info.themeName;
     utility->setValue("theme", m_theme);
+    qDebug()<<QString::fromUtf8("主题切换为：")<<m_theme;
     emit themeChanged(m_theme);
 
     return true;
@@ -300,7 +303,7 @@ void NCommand::updateStyle(const QSettings& settings)
     setStyleProperty("toUpIconWidth", settings, 50);
     //新闻列表中一键返回顶部的图标按钮的宽度
 #endif
-    setStyleProperty("invertedTheme", settings, false);
+    setStyleProperty("invertedTheme", settings, true);
     //是否是暗色主题
     setStyleProperty("backgroundImage", settings, "");
     //背景图片的地址，如果是本地文件要加上file:///前缀，并且最好使用绝对路径
@@ -350,8 +353,6 @@ void NCommand::updateStyle(const QSettings& settings)
     //控制对话框的invertedTheme
     setStyleProperty("scrollBarInverted", settings, true);
     //控制ScroolBar控件的Inverted
-    setStyleProperty("cuttingLineVisible", settings, true);
-    //是否显示分割线
 
     emit styleChanged(m_style);
 }

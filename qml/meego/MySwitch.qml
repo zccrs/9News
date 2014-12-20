@@ -6,7 +6,7 @@ Item{
     property string switch_text:""
     property alias checked: off_on.checked
     property alias textColor: switchText.color
-    property bool invertedTheme: command.style.switchInverted
+    property bool invertedTheme: command.style.switchInverted!=true
 
     signal trigger(bool checked)
 
@@ -30,6 +30,10 @@ Item{
         anchors.right: parent.right
         onCheckedChanged:{
             trigger(checked)
+        }
+
+        platformStyle: SwitchStyle{
+            inverted: invertedTheme
         }
     }
 }

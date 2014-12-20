@@ -7,9 +7,8 @@ MyPage{
     id: root
 
     tools: CustomToolBarLayout{
-        ToolIcon{
+        MyToolIcon{
             iconId: "toolbar-back"
-
             onClicked: {
                 pageStack.pop()
             }

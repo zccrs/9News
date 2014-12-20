@@ -84,7 +84,7 @@ public slots:
     void setCheckUpdate(bool arg);
     void setImagesSavePath(QString arg);
     void themeSwitch();
-    void setTheme(const QString& arg);
+    bool setTheme(const QString& arg);
     bool setTheme(int index);
     QVariantList themesName() const;
     QString readFile(const QUrl fileName) const;

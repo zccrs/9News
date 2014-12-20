@@ -8,7 +8,7 @@ import "../../utility"
 MyPage{
 
     tools: CustomToolBarLayout{
-        ToolIcon{
+        MyToolIcon{
             iconId: "toolbar-back"
             onClicked: {
                 pageStack.pop()

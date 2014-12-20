@@ -32,7 +32,7 @@ Item{
         source: command.style.toolBarBackgroundImage
     }
 
-    ToolIcon{
+    MyToolIcon{
         id: leftButton
 
         anchors.left: parent.left
@@ -61,12 +61,11 @@ Item{
             }
         }
     }
-    ToolIcon{
+    MyToolIcon{
         id:rightButton
 
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        iconSource: command.getIconSource(invertedTheme, "message_send", "svg", true)
 
         onClicked: {
             rightButtonClick()
@@ -76,6 +75,5 @@ Item{
     Component.onCompleted: {
         contentField.forceActiveFocus()
         contentField.openSoftwareInputPanel()
-        console.log(command.getIconSource(invertedTheme, "message_send", "svg", true))
     }
 }

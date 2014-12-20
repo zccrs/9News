@@ -11,7 +11,7 @@ Item {
     property alias value: sli.value
     property alias inverted: sli.inverted
     property alias textColor: sliderText.color
-    property bool invertedTheme: command.style.sliderInverted
+    property bool invertedTheme: command.style.sliderInverted!=true
 
     width: parent.width
     height: sliderText.height+20
@@ -32,5 +32,9 @@ Item {
         anchors.right: parent.right
         anchors.verticalCenter: sliderText.verticalCenter
         valueIndicatorVisible: true
+
+        platformStyle: SliderStyle{
+            inverted: invertedTheme
+        }
     }
 }
