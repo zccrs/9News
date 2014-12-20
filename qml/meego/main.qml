@@ -2,7 +2,6 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
 import com.nokia.extras 1.1
-import "inheritProperties.js" as Saa
 
 PageStackWindow
 {
@@ -44,7 +43,6 @@ PageStackWindow
     Connections{
         target: command
         onStyleChanged:{
-            console.log("fdsafds")
             updateStyle()
         }
     }

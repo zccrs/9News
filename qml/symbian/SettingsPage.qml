@@ -8,7 +8,7 @@ MyPage{
     id: root
 
     function selectPath(){
-        fileDialog.inverseTheme = command.invertedTheme
+        fileDialog.inverseTheme = command.style.invertedTheme
         fileDialog.chooseType = FilesDialog.FolderType
         fileDialog.chooseMode = FilesDialog.IndividualChoice
         fileDialog.exec(utility.homePath(), "", FilesDialog.Dirs|FilesDialog.Drives)

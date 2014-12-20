@@ -66,7 +66,7 @@ MyPage{
             //记录是在哪个新闻页面点击的搜索
 
             invertedTheme: command.style.toolBarInverted
-            rightButtonIconId: command.getIconSource(invertedTheme, "message_send", "svg", true)
+            rightButtonIconSource: command.getIconSource(invertedTheme, "message_send", "svg", true)
 
             onLeftButtonClick: {
                 main.pageStack.toolBar.height = toolBarHeight

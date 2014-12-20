@@ -1,6 +1,8 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QDir>
+#include <QDesktopWidget>
+#include <QApplication>
 #include "ncommand.h"
 #include "utility.h"
 
@@ -254,7 +256,13 @@ void NCommand::getCustomThemeList()
 #ifdef HARMATTAN_BOOSTER
     QDir dir("/opt/9News/theme_meego");
 #else
-    QDir dir("./theme_symbian");
+    QString theme_path;
+    if(qApp->desktop()->screen(0)->width()==640)
+        theme_path = "./theme_e6";
+    else
+        theme_path = "./theme_symbian";
+
+    QDir dir(theme_path);
 #endif
     dir.setFilter(QDir::Files);
     QStringList namesFilter;
