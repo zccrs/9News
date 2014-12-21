@@ -11,7 +11,7 @@ MyPage{
         fileDialog.inverseTheme = command.style.invertedTheme
         fileDialog.chooseType = FilesDialog.FolderType
         fileDialog.chooseMode = FilesDialog.IndividualChoice
-        fileDialog.exec(utility.homePath(), "", FilesDialog.Dirs|FilesDialog.Drives)
+        fileDialog.exec(utility.homePath(), FilesDialog.Dirs|FilesDialog.Drives)
         if(fileDialog.selectionCount>0){
             return fileDialog.firstSelection()
         }
@@ -286,7 +286,52 @@ MyPage{
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
+        Text{
+            id: selectionListItem
 
+            color: command.style.newsContentFontColor
+            anchors.top: cut_off4.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 10
+
+            SelectionDialog{
+                id: selectionDialog
+
+                selectedIndex: -1
+                model: ListModel{
+                    Component.onCompleted: {
+                        var theme_list = command.getThemeList()
+                        for(var i in theme_list){
+                            var theme_name = theme_list[i]
+                            append({"name": theme_name})
+                            if(theme_name == command.theme){
+                                selectionDialog.selectedIndex = i
+                            }
+                        }
+                    }
+                }
+
+                onSelectedIndexChanged: {
+                    var temp_obj = selectionDialog.model.get(selectionDialog.selectedIndex)
+                    if(temp_obj)
+                        selectionListItem.text = qsTr("Theme: ")+temp_obj.name
+                    else
+                        selectionListItem.text = qsTr("Theme: ")
+
+                    command.theme = temp_obj.name
+                }
+            }
+        }
+        MouseArea{
+            anchors.top: cut_off4.bottom
+            anchors.bottom: selectionListItem.bottom
+            width: parent.width
+
+            onClicked: {
+                selectionDialog.open()
+            }
+        }
 
         Text{
             id:my_signature
@@ -304,7 +349,7 @@ MyPage{
             placeholderText: command.signature
             anchors.left: my_signature.right
             anchors.right: parent.right
-            anchors.top: cut_off4.bottom
+            anchors.top: selectionListItem.bottom
             anchors.margins: 10
 
 
@@ -313,7 +358,7 @@ MyPage{
         }
 
         CuttingLine{
-            id:cut_off5
+            id: cut_off5
 
             textColor: command.style.inactiveFontColor
 
@@ -323,21 +368,11 @@ MyPage{
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        Text{
-            id:cacheSize
-
-            anchors.top: cut_off5.top
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            font.pixelSize: 22
-            color: command.style.newsContentFontColor
-        }
-
         MyButton{
             id: checkForUpdateButton
 
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: cacheSize.bottom
+            anchors.top: cut_off5.bottom
             anchors.topMargin: 10
             text: qsTr("Check for updates")
             width: parent.width*0.6

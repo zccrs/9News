@@ -224,6 +224,7 @@ ListView{
             }
         }
     }*/
+
     PullDownMenu{
         id: pullDownMenu
 
@@ -277,6 +278,7 @@ ListView{
         loadNewsList()//加载新闻
         contentY = listContentY
     }
+
     Component.onDestruction: {//当组件被销毁时
         parentListModel.setProperty(index, "listContentY", contentY)
         //设置model中存放的属于自己的属性
@@ -284,4 +286,12 @@ ListView{
         //将允许动画设置为false
     }
 
+    onMovementStarted: {
+        if(command.fullscreenMode)
+            main.showToolBar = false
+    }
+    onMovementEnded: {
+        if(command.fullscreenMode)
+            main.showToolBar = true
+    }
 }

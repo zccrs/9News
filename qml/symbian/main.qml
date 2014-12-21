@@ -19,6 +19,13 @@ PageStackWindow{
         source: command.style.backgroundImage
         sourceSize.width: width
         opacity: command.style.backgroundImageOpacity
+
+        Rectangle{//图片遮罩
+            anchors.fill: parent
+            color: command.style.backgroundImageMaskColor
+            opacity: command.style.backgroundImageMaskOpacity
+            visible: command.style.showBackgroundImageMask
+        }
     }
 
     Label {

@@ -11,7 +11,7 @@ MyPage{
         fileDialog.inverseTheme = command.style.invertedTheme
         fileDialog.chooseType = FilesDialog.FolderType
         fileDialog.chooseMode = FilesDialog.IndividualChoice
-        fileDialog.exec(utility.homePath(), "", FilesDialog.Dirs|FilesDialog.Drives)
+        fileDialog.exec(utility.homePath(), FilesDialog.Dirs|FilesDialog.Drives)
         if(fileDialog.selectionCount>0){
             return fileDialog.firstSelection()
         }
@@ -48,7 +48,7 @@ MyPage{
         width: parent.width
         clip: true
 
-        contentHeight: logo.height+textVersion.implicitHeight+checkForUpdateButton.height+760
+        contentHeight: logo.height+textVersion.implicitHeight+checkForUpdateButton.height+860
 
         Behavior on contentY{
             NumberAnimation{duration: 200}
@@ -141,7 +141,6 @@ MyPage{
             id:auto_updata_app
 
             textColor: command.style.newsContentFontColor
-
             checked: command.checkUpdate
             anchors.top: full_screen.bottom
             anchors.left: parent.left
@@ -158,7 +157,6 @@ MyPage{
             id:cut_off
 
             textColor: command.style.inactiveFontColor
-
             anchors.top: auto_updata_app.bottom
             anchors.topMargin: 10
             width: parent.width-20
@@ -211,7 +209,6 @@ MyPage{
             id: contentFontSize
 
             value: command.newsContentFontSize
-
             anchors.top: textReference2.bottom
             anchors.topMargin: 20
             anchors.left: parent.left
@@ -231,7 +228,6 @@ MyPage{
 
             textColor: command.style.inactiveFontColor
             annotation: qsTr("Images save path")
-
             anchors.top: contentFontSize.bottom
             anchors.topMargin: 10
             width: parent.width-20
@@ -263,21 +259,8 @@ MyPage{
             }
         }
 
-        /*CuttingLine{
-            id:cut_off3
-
-            textColor: command.style.inactiveFontColor
-            annotation: qsTr("Background Image path")
-
-            anchors.top: imageSavePath.bottom
-            anchors.topMargin: 10
-            width: parent.width-20
-            anchors.horizontalCenter: parent.horizontalCenter
-        }*/
-
-
         CuttingLine{
-            id:cut_off4
+            id: cut_off4
 
             textColor: command.style.inactiveFontColor
             annotation: qsTr("Preferences settings")
@@ -288,10 +271,57 @@ MyPage{
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
+        Text{
+            id: selectionListItem
 
+            color: command.style.newsContentFontColor
+            anchors.top: cut_off4.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 10
+
+            SelectionDialog{
+                id: selectionDialog
+
+                platformInverted: command.style.dialogInverted
+                selectedIndex: -1
+                model: ListModel{
+                    Component.onCompleted: {
+                        var theme_list = command.getThemeList()
+                        for(var i in theme_list){
+                            var theme_name = theme_list[i]
+                            append({"name": theme_name})
+                            if(theme_name == command.theme){
+                                selectionDialog.selectedIndex = i
+                            }
+                        }
+                    }
+                }
+
+                onSelectedIndexChanged: {
+                    var temp_obj = selectionDialog.model.get(selectionDialog.selectedIndex)
+                    if(temp_obj)
+                        selectionListItem.text = qsTr("Theme: ")+temp_obj.name
+                    else
+                        selectionListItem.text = qsTr("Theme: ")
+
+                    command.theme = temp_obj.name
+                }
+            }
+        }
+
+        MouseArea{
+            anchors.top: cut_off4.bottom
+            anchors.bottom: selectionListItem.bottom
+            width: parent.width
+
+            onClicked: {
+                selectionDialog.open()
+            }
+        }
 
         Text{
-            id:my_signature
+            id: my_signature
 
             text: qsTr("Signature")
             anchors.left: parent.left
@@ -300,15 +330,16 @@ MyPage{
             color: command.style.newsContentFontColor
             anchors.verticalCenter: signature_input.verticalCenter
         }
+
         TextField{
-            id:signature_input
+            id: signature_input
 
             platformInverted: command.style.textInputInverted
             placeholderText: command.signature
             anchors.left: my_signature.right
             anchors.right: parent.right
-            anchors.top: cut_off4.bottom
-            anchors.margins: 10
+            anchors.top: selectionListItem.bottom
+            anchors.margins: 20
 
 
             KeyNavigation.up: contentFontSize
@@ -316,24 +347,13 @@ MyPage{
         }
 
         CuttingLine{
-            id:cut_off5
+            id: cut_off5
 
             textColor: command.style.inactiveFontColor
-
             anchors.top: signature_input.bottom
             anchors.topMargin: 20
             width: parent.width-20
             anchors.horizontalCenter: parent.horizontalCenter
-        }
-
-        Text{
-            id:cacheSize
-
-            anchors.top: cut_off5.top
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            font.pixelSize: 22
-            color: command.style.newsContentFontColor
         }
 
         Button{
@@ -341,7 +361,7 @@ MyPage{
 
             platformInverted: command.style.buttonInverted
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: cacheSize.bottom
+            anchors.top: cut_off5.bottom
             anchors.topMargin: 10
             text: qsTr("Check for updates")
             width: parent.width*0.6

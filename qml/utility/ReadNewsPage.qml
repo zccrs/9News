@@ -146,6 +146,15 @@ Item{
             id: mymodel
         }
         delegate: newsContentListDelegate
+
+        onMovementStarted: {
+            if(command.fullscreenMode)
+                main.showToolBar = false
+        }
+        onMovementEnded: {
+            if(command.fullscreenMode)
+                main.showToolBar = true
+        }
     }
 
     ToTopIcon{
@@ -196,13 +205,14 @@ Item{
         MyImage{
             id: myimage
 
-            source: "qrc:/images/loading.png"
+            source: command.noPicturesMode?
+                        command.style.defaultImage:command.style.loadingImage
             width: Math.min(newsContentList.width, defaultSize.width)
             height: width/defaultSize.width*defaultSize.height
             x: newsContentList.width/2-width/2
             smooth: true
             onLoadReady: {
-                if(source!="qrc:/images/loading.png"){
+                if(source!=command.style.loadingImage){
                     mouse.enabled = true
                 }
             }
@@ -223,7 +233,8 @@ Item{
             }
 
             Component.onCompleted: {
-                source = componentData
+                if(!command.noPicturesMode)
+                    source = componentData
             }
         }
     }

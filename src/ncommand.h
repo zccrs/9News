@@ -86,7 +86,7 @@ public slots:
     void themeSwitch();
     bool setTheme(const QString& arg);
     bool setTheme(int index);
-    QVariantList themesName() const;
+    QVariantList getThemeList() const;
     QString readFile(const QUrl fileName) const;
 
 private:

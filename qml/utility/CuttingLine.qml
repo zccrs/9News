@@ -13,8 +13,6 @@ Item{
         anchors.leftMargin: annotation==""?0:10
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        height: 2
-        sourceSize.width: width
         source: "qrc:/images/cuttingLine.png"
     }
 

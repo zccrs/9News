@@ -229,7 +229,7 @@ bool NCommand::setTheme(int index)
     return true;
 }
 
-QVariantList NCommand::themesName() const
+QVariantList NCommand::getThemeList() const
 {
     QVariantList list;
     foreach(ThemeInfo info, themeList){
@@ -317,19 +317,19 @@ void NCommand::updateStyle(const QSettings& settings)
     //背景图片的地址，如果是本地文件要加上file:///前缀，并且最好使用绝对路径
     setStyleProperty("backgroundImageOpacity", settings, 1);
     //设置背景图片的不透明度（值越小透明度越高）
-    setStyleProperty("newsTitleFontColor", settings, "#000");
+    setStyleProperty("newsTitleFontColor", settings, QColor("#000"));
     //标题文字颜色
-    setStyleProperty("newsContentFontColor", settings, "#000");
+    setStyleProperty("newsContentFontColor", settings, QColor("#000"));
     //新闻内容字体颜色
-    setStyleProperty("newsInfoFontColor", settings, "#888");
+    setStyleProperty("newsInfoFontColor", settings, QColor("#888"));
     //新闻信息字体的颜色（新闻标题下面那行小字）
-    setStyleProperty("oldNewsTitleFontColor", settings, "#666");
+    setStyleProperty("oldNewsTitleFontColor", settings, QColor("#666"));
     //已经阅读过的新闻的标题颜色
-    setStyleProperty("metroActiveTitleFontColor", settings, "#000");
+    setStyleProperty("metroActiveTitleFontColor", settings, QColor("#000"));
     //metro活跃页大标题的字体颜色
-    setStyleProperty("metroInactiveTitleFontColor", settings, "#888");
+    setStyleProperty("metroInactiveTitleFontColor", settings, QColor("#888"));
     //metro非活跃页大标题的字体颜色
-    setStyleProperty("inactiveFontColor", settings, "#888");
+    setStyleProperty("inactiveFontColor", settings, QColor("#888"));
     //此颜色值用于那些在Page中不是主教，但必须要显示的文本的颜色，例如设置界面用来分割每一栏设置项的标示文本
     setStyleProperty("toolBarOpacity", settings, 1);
     //控制工具栏背景图的不透明度
@@ -361,6 +361,16 @@ void NCommand::updateStyle(const QSettings& settings)
     //控制对话框的invertedTheme
     setStyleProperty("scrollBarInverted", settings, true);
     //控制ScroolBar控件的Inverted
+    setStyleProperty("defaultImage", settings, "qrc:/images/loading.png");
+    //在无图模式下默认显示的图片
+    setStyleProperty("loadingImage", settings, "qrc:/images/loading.png");
+    //在图片加载完成之前显示的加载指示器
+    setStyleProperty("showBackgroundImageMask", settings, false);
+    //记录背景图上的遮罩是否开启
+    setStyleProperty("backgroundImageMaskColor", settings, QColor("balck"));
+    //图片遮罩的背景颜色
+    setStyleProperty("backgroundImageMaskOpacity", settings, 0.5);
+    //背景图遮罩的不透明度
 
     emit styleChanged(m_style);
 }

@@ -11,7 +11,7 @@ PageStackWindow
     initialPage: MainPage{}
 
     style: PageStackWindowStyle{
-        __invertedString: command.style.invertedTheme? "-inverted" : ""
+        inverted: command.style.invertedTheme==true
         background: command.style.backgroundImage
         portraitBackground: command.style.backgroundImage
         landscapeBackground: command.style.backgroundImage
@@ -23,6 +23,14 @@ PageStackWindow
         else
             theme.inverted = true
         main.children[0].opacity = command.style.backgroundImageOpacity
+    }
+
+    Rectangle{//图片遮罩
+        parent: main.children[2]
+        anchors.fill: parent
+        color: command.style.backgroundImageMaskColor
+        opacity: command.style.backgroundImageMaskOpacity
+        visible: command.style.showBackgroundImageMask
     }
 
     InfoBanner {
