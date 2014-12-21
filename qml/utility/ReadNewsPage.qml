@@ -205,8 +205,8 @@ Item{
         MyImage{
             id: myimage
 
-            source: command.noPicturesMode?
-                        command.style.defaultImage:command.style.loadingImage
+            source: command.showNewsImage?
+                        command.style.loadingImage:command.style.defaultImage
             width: Math.min(newsContentList.width, defaultSize.width)
             height: width/defaultSize.width*defaultSize.height
             x: newsContentList.width/2-width/2
@@ -233,7 +233,7 @@ Item{
             }
 
             Component.onCompleted: {
-                if(!command.noPicturesMode)
+                if(command.showNewsImage)//如果可以显示图片
                     source = componentData
             }
         }

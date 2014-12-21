@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QDesktopWidget>
 #include <QApplication>
+#include <QSystemDeviceInfo>
 #include "ncommand.h"
 #include "utility.h"
 
@@ -39,6 +40,16 @@ NCommand::NCommand(QObject *parent) :
     m_fullscreenMode  = utility->value("fullscreenMode", false).toBool();
     m_checkUpdate  = utility->value("checkUpdate", true).toBool();
     m_imagesSavePath  = utility->value("imagesSavePath", "").toString();
+
+    connect(&networkInfo,
+            SIGNAL(networkStatusChanged(QSystemNetworkInfo::NetworkMode,QSystemNetworkInfo::NetworkStatus)),
+            SLOT(onNetworkStatusChanged(QSystemNetworkInfo::NetworkMode,QSystemNetworkInfo::NetworkStatus)));
+
+    connect(&networkInfo, SIGNAL(networkSignalStrengthChanged(QSystemNetworkInfo::NetworkMode,int)),
+            SLOT(onNetworkSignalStrengthChanged(QSystemNetworkInfo::NetworkMode,int)));
+
+    connect(&networkInfo, SIGNAL(networkModeChanged(QSystemNetworkInfo::NetworkMode)),
+            SLOT(onNetworkModeChanged(QSystemNetworkInfo::NetworkMode)));
 }
 
 NCommand::SystemType NCommand::systemTye() const
@@ -100,6 +111,24 @@ QString NCommand::theme() const
     return m_theme;
 }
 
+QString NCommand::phoneModel() const
+{
+    QSystemDeviceInfo info;
+    return info.model();
+}
+
+bool NCommand::showNewsImage()
+{
+    if(m_noPicturesMode){//如果是无图模式
+        return false;
+    }else if(m_wifiMode){
+        //如果是仅wifi显示图片模式
+        return networkInfo.currentMode()==QSystemNetworkInfo::WlanMode;
+    }
+
+    return true;
+}
+
 QString NCommand::fromTime_t(uint seconds) const
 {
     return QDateTime::fromTime_t(seconds).toString(Qt::SystemLocaleDate);
@@ -144,6 +173,7 @@ void NCommand::setNoPicturesMode(bool arg)
         m_noPicturesMode = arg;
         utility->setValue("noPicturesMode", arg);
         emit noPicturesModeChanged(arg);
+        emit showNewsImageChanged();
     }
 }
 
@@ -153,6 +183,7 @@ void NCommand::setWifiMode(bool arg)
         m_wifiMode = arg;
         utility->setValue("wifiMode", arg);
         emit wifiModeChanged(arg);
+        emit showNewsImageChanged();
     }
 }
 
@@ -249,6 +280,22 @@ QString NCommand::readFile(const QUrl fileName) const
     }
 
     return "";
+}
+
+void NCommand::onNetworkStatusChanged(QSystemNetworkInfo::NetworkMode mode,
+                                      QSystemNetworkInfo::NetworkStatus status)
+{
+    //qDebug()<<mode<<status;
+}
+
+void NCommand::onNetworkSignalStrengthChanged(QSystemNetworkInfo::NetworkMode mode, int strength)
+{
+    //qDebug()<<mode<<strength;
+}
+
+void NCommand::onNetworkModeChanged(QSystemNetworkInfo::NetworkMode mode)
+{
+    emit showNewsImageChanged();
 }
 
 void NCommand::getCustomThemeList()
@@ -367,7 +414,7 @@ void NCommand::updateStyle(const QSettings& settings)
     //在图片加载完成之前显示的加载指示器
     setStyleProperty("showBackgroundImageMask", settings, false);
     //记录背景图上的遮罩是否开启
-    setStyleProperty("backgroundImageMaskColor", settings, QColor("balck"));
+    setStyleProperty("backgroundImageMaskColor", settings, QColor("black"));
     //图片遮罩的背景颜色
     setStyleProperty("backgroundImageMaskOpacity", settings, 0.5);
     //背景图遮罩的不透明度

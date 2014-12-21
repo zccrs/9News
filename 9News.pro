@@ -1,5 +1,7 @@
 TARGET = 9News
 
+CONFIG += mobility
+MOBILITY += systeminfo
 # Add more folders to ship with the application, here
 
 # Additional import path used to resolve QML modules in Creator's code model

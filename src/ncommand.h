@@ -5,6 +5,8 @@
 #include <QVariant>
 #include <QUrl>
 #include <QSettings>
+#include <QSystemNetworkInfo>
+using namespace QtMobility;
 
 class Utility;
 class NCommand : public QObject
@@ -32,6 +34,9 @@ class NCommand : public QObject
     //下载图片的保存地址
     Q_PROPERTY(QString theme READ theme WRITE setTheme NOTIFY themeChanged)
     //记录当前主题
+    Q_PROPERTY(QString phoneModel READ phoneModel)//手机型号RM-xxx
+    Q_PROPERTY(bool showNewsImage READ showNewsImage NOTIFY showNewsImageChanged FINAL)
+    //记录是否要显示新闻图片（标题图和内容图）
 
     Q_ENUMS(SystemType)
 
@@ -54,6 +59,8 @@ public:
     bool checkUpdate() const;
     QString imagesSavePath() const;
     QString theme() const;
+    QString phoneModel() const;
+    bool showNewsImage();
 
 signals:
     void getNews(int newsId, const QString& title);
@@ -69,6 +76,7 @@ signals:
     void imagesSavePathChanged(QString arg);
     void styleChanged(QVariantMap arg);
     void themeChanged(QString arg);
+    void showNewsImageChanged();
 
 public slots:
     QString fromTime_t ( uint seconds ) const;
@@ -89,6 +97,11 @@ public slots:
     QVariantList getThemeList() const;
     QString readFile(const QUrl fileName) const;
 
+private slots:
+    void onNetworkStatusChanged( QSystemNetworkInfo::NetworkMode mode,
+                                 QSystemNetworkInfo::NetworkStatus status );
+    void onNetworkSignalStrengthChanged ( QSystemNetworkInfo::NetworkMode mode, int strength );
+    void onNetworkModeChanged( QSystemNetworkInfo::NetworkMode mode );
 private:
     struct ThemeInfo{
         QString filePath;
@@ -114,6 +127,8 @@ private:
     QString m_theme;
     QList<ThemeInfo> themeList;
     int currentThemeIndex;//记录当前使用的是第几个主题
+    QSystemNetworkInfo networkInfo;
+    bool m_showNewsImage;
 
     void getCustomThemeList();
     void setStyleProperty(const QString &name, const QSettings &settings, const QVariant defaultValue);

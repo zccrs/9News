@@ -2,6 +2,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import com.nokia.extras 1.1
+import QtMobility.systeminfo 1.2
 
 PageStackWindow{
     id:main

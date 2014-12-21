@@ -77,7 +77,7 @@ Item{
         Image{
             id: titleImage
 
-            source: command.noPicturesMode?command.style.defaultImage:imageUrl
+            source: command.showNewsImage?imageUrl:command.style.defaultImage
             sourceSize{
                 width: titleImage.width
                 height: titleImage.height
@@ -112,7 +112,7 @@ Item{
             spacing: 5
             delegate: Image{
                 id: listImage
-                source: command.noPicturesMode?command.style.defaultImage:imageUrl
+                source: command.showNewsImage?imageUrl:command.style.defaultImage
                 sourceSize.height: parent.height
 
                 NumberAnimation on y {
