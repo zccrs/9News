@@ -319,7 +319,9 @@ void NCommand::getCustomThemeList()
     foreach(QFileInfo info, dir.entryInfoList()){
         ThemeInfo theme_info;
         theme_info.filePath = info.absoluteFilePath();
-        theme_info.themeName = info.fileName().replace(".ini", "");
+        QString default_themeName = info.fileName().replace(".ini", "");
+        QSettings settings(theme_info.filePath, QSettings::IniFormat);
+        theme_info.themeName = settings.value("themeName", default_themeName).toString();
         themeList<<theme_info;
     }
 }
@@ -408,7 +410,7 @@ void NCommand::updateStyle(const QSettings& settings)
     //控制对话框的invertedTheme
     setStyleProperty("scrollBarInverted", settings, true);
     //控制ScroolBar控件的Inverted
-    setStyleProperty("defaultImage", settings, "qrc:/images/loading.png");
+    setStyleProperty("defaultImage", settings, "qrc:/images/defaultImage.svg");
     //在无图模式下默认显示的图片
     setStyleProperty("loadingImage", settings, "qrc:/images/loading.png");
     //在图片加载完成之前显示的加载指示器

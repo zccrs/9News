@@ -101,7 +101,7 @@ MyPage{
                  }
         }
 
-        ScrollDecorator {
+        MyScrollDecorator {
             flickableItem: newsPage.contentList
         }
     }

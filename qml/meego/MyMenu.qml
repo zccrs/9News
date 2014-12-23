@@ -6,6 +6,5 @@ Menu{
 
     platformStyle: MenuStyle{
         inverted: invertedTheme
-        //property url background: "image://theme/meegotouch-menu-background"+(invertedTheme? "-inverted" : "")
     }
 }

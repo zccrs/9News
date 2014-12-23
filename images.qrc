@@ -13,5 +13,8 @@
         <file>images/logo.svg</file>
         <file>images/up.svg</file>
         <file>images/cuttingLine.png</file>
+        <file>images/defaultImage.svg</file>
+        <file>images/indicator.svg</file>
+        <file>images/indicator_inverse.svg</file>
     </qresource>
 </RCC>

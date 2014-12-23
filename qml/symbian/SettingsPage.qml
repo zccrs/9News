@@ -278,11 +278,15 @@ MyPage{
             anchors.top: cut_off4.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.margins: 10
+            anchors.leftMargin: 10
+            anchors.rightMargin: 10
+            anchors.topMargin: 20
+            font.pixelSize: 22
 
             SelectionDialog{
                 id: selectionDialog
 
+                titleText: qsTr("Please select a theme")
                 platformInverted: command.style.dialogInverted
                 selectedIndex: -1
                 model: ListModel{
@@ -306,6 +310,15 @@ MyPage{
                         selectionListItem.text = qsTr("Theme: ")
 
                     command.theme = temp_obj.name
+                }
+            }
+
+            Image {
+                id: indicator
+                source: command.getIconSource(command.style.dialogInverted, "indicator", "svg", true)
+                anchors {
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
                 }
             }
         }
@@ -339,7 +352,9 @@ MyPage{
             anchors.left: my_signature.right
             anchors.right: parent.right
             anchors.top: selectionListItem.bottom
-            anchors.margins: 20
+            anchors.leftMargin: 10
+            anchors.rightMargin: 10
+            anchors.topMargin: 20
 
 
             KeyNavigation.up: contentFontSize

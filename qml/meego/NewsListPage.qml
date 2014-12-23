@@ -20,7 +20,7 @@ NewsList{
              }
     }
 
-    ScrollDecorator {
+    MyScrollDecorator {
         flickableItem: root
     }
 }

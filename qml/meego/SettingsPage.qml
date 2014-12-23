@@ -45,7 +45,7 @@ MyPage{
         width: parent.width
         clip: true
 
-        contentHeight: logo.height+textVersion.implicitHeight+checkForUpdateButton.height+800
+        contentHeight: logo.height+textVersion.implicitHeight+checkForUpdateButton.height+860
 
         Behavior on contentY{
             NumberAnimation{duration: 200}
@@ -293,9 +293,12 @@ MyPage{
             anchors.top: cut_off4.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.margins: 10
+            anchors.leftMargin: 10
+            anchors.rightMargin: 10
+            anchors.topMargin: 20
+            font.pixelSize: 22
 
-            SelectionDialog{
+            MySelectionDialog{
                 id: selectionDialog
 
                 selectedIndex: -1
@@ -320,6 +323,15 @@ MyPage{
                         selectionListItem.text = qsTr("Theme: ")
 
                     command.theme = temp_obj.name
+                }
+            }
+
+            Image {
+                id: indicator
+                source: command.getIconSource(command.style.dialogInverted, "indicator", "svg", true)
+                anchors {
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
                 }
             }
         }
@@ -350,8 +362,9 @@ MyPage{
             anchors.left: my_signature.right
             anchors.right: parent.right
             anchors.top: selectionListItem.bottom
-            anchors.margins: 10
-
+            anchors.leftMargin: 10
+            anchors.rightMargin: 10
+            anchors.topMargin: 20
 
             KeyNavigation.up: contentFontSize
             KeyNavigation.down: show_image_off_on
