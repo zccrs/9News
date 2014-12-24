@@ -175,7 +175,7 @@ ListView{
 
         Item{
             width: newsList.width
-            height: textLoadMoreNews.implicitHeight+20
+            height: textLoadMoreNews.implicitHeight+40
             Text{
                 id: textLoadMoreNews
                 text: qsTr("load more...")
@@ -183,17 +183,16 @@ ListView{
                 visible: newsList.count>1
                 color: newsList.isBusy?command.style.inactiveFontColor:command.style.newsTitleFontColor
                 font.pixelSize: command.newsTitleFontSize
-
-                MouseArea{
-                    anchors.fill: parent
-                    enabled: !newsList.isBusy
-                    onClicked: {
-                        utility.consoleLog("将要增加新闻")
-                        newsList.addMoreNews()//增加新闻
-                    }
-                }
             }
             //newsList对象在MainPage中，因为在compoentFooter中无法引用的root对象，所以这也是不得已而为之
+            MouseArea{
+                anchors.fill: parent
+                enabled: !newsList.isBusy
+                onClicked: {
+                    utility.consoleLog("将要增加新闻")
+                    newsList.addMoreNews()//增加新闻
+                }
+            }
         }
     }
 

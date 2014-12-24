@@ -1,6 +1,6 @@
 .pragma library
 
-var loginUrl = ""
+var loginUrl = "http://www.9smart.cn/member/login"
 //用户登录url
 var newsCategorysUrl = "http://api.9smart.cn/news/categorys"
 //获取新闻分类的url
@@ -41,4 +41,8 @@ function getUrlProperty(url, name){
     var reg = new RegExp(name+"=[^&]*")
     var value = reg.exec(url)
     return value.replace(name+"=", "")
+}
+function getCommentUrl(aid){
+    //返回获取新闻id为aid的新闻的评论
+    return "http://api.9smart.cn/comments/"+aid+"?type=article"//article
 }

@@ -86,6 +86,7 @@ Window {
         width: parent.width
         anchors.top: statusBar.bottom
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: inputContext.customSoftwareInputPanelVisible?72:0
 
         // content area
         Item {
@@ -130,8 +131,8 @@ Window {
         ToolBar {
             id: toolBar
             anchors.bottom: parent.bottom
-            privateVisibility: (inputContext.softwareInputPanelVisible==true || inputContext.customSoftwareInputPanelVisible == true)
-            ? ToolBarVisibility.HiddenImmediately : (window.showToolBar ? ToolBarVisibility.Visible : ToolBarVisibility.Hidden)
+            privateVisibility: window.showToolBar ? ToolBarVisibility.Visible : ToolBarVisibility.Hidden//(inputContext.softwareInputPanelVisible==true || inputContext.customSoftwareInputPanelVisible == true)
+            //? ToolBarVisibility.HiddenImmediately : (window.showToolBar ? ToolBarVisibility.Visible : ToolBarVisibility.Hidden)
         }
     }
 

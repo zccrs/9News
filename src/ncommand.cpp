@@ -346,6 +346,8 @@ void NCommand::updateStyle(const QSettings& settings)
     //新闻标题标题下面的横排图片的ListView的高度
     setStyleProperty("toUpIconWidth", settings, 80);
     //新闻列表中一键返回顶部的图标按钮的宽度
+    setStyleProperty("commentAvatarWidth", settings, 60);
+    //评论列表的用户头像大小
 #else
     setStyleProperty("metroTitleFontPixelSize", settings, 28);
     //Metro界面上方大标题的最大字体大小
@@ -359,6 +361,8 @@ void NCommand::updateStyle(const QSettings& settings)
     //新闻标题标题下面的横排图片的ListView的高度
     setStyleProperty("toUpIconWidth", settings, 50);
     //新闻列表中一键返回顶部的图标按钮的宽度
+    setStyleProperty("commentAvatarWidth", settings, 50);
+    //评论列表的用户头像大小
 #endif
     setStyleProperty("invertedTheme", settings, true);
     //是否是暗色主题

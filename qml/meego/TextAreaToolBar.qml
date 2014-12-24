@@ -47,19 +47,11 @@ Item{
     TextArea{
         id: contentField
 
-        placeholderText: "请输入评论内容"
+        placeholderText: qsTr("Plase input text")
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: rightButton.left
         anchors.left: leftButton.right
         anchors.margins: 10
-
-        onActiveFocusChanged: {
-            if(activeFocus){
-                openSoftwareInputPanel()
-            }else{
-                closeSoftwareInputPanel()
-            }
-        }
     }
     MyToolIcon{
         id:rightButton
@@ -74,6 +66,5 @@ Item{
 
     Component.onCompleted: {
         contentField.forceActiveFocus()
-        contentField.openSoftwareInputPanel()
     }
 }

@@ -133,6 +133,7 @@ Item{
         anchors.fill: parent
         orientation: ListView.Horizontal
         snapMode :ListView.SnapOneItem
+        cacheBuffer: count*width
 
         model: ListModel{
             id:mymodel

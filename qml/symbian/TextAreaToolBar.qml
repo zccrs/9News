@@ -49,12 +49,21 @@ Item{
         id: contentField
 
         platformInverted: invertedTheme
-        placeholderText: "请输入评论内容"
+        placeholderText: qsTr("Plase input text")
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: rightButton.left
         anchors.left: leftButton.right
         anchors.margins: 10
 
+        onActiveFocusChanged: {
+            if(activeFocus){
+                console.log("fdsafd2222")
+                openSoftwareInputPanel()
+            }else{
+                closeSoftwareInputPanel()
+                console.log("fdsafd")
+            }
+        }
     }
     ToolButton{
         id:rightButton
@@ -72,6 +81,9 @@ Item{
 
     Component.onCompleted: {
         contentField.forceActiveFocus()
-        contentField.openSoftwareInputPanel()
+    }
+
+    Component.onDestruction: {
+        contentField.closeSoftwareInputPanel()
     }
 }

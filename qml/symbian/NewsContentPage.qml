@@ -52,7 +52,8 @@ MyPage{
                 iconSource: command.getIconSource(platformInverted, "comment")
                 platformInverted: command.style.toolBarInverted
                 onClicked: {
-
+                    pageStack.push(Qt.resolvedUrl("./comment/CommentPage.qml"),
+                                   {"newsId": newsId})
                 }
             }
 
@@ -71,22 +72,18 @@ MyPage{
 
         TextAreaToolBar{
             property string oldText: ""
-            //记录上次输入的搜索内容
-            property int currentNewsPage: 0
-            //记录是在哪个新闻页面点击的搜索
+            //记录上次输入的内容
 
             invertedTheme: command.style.toolBarInverted
-            rightButtonIconSource: "toolbar-search"
 
             onLeftButtonClick: {
                 main.pageStack.toolBar.height = toolBarHeight
                 //还原状态栏的高度
-                textArea.closeSoftwareInputPanel()
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
             }
             onRightButtonClick: {
                 if(textAreaContent=="")
-                    return//如果搜索内容没有变化或者为空则不搜索
+                    return//如果内容没有变化或者为空则不进行下一步
             }
         }
     }

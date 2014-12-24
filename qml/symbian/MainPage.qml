@@ -121,7 +121,6 @@ MyPage{
             onLeftButtonClick: {
                 main.pageStack.toolBar.height = toolBarHeight
                 //还原状态栏的高度
-                textArea.closeSoftwareInputPanel()
                 metroView.pageInteractive = true
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
                 if(metroView.getTitle(metroView.currentPageIndex)==qsTr("Searched result")){
@@ -143,7 +142,6 @@ MyPage{
                     metroView.addItem(qsTr("Searched result"), "", textAreaContent)
                     metroView.activation(metroView.pageCount-1)
                     metroView.pageInteractive = false
-                    textArea.closeSoftwareInputPanel()
                 }
             }
 
@@ -173,7 +171,7 @@ MyPage{
         id: metroView
 
         anchors.fill: parent
-        titleSpacing: 25
+        titleSpacing: 15
         titleMaxFontSize: command.style.metroTitleFontPixelSize
 
         function addItem(title, category, keyword, order){
