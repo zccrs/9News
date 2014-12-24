@@ -11,8 +11,9 @@ MyPageStackWindow
     initialPage: MainPage{}
 
     style: PageStackWindowStyle{
-        inverted: command.style.invertedTheme==true
-        background: command.style.backgroundImage
+        inverted: command.style.invertedTheme!=true
+        background: command.style.backgroundImage!=""?command.style.backgroundImage:
+                        "image://theme/meegotouch-applicationpage-background"+__invertedString
         portraitBackground: command.style.backgroundImage
         landscapeBackground: command.style.backgroundImage
     }
@@ -22,6 +23,7 @@ MyPageStackWindow
             theme.inverted = false
         else
             theme.inverted = true
+
         main.children[0].opacity = command.style.backgroundImageOpacity
     }
 

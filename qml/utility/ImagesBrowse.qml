@@ -7,7 +7,7 @@ Item{
 
     property url imageUrl;
     property alias currentImage: imagePreview
-
+    property alias flickable: imageFlickable
     signal close
     signal saveImage
 
@@ -38,6 +38,7 @@ Item{
     }
     Flickable {
         id: imageFlickable
+
         width: parent.width
         height: parent.height
         interactive: image_zoom.opacity
