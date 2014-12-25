@@ -131,7 +131,8 @@ private:
     bool m_showNewsImage;
 
     void getCustomThemeList();
-    void setStyleProperty(const QString &name, const QSettings &settings, const QVariant defaultValue);
+    void setStyleProperty(const QString &name, const QSettings &settings,
+                          const QVariant defaultValue, bool isUrl=false);
     void updateStyle(const QSettings& settings);
 };
 

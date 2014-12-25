@@ -76,17 +76,25 @@ Item{
         }
     }
 
-    ListView{
-        id: commentList
-
-        spacing: 10
+    Item{
         anchors.fill: parent
+        clip: true
+        anchors.bottomMargin: command.style.penetrateToolBar?
+                                  -main.pageStack.toolBar.height:0
 
-        model: ListModel{
-            id: mymodel
+        ListView{
+            id: commentList
+
+            spacing: 10
+            anchors.fill: parent
+            anchors.bottomMargin: -parent.anchors.bottomMargin
+
+            model: ListModel{
+                id: mymodel
+            }
+
+            delegate: listComponent
         }
-
-        delegate: listComponent
     }
 
     Component{

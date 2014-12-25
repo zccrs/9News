@@ -33,13 +33,18 @@ MyPage{
         id: webviewFlickable
 
         clip: true
-        anchors.top: header.bottom
-        anchors.bottom: parent.bottom
+        anchors{
+            top: header.bottom
+            bottom: parent.bottom
+            bottomMargin: command.style.penetrateToolBar?
+                              -main.pageStack.toolBar.height:0
+        }
+
         width: parent.width
         maximumFlickVelocity: 3000
         pressDelay:200
         flickableDirection:Flickable.VerticalFlick
-        contentHeight: textAbout.implicitHeight
+        contentHeight: textAbout.implicitHeight-anchors.bottomMargin
 
         Text{
             id: textAbout

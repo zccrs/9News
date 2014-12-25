@@ -39,7 +39,7 @@ NCommand::NCommand(QObject *parent) :
     m_signature  = utility->value("signature", "").toString();
     m_fullscreenMode  = utility->value("fullscreenMode", false).toBool();
     m_checkUpdate  = utility->value("checkUpdate", true).toBool();
-    m_imagesSavePath  = utility->value("imagesSavePath", "").toString();
+    m_imagesSavePath  = utility->value("imagesSavePath", QDir::homePath()).toString();
 
     connect(&networkInfo,
             SIGNAL(networkStatusChanged(QSystemNetworkInfo::NetworkMode,QSystemNetworkInfo::NetworkStatus)),
@@ -254,7 +254,6 @@ bool NCommand::setTheme(int index)
     updateStyle(settings);
     m_theme = info.themeName;
     utility->setValue("theme", m_theme);
-    qDebug()<<QString::fromUtf8("主题切换为：")<<m_theme;
     emit themeChanged(m_theme);
 
     return true;
@@ -326,9 +325,24 @@ void NCommand::getCustomThemeList()
     }
 }
 
-void NCommand::setStyleProperty(const QString &name, const QSettings &settings, const QVariant defaultValue)
+void NCommand::setStyleProperty(const QString &name, const QSettings &settings,
+                                const QVariant defaultValue, bool isUrl)
 {
-    m_style[name] = settings.value(name, defaultValue);
+    if(isUrl){
+        QString url = settings.value(name, defaultValue).toString();
+        if(url == defaultValue.toString()){
+            m_style[name] = url;
+            return;
+        }
+        QFileInfo fileInfo(settings.fileName());
+        QDir dir = fileInfo.dir();
+        QString fileName = url.mid(url.lastIndexOf("/"));
+        url.replace(fileName, "");
+        dir.cd(url);
+        m_style[name] = QUrl(dir.absolutePath()+fileName);
+    }else{
+        m_style[name] = settings.value(name, defaultValue);
+    }
 }
 
 void NCommand::updateStyle(const QSettings& settings)
@@ -366,7 +380,7 @@ void NCommand::updateStyle(const QSettings& settings)
 #endif
     setStyleProperty("invertedTheme", settings, true);
     //是否是暗色主题
-    setStyleProperty("backgroundImage", settings, "");
+    setStyleProperty("backgroundImage", settings, "", true);
     //背景图片的地址，如果是本地文件要加上file:///前缀，并且最好使用绝对路径
     setStyleProperty("backgroundImageOpacity", settings, 1);
     //设置背景图片的不透明度（值越小透明度越高）
@@ -388,7 +402,6 @@ void NCommand::updateStyle(const QSettings& settings)
     //控制工具栏背景图的不透明度
     setStyleProperty("cuttingLineVisible", settings, true);
     //控制分割线是否显示,只对新闻列表有用
-    setStyleProperty("webViewBackgroundImage", settings, true);
     setStyleProperty("toolBarInverted", settings, true);
     //控制工具栏图标的invertedTheme
 #ifdef HARMATTAN_BOOSTER
@@ -397,7 +410,7 @@ void NCommand::updateStyle(const QSettings& settings)
 #else
     QUrl defaule_backImage = getIconSource(m_style["toolBarInverted"], "toolbar", "svg");
 #endif
-    setStyleProperty("toolBarBackgroundImage", settings, defaule_backImage);
+    setStyleProperty("toolBarBackgroundImage", settings, defaule_backImage, true);
     //工具栏背景图路径
     setStyleProperty("menuInverted", settings, true);
     //控制菜单的invertedTheme
@@ -415,6 +428,7 @@ void NCommand::updateStyle(const QSettings& settings)
     setStyleProperty("scrollBarInverted", settings, true);
     //控制ScroolBar控件的Inverted
     setStyleProperty("busyIndicatorInverted", settings, true);
+    //控制忙碌指示器的Inverted
     setStyleProperty("defaultImage", settings, "qrc:/images/defaultImage.svg");
     //在无图模式下默认显示的图片
     setStyleProperty("loadingImage", settings, "qrc:/images/loading.png");

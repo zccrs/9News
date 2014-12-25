@@ -9,7 +9,7 @@ MyPage{
     id: root
 
     function selectPath(){
-        fileDialog.inverseTheme = command.style.invertedTheme
+        fileDialog.inverseTheme = command.style.dialogInverted
         fileDialog.chooseType = FilesDialog.FolderType
         fileDialog.chooseMode = FilesDialog.IndividualChoice
         fileDialog.exec(utility.homePath(), FilesDialog.Dirs|FilesDialog.Drives)
@@ -44,8 +44,13 @@ MyPage{
 
     Flickable{
         id:settingFlick
-        anchors.top: header.bottom
-        anchors.bottom: parent.bottom
+
+        anchors{
+            top: header.bottom
+            bottom: parent.bottom
+            bottomMargin: command.style.penetrateToolBar?
+                              -main.pageStack.toolBar.height:0
+        }
         width: parent.width
         clip: true
 
@@ -316,7 +321,7 @@ MyPage{
 
             Image {
                 id: indicator
-                source: command.getIconSource(command.style.dialogInverted, "indicator", "svg", true)
+                source: command.getIconSource(!command.style.dialogInverted, "indicator", "svg", true)
                 anchors {
                     right: parent.right
                     verticalCenter: parent.verticalCenter

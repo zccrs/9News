@@ -100,7 +100,6 @@ MyPage{
             bottom: parent.bottom
         }
         newsId: root.newsId
-        clip: true
     }
 
     ScrollBar {

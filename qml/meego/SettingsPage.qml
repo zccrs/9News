@@ -9,7 +9,7 @@ MyPage{
     id: root
 
     function selectPath(){
-        fileDialog.inverseTheme = command.style.invertedTheme
+        fileDialog.inverseTheme = command.style.dialogInverted
         fileDialog.chooseType = FilesDialog.FolderType
         fileDialog.chooseMode = FilesDialog.IndividualChoice
         fileDialog.exec(utility.homePath(), FilesDialog.Dirs|FilesDialog.Drives)
@@ -41,12 +41,17 @@ MyPage{
 
     Flickable{
         id:settingFlick
-        anchors.top: header.bottom
-        anchors.bottom: parent.bottom
+
+        anchors{
+            top: header.bottom
+            bottom: parent.bottom
+            bottomMargin: command.style.penetrateToolBar?
+                              -main.pageStack.toolBar.height:0
+        }
         width: parent.width
         clip: true
 
-        contentHeight: logo.height+textVersion.implicitHeight+checkForUpdateButton.height+860
+        contentHeight: logo.height+textVersion.implicitHeight+checkForUpdateButton.height+950
 
         Behavior on contentY{
             NumberAnimation{duration: 200}

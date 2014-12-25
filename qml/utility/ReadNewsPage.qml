@@ -135,26 +135,32 @@ Item{
         }
     }
 
-    ListView{
-        id: newsContentList
-
+    Item{
         anchors.fill: parent
-        anchors.topMargin: titleItems.height
         clip: true
-        cacheBuffer: height*2
+        anchors.topMargin: titleItems.height
+        anchors.bottomMargin: command.style.penetrateToolBar?
+                                  -main.pageStack.toolBar.height:0
 
-        model: ListModel{
-            id: mymodel
-        }
-        delegate: newsContentListDelegate
+        ListView{
+            id: newsContentList
 
-        onMovementStarted: {
-            if(command.fullscreenMode)
-                main.showToolBar = false
-        }
-        onMovementEnded: {
-            if(command.fullscreenMode)
-                main.showToolBar = true
+            anchors.fill: parent
+            anchors.bottomMargin: -parent.anchors.bottomMargin
+
+            model: ListModel{
+                id: mymodel
+            }
+            delegate: newsContentListDelegate
+
+            onMovementStarted: {
+                if(command.fullscreenMode)
+                    main.showToolBar = false
+            }
+            onMovementEnded: {
+                if(command.fullscreenMode)
+                    main.showToolBar = true
+            }
         }
     }
 

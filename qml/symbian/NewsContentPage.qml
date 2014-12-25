@@ -89,6 +89,7 @@ MyPage{
 
     ReadNewsPage{
         id: newsPage
+
         anchors.fill: parent
         newsId: root.newsId
         newsTitle: root.newsTitle

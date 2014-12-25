@@ -113,10 +113,5 @@ MyPage{
 
     MyScrollDecorator {
         flickableItem: commentList.listView
-        anchors {
-            right: parent.right
-            top: header.bottom
-            bottom: parent.bottom
-        }
     }
 }
