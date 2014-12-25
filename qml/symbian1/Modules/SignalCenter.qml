@@ -3,6 +3,10 @@ import QtQuick 1.0
 QtObject {
     id: signalCenter;
 
+    // signals
+    signal categoryChanged;
+    signal newsListChanged;
+
     // functions
     function showMessage(icon, message) {
         switch (icon) {

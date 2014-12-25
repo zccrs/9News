@@ -7,6 +7,9 @@ QtObject {
     // UI - Graphic size
     property int headerHeight: 60;
 
+    // UI - Margins
+    property real headerTitleLeftMargin: 15;
+
     // color
     //property color colorLight: platformStyle.colorNormalLight;
     //property color colorMid: platformStyle.colorNormalMid;
