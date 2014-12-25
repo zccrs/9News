@@ -76,10 +76,13 @@ Item{
 
     ListView{
         id: pageList
+
         clip: true
         width: parent.width
         anchors.top: titleBarList.bottom
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: command.style.penetrateToolBar?
+                                -main.pageStack.toolBar.height:0
         orientation: ListView.Horizontal
         snapMode :ListView.SnapOneItem
         boundsBehavior: Flickable.StopAtBounds

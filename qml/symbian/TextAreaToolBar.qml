@@ -23,6 +23,17 @@ Item{
     width: parent.width
     height: Math.max(toolBarHeight, contentField.height+5)
 
+    onHeightChanged: {
+        parent.height = height
+        main.pageStack.toolBar.height = height
+        //设置状态栏的高度
+    }
+    onLeftButtonClick: {
+        parent.height = toolBarHeight
+        main.pageStack.toolBar.height = toolBarHeight
+        //还原状态栏的高度
+    }
+
     Image{
         id:backg
 
@@ -57,11 +68,9 @@ Item{
 
         onActiveFocusChanged: {
             if(activeFocus){
-                console.log("fdsafd2222")
                 openSoftwareInputPanel()
             }else{
                 closeSoftwareInputPanel()
-                console.log("fdsafd")
             }
         }
     }

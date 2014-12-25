@@ -11,7 +11,6 @@ Item{
 
         opacity: command.style.toolBarOpacity
         anchors.fill: parent
-        sourceSize.width: width
         source: command.style.toolBarBackgroundImage
     }
 

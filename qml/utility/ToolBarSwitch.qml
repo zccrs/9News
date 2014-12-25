@@ -10,7 +10,6 @@ Item{
 
     width: parent?parent.width:screen.width
     height: Math.max(qtObject.currentItem.height, parent.height)
-    y: parent?parent.height-height:0
 
     onToolBarComponentChanged: {
         if(enableAnimation&&qtObject.currentItem){

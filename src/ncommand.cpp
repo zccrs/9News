@@ -392,7 +392,7 @@ void NCommand::updateStyle(const QSettings& settings)
     setStyleProperty("toolBarInverted", settings, true);
     //控制工具栏图标的invertedTheme
 #ifdef HARMATTAN_BOOSTER
-    QString temp_str = m_style["toolBarInverted"].toBool()?"-inverted":"";
+    QString temp_str = m_style["toolBarInverted"].toBool()?"":"-inverted";
     QUrl defaule_backImage = "image://theme/meegotouch-toolbar-portrait"+temp_str+"-background";
 #else
     QUrl defaule_backImage = getIconSource(m_style["toolBarInverted"], "toolbar", "svg");
@@ -414,6 +414,7 @@ void NCommand::updateStyle(const QSettings& settings)
     //控制对话框的invertedTheme
     setStyleProperty("scrollBarInverted", settings, true);
     //控制ScroolBar控件的Inverted
+    setStyleProperty("busyIndicatorInverted", settings, true);
     setStyleProperty("defaultImage", settings, "qrc:/images/defaultImage.svg");
     //在无图模式下默认显示的图片
     setStyleProperty("loadingImage", settings, "qrc:/images/loading.png");
@@ -424,6 +425,8 @@ void NCommand::updateStyle(const QSettings& settings)
     //图片遮罩的背景颜色
     setStyleProperty("backgroundImageMaskOpacity", settings, 0.5);
     //背景图遮罩的不透明度
+    setStyleProperty("penetrateToolBar", settings, false);
+    //page的内容是否在toolbar下显示。false为不显示，true为显示
 
     emit styleChanged(m_style);
 }

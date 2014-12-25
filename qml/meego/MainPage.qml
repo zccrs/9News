@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 import com.star.widgets 1.0
 import "../utility"
+import "./customwidget"
 import "../utility/newsListPage"
 import "../js/api.js" as Api
 
@@ -62,7 +63,7 @@ MyPage{
     Component{
         id: compoentToolBarLayout
 
-        CustomToolBarLayout{
+        MyToolBarLayout{
             MyToolIcon{
                 iconId: "toolbar-home"
                 onClicked: {
@@ -102,14 +103,7 @@ MyPage{
             invertedTheme: command.style.toolBarInverted
             rightButtonIconId: "toolbar-search"
 
-            onHeightChanged: {
-                main.pageStack.toolBar.height = height
-                //设置状态栏的高度
-            }
-
             onLeftButtonClick: {
-                main.pageStack.toolBar.height = toolBarHeight
-                //还原状态栏的高度
                 metroView.pageInteractive = true
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
                 if(metroView.getTitle(metroView.currentPageIndex)==qsTr("Searched result")){

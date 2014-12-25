@@ -2,6 +2,7 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import "../utility"
+import "customwidget"
 
 MyPage{
     id: root
@@ -29,7 +30,7 @@ MyPage{
     Component{
         id: compoentToolBarLayout
 
-        CustomToolBarLayout{
+        MyToolBarLayout{
             invertedTheme: command.style.toolBarInverted
 
             ToolButton{
@@ -77,8 +78,6 @@ MyPage{
             invertedTheme: command.style.toolBarInverted
 
             onLeftButtonClick: {
-                main.pageStack.toolBar.height = toolBarHeight
-                //还原状态栏的高度
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
             }
             onRightButtonClick: {

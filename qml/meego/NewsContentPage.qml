@@ -2,6 +2,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
 import "../utility"
+import "./customwidget"
 
 MyPage{
     id: root
@@ -24,7 +25,7 @@ MyPage{
     Component{
         id: compoentToolBarLayout
 
-        CustomToolBarLayout{
+        MyToolBarLayout{
             MyToolIcon{
                 iconId: "toolbar-back"
                 onClicked: {
@@ -68,8 +69,6 @@ MyPage{
             rightButtonIconSource: command.getIconSource(invertedTheme, "message_send", "svg", true)
 
             onLeftButtonClick: {
-                main.pageStack.toolBar.height = toolBarHeight
-                //还原状态栏的高度
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
             }
             onRightButtonClick: {
@@ -85,7 +84,7 @@ MyPage{
         newsId: root.newsId
         newsTitle: root.newsTitle
 
-        BusyIndicator {
+        MyBusyIndicator {
             id: busyIndicator
             running: visible
             visible: newsPage.isBusy

@@ -2,22 +2,19 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
 import "../utility/newsListPage"
+import "./customwidget"
 
 NewsList{
     id: root
 
-    BusyIndicator {
+    MyBusyIndicator {
         id: busyIndicator
+
         running: visible
         visible: isBusy
         anchors.centerIn: parent
         width: 100
         height: 100
-
-        platformStyle: BusyIndicatorStyle {
-                 period: 800
-                 size: "large"
-             }
     }
 
     MyScrollDecorator {

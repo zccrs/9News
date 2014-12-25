@@ -6,6 +6,7 @@ import QtMobility.systeminfo 1.2
 
 PageStackWindow{
     id:main
+
     showStatusBar:true
     showToolBar: true
     platformSoftwareInputPanelEnabled :true

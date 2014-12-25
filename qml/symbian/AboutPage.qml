@@ -2,11 +2,12 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import "../utility"
+import "customwidget"
 
 MyPage{
     id: root
 
-    tools: CustomToolBarLayout{
+    tools: MyToolBarLayout{
         invertedTheme: command.style.toolBarInverted
 
         ToolButton{

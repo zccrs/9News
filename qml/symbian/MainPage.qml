@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 import com.star.widgets 1.0
 import "../utility"
+import "customwidget"
 import "../utility/newsListPage"
 import "../js/api.js" as Api
 
@@ -59,7 +60,7 @@ MyPage{
     Component{
         id: compoentToolBarLayout
 
-        CustomToolBarLayout{
+        MyToolBarLayout{
             invertedTheme: command.style.toolBarInverted
 
             ToolButton{
@@ -113,14 +114,7 @@ MyPage{
             invertedTheme: command.style.toolBarInverted
             rightButtonIconSource: "toolbar-search"
 
-            onHeightChanged: {
-                main.pageStack.toolBar.height = height
-                //设置状态栏的高度
-            }
-
             onLeftButtonClick: {
-                main.pageStack.toolBar.height = toolBarHeight
-                //还原状态栏的高度
                 metroView.pageInteractive = true
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
                 if(metroView.getTitle(metroView.currentPageIndex)==qsTr("Searched result")){
@@ -219,43 +213,48 @@ MyPage{
     }
 
     // define the menu
-     Menu {
-         id: mainMenu
-         // define the items in the menu and corresponding actions
-         platformInverted: command.style.menuInverted
-         content: MenuLayout {
-             MenuItem {
-                 text: qsTr("Personal Center")
-                 platformInverted: mainMenu.platformInverted
+    Menu {
+        id: mainMenu
+        // define the items in the menu and corresponding actions
+        platformInverted: command.style.menuInverted
+        content: MenuLayout {
+            MenuItem {
+                text: qsTr("Personal Center")
+                platformInverted: mainMenu.platformInverted
 
-                 onClicked: {
-                     pageStack.push(Qt.resolvedUrl("./usercenter/UserCenterPage.qml"))
-                 }
-             }
-             MenuItem {
-                 text: qsTr("Refresh All News Categorys")
-                 platformInverted: mainMenu.platformInverted
+                onClicked: {
+                    var auth = utility.value("auth", "")
+                    if(auth!=""){
+                        pageStack.push(Qt.resolvedUrl("./usercenter/UserCenterPage.qml"))
+                    }else{
+                        pageStack.push(Qt.resolvedUrl("./usercenter/LoginPage.qml"))
+                    }
+                }
+            }
+            MenuItem {
+                text: qsTr("Refresh All News Categorys")
+                platformInverted: mainMenu.platformInverted
 
-                 onClicked: {
-                     updateAllNewsCategorys()
-                     //更新所有分类的新闻
-                 }
-             }
-             MenuItem {
-                 text: qsTr("Settings")
-                 platformInverted: mainMenu.platformInverted
+                onClicked: {
+                    updateAllNewsCategorys()
+                    //更新所有分类的新闻
+                }
+            }
+            MenuItem {
+                text: qsTr("Settings")
+                platformInverted: mainMenu.platformInverted
 
-                 onClicked: {
-                     pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
-                 }
-             }
-             MenuItem {
-                 text: qsTr("About")
-                 platformInverted: mainMenu.platformInverted
-                 onClicked: {
-                     pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
-                 }
-             }
-         }
-     }
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
+                }
+            }
+            MenuItem {
+                text: qsTr("About")
+                platformInverted: mainMenu.platformInverted
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
+                }
+            }
+        }
+    }
 }

@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 import com.star.utility 1.0
 import "../utility"
+import "customwidget"
 
 MyPage{
     id: root
@@ -19,7 +20,7 @@ MyPage{
         return null
     }
 
-    tools: CustomToolBarLayout{
+    tools: MyToolBarLayout{
         invertedTheme: command.style.toolBarInverted
 
         ToolButton{

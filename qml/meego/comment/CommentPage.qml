@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 import "../../js/api.js" as Api
 import "../"
+import "../customwidget"
 import "../../utility"
 
 MyPage{
@@ -28,7 +29,7 @@ MyPage{
     Component{
         id: compoentToolBarLayout
 
-        CustomToolBarLayout{
+        MyToolBarLayout{
             MyToolIcon{
                 iconId: "toolbar-back"
                 onClicked: {
@@ -70,8 +71,6 @@ MyPage{
             invertedTheme: command.style.toolBarInverted
 
             onLeftButtonClick: {
-                main.pageStack.toolBar.height = toolBarHeight
-                //还原状态栏的高度
                 textArea.closeSoftwareInputPanel()
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
             }
@@ -97,7 +96,7 @@ MyPage{
         clip: true
     }
 
-    BusyIndicator {
+    MyBusyIndicator {
         id: busyIndicator
 
         running: visible

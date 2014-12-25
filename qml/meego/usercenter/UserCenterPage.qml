@@ -4,11 +4,12 @@ import com.nokia.meego 1.1
 import QtWebKit 1.0
 import "../../js/api.js" as Api
 import "../"
+import "../customwidget"
 import "../../utility"
 
 MyPage{
 
-    tools: CustomToolBarLayout{
+    tools: MyToolBarLayout{
         MyToolIcon{
             iconId: "toolbar-back"
             onClicked: {
