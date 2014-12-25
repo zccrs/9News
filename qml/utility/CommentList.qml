@@ -65,7 +65,7 @@ Item{
                         "date": command.fromTime_t(comment.dateline),
                         "message": comment.message,
                         "score": comment.score,
-                        "phoneName": comment.model==null?qsTr("unknown"):comment.model
+                        "phoneName": comment.model?comment.model:qsTr("unknown")
                     }
 
                     mymodel.append(obj)

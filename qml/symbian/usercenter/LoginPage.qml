@@ -25,7 +25,7 @@ MyPage{
 
         textColor: command.style.newsContentFontColor
         font.pixelSize: command.style.metroTitleFontPixelSize
-        title: qsTr("Register accout")
+        title: qsTr("Login")
         height: screen.currentOrientation===Screen.Portrait?
                      privateStyle.tabBarHeightPortrait:privateStyle.tabBarHeightLandscape
     }

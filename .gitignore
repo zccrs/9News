@@ -92,3 +92,4 @@ ABLD.BAT
 ._*
 *.changes
 *.changes
+/qml/js/api.js

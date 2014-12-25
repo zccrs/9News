@@ -34,7 +34,8 @@ Item{
         if(data.error==0){
             //如果服务器没有返回错误
             var reg = /\[img=\d+,\d+\][^\[]+\[\/img\]/g
-            var content = data.article.content
+            var content = data.article.content.replace(/\r/g, "")
+
             newsSource.text = data.article.source
             dateTime.text = command.fromTime_t(data.article.dateline)
 
@@ -44,11 +45,13 @@ Item{
                 for(var i=0; i<imgs.length; ++i){
                     var img_pos = content.indexOf(imgs[i])
                     var text = content.substring(pos, img_pos)
+                    if(text!=""){
+                        mymodel.append({
+                                    "contentComponent": componentText,
+                                    "contentData": text
+                                    })
+                    }
 
-                    mymodel.append({
-                                "contentComponent": componentText,
-                                "contentData": text
-                                })
                     var img_url = imgs[i].substring(13, imgs[i].length-6)
 
                     mymodel.append({
@@ -135,12 +138,10 @@ Item{
     ListView{
         id: newsContentList
 
-        anchors.left: titleItems.left
-        anchors.right: titleItems.right
-        anchors.top: titleItems.bottom
-        anchors.bottom: parent.bottom
+        anchors.fill: parent
+        anchors.topMargin: titleItems.height
         clip: true
-        spacing: 10
+        cacheBuffer: height*2
 
         model: ListModel{
             id: mymodel
@@ -176,6 +177,7 @@ Item{
 
             opacity: 0
             sourceComponent: contentComponent
+            anchors.horizontalCenter: parent.horizontalCenter
 
             Behavior on opacity {
                 NumberAnimation { duration: 200 }
@@ -191,7 +193,8 @@ Item{
         id: componentText
 
         Text{
-            width: newsContentList.width
+            width: newsContentList.width-20
+            anchors.horizontalCenter: parent.horizontalCenter
             wrapMode: Text.WordWrap
             text: componentData
             font.pixelSize: command.newsContentFontSize
@@ -207,9 +210,8 @@ Item{
 
             source: command.showNewsImage?
                         command.style.loadingImage:command.style.defaultImage
-            width: Math.min(newsContentList.width, defaultSize.width)
+            width: Math.min(newsContentList.width-20, defaultSize.width)
             height: width/defaultSize.width*defaultSize.height
-            x: newsContentList.width/2-width/2
             smooth: true
             onLoadReady: {
                 if(source!=command.style.loadingImage){

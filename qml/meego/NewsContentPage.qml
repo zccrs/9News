@@ -98,10 +98,10 @@ MyPage{
                      size: "large"
                  }
         }
+    }
 
-        MyScrollDecorator {
-            flickableItem: newsPage.contentList
-        }
+    MyScrollDecorator {
+        flickableItem: newsPage.contentList
     }
 
     MyMenu {

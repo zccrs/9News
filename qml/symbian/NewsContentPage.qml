@@ -102,15 +102,15 @@ MyPage{
             width: 50
             height: 50
         }
-    }
-
-    ScrollBar {
-        platformInverted: command.style.scrollBarInverted
-        flickableItem: newsPage.contentList
-        anchors {
-            right: parent.right
-            top: parent.top
-            topMargin: newsPage.titleHeight
+        ScrollBar {
+            platformInverted: command.style.scrollBarInverted
+            flickableItem: newsPage.contentList
+            anchors {
+                right: parent.right
+                top: parent.top
+                bottom: parent.bottom
+                topMargin: newsPage.titleHeight
+            }
         }
     }
 
