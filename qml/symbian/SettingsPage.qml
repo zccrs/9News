@@ -226,7 +226,7 @@ MyPage{
             textColor: command.style.newsContentFontColor
             stepSize: 1
             KeyNavigation.up: titleFontSize
-            KeyNavigation.down: my_signature
+            KeyNavigation.down: selectionListItem
         }
 
         CuttingLine{
@@ -277,17 +277,20 @@ MyPage{
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        Text{
+        ToolButton{
             id: selectionListItem
 
-            color: command.style.newsContentFontColor
+            platformInverted: command.style.selectionThemeButtonInverted
             anchors.top: cut_off4.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.leftMargin: 10
             anchors.rightMargin: 10
             anchors.topMargin: 20
-            font.pixelSize: 22
+
+            onClicked: {
+                selectionDialog.open()
+            }
 
             SelectionDialog{
                 id: selectionDialog
@@ -321,41 +324,21 @@ MyPage{
 
             Image {
                 id: indicator
-                source: command.getIconSource(!command.style.dialogInverted, "indicator", "svg", true)
+                source: command.getIconSource(selectionListItem.platformInverted, "indicator", "svg", true)
                 anchors {
                     right: parent.right
+                    rightMargin: 10
                     verticalCenter: parent.verticalCenter
                 }
             }
-        }
-
-        MouseArea{
-            anchors.top: cut_off4.bottom
-            anchors.bottom: selectionListItem.bottom
-            width: parent.width
-
-            onClicked: {
-                selectionDialog.open()
-            }
-        }
-
-        Text{
-            id: my_signature
-
-            text: qsTr("Signature")
-            anchors.left: parent.left
-            anchors.leftMargin:10
-            font.pixelSize: 22
-            color: command.style.newsContentFontColor
-            anchors.verticalCenter: signature_input.verticalCenter
         }
 
         TextField{
             id: signature_input
 
             platformInverted: command.style.textInputInverted
-            placeholderText: command.signature
-            anchors.left: my_signature.right
+            placeholderText: command.signature==""?qsTr("Signature"):command.signature
+            anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: selectionListItem.bottom
             anchors.leftMargin: 10

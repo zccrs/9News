@@ -427,6 +427,8 @@ void NCommand::updateStyle(const QSettings& settings)
     //控制对话框的invertedTheme
     setStyleProperty("scrollBarInverted", settings, true);
     //控制ScroolBar控件的Inverted
+    setStyleProperty("selectionThemeButtonInverted", settings, true);
+    //控制设置页面中选择主题的那个ToolBar的Inverted
     setStyleProperty("busyIndicatorInverted", settings, true);
     //控制忙碌指示器的Inverted
     setStyleProperty("defaultImage", settings, "qrc:/images/defaultImage.svg");
