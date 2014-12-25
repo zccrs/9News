@@ -2,15 +2,33 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import com.nokia.extras 1.1
+import QtMobility.systeminfo 1.2
 
 PageStackWindow{
     id:main
+
     showStatusBar:true
     showToolBar: true
     platformSoftwareInputPanelEnabled :true
-    platformInverted: command.invertedTheme
+    platformInverted: command.style.invertedTheme
 
     initialPage: MainPage{}
+
+    Image {
+        id: backgroundImage
+
+        parent: main.children[0]
+        source: command.style.backgroundImage
+        sourceSize.width: width
+        opacity: command.style.backgroundImageOpacity
+
+        Rectangle{//图片遮罩
+            anchors.fill: parent
+            color: command.style.backgroundImageMaskColor
+            opacity: command.style.backgroundImageMaskOpacity
+            visible: command.style.showBackgroundImageMask
+        }
+    }
 
     Label {
         text:"久闻"
@@ -21,7 +39,7 @@ PageStackWindow{
     InfoBanner {
         id: banner
         timeout: 2000
-        platformInverted: command.invertedTheme
+        platformInverted: command.style.invertedTheme
     }
 
     Image{
@@ -56,5 +74,11 @@ PageStackWindow{
             banner.text = message
             banner.open()
         }
+    }
+
+    Binding{//默认隐藏状态栏的默认背景图（用自己的代替）
+        target: pageStack.toolBar.children[0]
+        property: "visible"
+        value: false
     }
 }

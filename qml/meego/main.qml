@@ -2,16 +2,58 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
 import com.nokia.extras 1.1
+import "./customwidget"
 
-PageStackWindow
+MyPageStackWindow
 {
-    id:mainwindow
+    id:main
+
     showStatusBar:true
     initialPage: MainPage{}
 
-    Binding{
-        target: theme
-        property: "inverted"
-        value: !command.invertedTheme
+    style: PageStackWindowStyle{
+        inverted: command.style.invertedTheme!=true
+        background: command.style.backgroundImage!=""?command.style.backgroundImage:
+                        "image://theme/meegotouch-applicationpage-background"+__invertedString
+        portraitBackground: command.style.backgroundImage
+        landscapeBackground: command.style.backgroundImage
+    }
+
+    function updateStyle(){
+        if(command.style.invertedTheme==true)
+            theme.inverted = false
+        else
+            theme.inverted = true
+
+        main.children[0].opacity = command.style.backgroundImageOpacity
+    }
+
+    InfoBanner {
+        id: banner
+
+        y: 35
+        timerShowTime: 2000
+    }
+
+    Connections{
+        target: command
+        onShowBanner:{
+            banner.text = message
+            banner.show()
+        }
+    }
+
+    Connections{
+        target: command
+        onStyleChanged:{
+            updateStyle()
+        }
+    }
+
+    Component.onCompleted: {
+        var toolBar_backImage = pageStack.toolBar.children[4]
+        toolBar_backImage.source = ""
+        toolBar_backImage.height = 72
+        updateStyle()
     }
 }

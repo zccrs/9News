@@ -34,7 +34,10 @@ Item{
         if(data.error==0){
             //如果服务器没有返回错误
             var reg = /\[img=\d+,\d+\][^\[]+\[\/img\]/g
-            var content = data.article.content
+            var content = data.article.content.replace(/\r/g, "")
+
+            newsSource.text = data.article.source
+            dateTime.text = command.fromTime_t(data.article.dateline)
 
             var pos = 0
             var imgs = content.match(reg)
@@ -42,11 +45,13 @@ Item{
                 for(var i=0; i<imgs.length; ++i){
                     var img_pos = content.indexOf(imgs[i])
                     var text = content.substring(pos, img_pos)
+                    if(text!=""){
+                        mymodel.append({
+                                    "contentComponent": componentText,
+                                    "contentData": text
+                                    })
+                    }
 
-                    mymodel.append({
-                                "contentComponent": componentText,
-                                "contentData": text
-                                })
                     var img_url = imgs[i].substring(13, imgs[i].length-6)
 
                     mymodel.append({
@@ -80,16 +85,16 @@ Item{
 
         y:-height
         width: parent.width-20
-        height: textTitle.implicitHeight+20
+        height: textTitle.implicitHeight+newsInfos.height+10
         anchors.horizontalCenter: parent.horizontalCenter
 
         Text{
             id: textTitle
 
             width: parent.width
-            anchors.verticalCenter: parent.verticalCenter
+            y: 10
             wrapMode: Text.WordWrap
-            color: command.invertedTheme?"black":"#ccc"
+            color: command.style.newsContentFontColor
             font.pixelSize: command.newsTitleFontSize
             font.bold: true
 
@@ -105,22 +110,67 @@ Item{
             easing.type: Easing.OutElastic
             to: 0
         }
+
+        Item{
+            id: newsInfos
+
+            width: parent.width
+            height: newsSource.implicitHeight+10
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+
+            Text{
+                id: newsSource
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: command.style.newsInfosFontPixelSize
+                color: command.style.newsInfoFontColor
+            }
+            Text{
+                id: dateTime
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: newsSource.font.pixelSize
+                color: newsSource.color
+            }
+        }
     }
 
-    ListView{
-        id: newsContentList
-
-        anchors.left: titleItems.left
-        anchors.right: titleItems.right
-        anchors.top: titleItems.bottom
-        anchors.bottom: parent.bottom
+    Item{
+        anchors.fill: parent
         clip: true
-        spacing: 10
+        anchors.topMargin: titleItems.height
+        anchors.bottomMargin: command.style.penetrateToolBar?
+                                  -main.pageStack.toolBar.height:0
 
-        model: ListModel{
-            id: mymodel
+        ListView{
+            id: newsContentList
+
+            anchors.fill: parent
+            anchors.bottomMargin: -parent.anchors.bottomMargin
+
+            model: ListModel{
+                id: mymodel
+            }
+            delegate: newsContentListDelegate
+
+            onMovementStarted: {
+                if(command.fullscreenMode)
+                    main.showToolBar = false
+            }
+            onMovementEnded: {
+                if(command.fullscreenMode)
+                    main.showToolBar = true
+            }
         }
-        delegate: newsContentListDelegate
+    }
+
+    ToTopIcon{
+        target: newsContentList
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        width: command.style.toUpIconWidth
+        z:1
     }
 
     Component{
@@ -133,6 +183,7 @@ Item{
 
             opacity: 0
             sourceComponent: contentComponent
+            anchors.horizontalCenter: parent.horizontalCenter
 
             Behavior on opacity {
                 NumberAnimation { duration: 200 }
@@ -148,10 +199,12 @@ Item{
         id: componentText
 
         Text{
-            width: newsContentList.width
+            width: newsContentList.width-20
+            anchors.horizontalCenter: parent.horizontalCenter
             wrapMode: Text.WordWrap
             text: componentData
             font.pixelSize: command.newsContentFontSize
+            color: command.style.newsContentFontColor
         }
     }
 
@@ -161,13 +214,13 @@ Item{
         MyImage{
             id: myimage
 
-            source: "qrc:/images/loading.png"
-            width: Math.min(newsContentList.width, defaultSize.width)
+            source: command.showNewsImage?
+                        command.style.loadingImage:command.style.defaultImage
+            width: Math.min(newsContentList.width-20, defaultSize.width)
             height: width/defaultSize.width*defaultSize.height
-            x: newsContentList.width/2-width/2
             smooth: true
             onLoadReady: {
-                if(source!="qrc:/images/loading.png"){
+                if(source!=command.style.loadingImage){
                     mouse.enabled = true
                 }
             }
@@ -188,7 +241,8 @@ Item{
             }
 
             Component.onCompleted: {
-                source = componentData
+                if(command.showNewsImage)//如果可以显示图片
+                    source = componentData
             }
         }
     }
@@ -207,7 +261,7 @@ Item{
             fileName = fileName.toISOString().replace(reg, "")+".png"
             fileName = command.imagesSavePath+"/"+fileName
             if(imagesBrowse.currentImage.save(fileName)){
-                command.showBanner(qsTr("Save finished"))
+                command.showBanner(qsTr("Saved:")+fileName)
             }else{
                 command.showBanner(qsTr("Save error"))
             }

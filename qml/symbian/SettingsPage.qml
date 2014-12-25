@@ -3,15 +3,16 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 import com.star.utility 1.0
 import "../utility"
+import "customwidget"
 
 MyPage{
     id: root
 
     function selectPath(){
-        fileDialog.inverseTheme = command.invertedTheme
+        fileDialog.inverseTheme = command.style.dialogInverted
         fileDialog.chooseType = FilesDialog.FolderType
         fileDialog.chooseMode = FilesDialog.IndividualChoice
-        fileDialog.exec(utility.homePath(), "", FilesDialog.Dirs|FilesDialog.Drives)
+        fileDialog.exec(utility.homePath(), FilesDialog.Dirs|FilesDialog.Drives)
         if(fileDialog.selectionCount>0){
             return fileDialog.firstSelection()
         }
@@ -19,12 +20,12 @@ MyPage{
         return null
     }
 
-    tools: CustomToolBarLayout{
-        invertedTheme: command.invertedTheme
+    tools: MyToolBarLayout{
+        invertedTheme: command.style.toolBarInverted
 
         ToolButton{
             iconSource: "toolbar-back"
-            platformInverted: command.invertedTheme
+            platformInverted: command.style.toolBarInverted
             onClicked: {
                 pageStack.pop()
             }
@@ -33,7 +34,8 @@ MyPage{
 
     HeaderView{
         id: header
-        invertedTheme: command.invertedTheme
+
+        textColor: command.style.newsContentFontColor
         font.pixelSize: command.style.metroTitleFontPixelSize
         title: qsTr("Settings")
         height: screen.currentOrientation===Screen.Portrait?
@@ -42,12 +44,17 @@ MyPage{
 
     Flickable{
         id:settingFlick
-        anchors.top: header.bottom
-        anchors.bottom: parent.bottom
+
+        anchors{
+            top: header.bottom
+            bottom: parent.bottom
+            bottomMargin: command.style.penetrateToolBar?
+                              -main.pageStack.toolBar.height:0
+        }
         width: parent.width
         clip: true
 
-        contentHeight: logo.height+textVersion.implicitHeight+checkForUpdateButton.height+760
+        contentHeight: logo.height+textVersion.implicitHeight+checkForUpdateButton.height+860
 
         Behavior on contentY{
             NumberAnimation{duration: 200}
@@ -67,7 +74,7 @@ MyPage{
             id:textVersion
 
             text: qsTr("Version:")+utility.appVersion
-            color: command.invertedTheme?"#000":"#ccc"
+            color: command.style.newsContentFontColor
             font.pixelSize: 22
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
@@ -80,8 +87,9 @@ MyPage{
         CuttingLine{
             id:divide1
 
+            textColor: command.style.inactiveFontColor
             annotation: qsTr("General settings")
-            invertedTheme: command.invertedTheme
+
             anchors.top: textVersion.bottom
             anchors.topMargin: 10
             width: parent.width-20
@@ -91,7 +99,8 @@ MyPage{
         MySwitch{
             id:show_image_off_on
 
-            invertedTheme: command.invertedTheme
+            textColor: command.style.newsContentFontColor
+
             enabled: !wifi_load_image.checked
             checked: command.noPicturesMode
             anchors.top: divide1.bottom
@@ -106,7 +115,8 @@ MyPage{
         MySwitch{
             id:wifi_load_image
 
-            invertedTheme: command.invertedTheme
+            textColor: command.style.newsContentFontColor
+
             enabled: !show_image_off_on.checked
             checked: command.wifiMode
             anchors.top: show_image_off_on.bottom
@@ -121,7 +131,8 @@ MyPage{
         MySwitch{
             id:full_screen
 
-            invertedTheme: command.invertedTheme
+            textColor: command.style.newsContentFontColor
+
             checked: command.fullscreenMode
             anchors.top: wifi_load_image.bottom
             anchors.left: parent.left
@@ -135,7 +146,7 @@ MyPage{
         MySwitch{
             id:auto_updata_app
 
-            invertedTheme: command.invertedTheme
+            textColor: command.style.newsContentFontColor
             checked: command.checkUpdate
             anchors.top: full_screen.bottom
             anchors.left: parent.left
@@ -151,19 +162,31 @@ MyPage{
         CuttingLine{
             id:cut_off
 
-            invertedTheme: command.invertedTheme
+            textColor: command.style.inactiveFontColor
             anchors.top: auto_updata_app.bottom
             anchors.topMargin: 10
             width: parent.width-20
             anchors.horizontalCenter: parent.horizontalCenter
             annotation: qsTr("Font pixel size")
         }
+
+        Text{
+            id: textReference1
+
+            anchors.top: cut_off.bottom
+            anchors.topMargin: 10
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Reference Text")
+            font.pixelSize: titleFontSize.value
+            color: command.style.newsContentFontColor
+        }
+
         MySlider {
             id: titleFontSize
 
             value: command.newsTitleFontSize
-            invertedTheme: command.invertedTheme
-            anchors.top: cut_off.bottom
+
+            anchors.top: textReference1.bottom
             anchors.topMargin: 10
             anchors.left: parent.left
             anchors.right: parent.right
@@ -171,17 +194,28 @@ MyPage{
             sliderText: qsTr("Title      ")
             maximumValue: 28
             minimumValue: 18
-
+            textColor: command.style.newsContentFontColor
             stepSize: 1
             KeyNavigation.up: auto_updata_app
             KeyNavigation.down: contentFontSize
-         }
+        }
+
+        Text{
+            id: textReference2
+
+            anchors.top: titleFontSize.bottom
+            anchors.topMargin: 10
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Reference Text")
+            font.pixelSize: contentFontSize.value
+            color: command.style.newsContentFontColor
+        }
+
         MySlider {
             id: contentFontSize
 
             value: command.newsContentFontSize
-            invertedTheme: command.invertedTheme
-            anchors.top: titleFontSize.bottom
+            anchors.top: textReference2.bottom
             anchors.topMargin: 20
             anchors.left: parent.left
             anchors.right: parent.right
@@ -189,17 +223,17 @@ MyPage{
             sliderText: qsTr("Content")
             maximumValue: 30
             minimumValue: 20
-
+            textColor: command.style.newsContentFontColor
             stepSize: 1
             KeyNavigation.up: titleFontSize
-            KeyNavigation.down: my_signature
+            KeyNavigation.down: selectionListItem
         }
 
         CuttingLine{
             id:cut_off2
 
+            textColor: command.style.inactiveFontColor
             annotation: qsTr("Images save path")
-            invertedTheme: command.invertedTheme
             anchors.top: contentFontSize.bottom
             anchors.topMargin: 10
             width: parent.width-20
@@ -215,7 +249,7 @@ MyPage{
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.margins: 10
-            color: command.invertedTheme?"#000":"#ccc"
+            color: command.style.newsContentFontColor
             elide: Text.ElideMiddle
         }
 
@@ -232,72 +266,84 @@ MyPage{
         }
 
         CuttingLine{
-            id:cut_off3
+            id: cut_off4
 
-            annotation: qsTr("Background Image path")
-            invertedTheme: command.invertedTheme
+            textColor: command.style.inactiveFontColor
+            annotation: qsTr("Preferences settings")
+
             anchors.top: imageSavePath.bottom
             anchors.topMargin: 10
             width: parent.width-20
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        Text{
-            id: backgroundImagePath
+        ToolButton{
+            id: selectionListItem
 
-            text: command.backgroundImage==""?qsTr("null"):command.backgroundImage
-            anchors.top: cut_off3.bottom
+            platformInverted: command.style.selectionThemeButtonInverted
+            anchors.top: cut_off4.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.margins: 10
-            color: command.invertedTheme?"#000":"#ccc"
-            elide: Text.ElideMiddle
-        }
+            anchors.leftMargin: 10
+            anchors.rightMargin: 10
+            anchors.topMargin: 20
 
-        MouseArea{
-            anchors.top: cut_off3.top
-            anchors.bottom: backgroundImagePath.bottom
-            width: parent.width
             onClicked: {
-                var path = selectPath()
-                if(path){
-                    backgroundImagePath.text = path.filePath
+                selectionDialog.open()
+            }
+
+            SelectionDialog{
+                id: selectionDialog
+
+                titleText: qsTr("Please select a theme")
+                platformInverted: command.style.dialogInverted
+                selectedIndex: -1
+                model: ListModel{
+                    Component.onCompleted: {
+                        var theme_list = command.getThemeList()
+                        for(var i in theme_list){
+                            var theme_name = theme_list[i]
+                            append({"name": theme_name})
+                            if(theme_name == command.theme){
+                                selectionDialog.selectedIndex = i
+                            }
+                        }
+                    }
+                }
+
+                onSelectedIndexChanged: {
+                    var temp_obj = selectionDialog.model.get(selectionDialog.selectedIndex)
+                    if(temp_obj)
+                        selectionListItem.text = qsTr("Theme: ")+temp_obj.name
+                    else
+                        selectionListItem.text = qsTr("Theme: ")
+
+                    command.theme = temp_obj.name
+                }
+            }
+
+            Image {
+                id: indicator
+                source: command.getIconSource(selectionListItem.platformInverted, "indicator", "svg", true)
+                anchors {
+                    right: parent.right
+                    rightMargin: 10
+                    verticalCenter: parent.verticalCenter
                 }
             }
         }
 
-        CuttingLine{
-            id:cut_off4
-
-            annotation: qsTr("Preferences settings")
-            invertedTheme: command.invertedTheme
-            anchors.top: backgroundImagePath.bottom
-            anchors.topMargin: 10
-            width: parent.width-20
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-
-
-
-        Text{
-            id:my_signature
-
-            text: qsTr("Signature")
-            anchors.left: parent.left
-            anchors.leftMargin:10
-            font.pixelSize: 22
-            color: command.invertedTheme?"#000":"#ccc"
-            anchors.verticalCenter: signature_input.verticalCenter
-        }
         TextField{
-            id:signature_input
+            id: signature_input
 
-            platformInverted: command.invertedTheme
-            placeholderText: command.signature
-            anchors.left: my_signature.right
+            platformInverted: command.style.textInputInverted
+            placeholderText: command.signature==""?qsTr("Signature"):command.signature
+            anchors.left: parent.left
             anchors.right: parent.right
-            anchors.top: cut_off4.bottom
-            anchors.margins: 10
+            anchors.top: selectionListItem.bottom
+            anchors.leftMargin: 10
+            anchors.rightMargin: 10
+            anchors.topMargin: 20
 
 
             KeyNavigation.up: contentFontSize
@@ -305,31 +351,21 @@ MyPage{
         }
 
         CuttingLine{
-            id:cut_off5
+            id: cut_off5
 
-            invertedTheme: command.invertedTheme
+            textColor: command.style.inactiveFontColor
             anchors.top: signature_input.bottom
             anchors.topMargin: 20
             width: parent.width-20
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        Text{
-            id:cacheSize
-
-            anchors.top: cut_off5.top
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            font.pixelSize: 22
-            color: command.invertedTheme?"#000":"#ccc"
-        }
-
         Button{
             id: checkForUpdateButton
 
-            platformInverted: command.invertedTheme
+            platformInverted: command.style.buttonInverted
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: cacheSize.bottom
+            anchors.top: cut_off5.bottom
             anchors.topMargin: 10
             text: qsTr("Check for updates")
             width: parent.width*0.6
@@ -354,9 +390,6 @@ MyPage{
         command.signature = signature_input.text
         if(imageSavePath.text!=qsTr("null")){
             command.imagesSavePath = imageSavePath.text
-        }
-        if(backgroundImagePath.text!=qsTr("null")){
-            command.backgroundImage = backgroundImagePath.text
         }
     }
 }

@@ -118,7 +118,7 @@ ListView{
         }
         isBusy = true
         //设置为忙碌的
-        var newUrl = Api.getMoreNewsUrlByCurrentUrl(newsUrl, lastNewsId-1)
+        var newUrl = Api.getMoreNewsUrlByCurrentUrl(newsUrl, lastNewsId)
         parentListModel.setProperty(index, "newsUrl", newUrl)
         //设置新的url
 
@@ -175,24 +175,24 @@ ListView{
 
         Item{
             width: newsList.width
-            height: textLoadMoreNews.implicitHeight+20
+            height: textLoadMoreNews.implicitHeight+40
             Text{
                 id: textLoadMoreNews
                 text: qsTr("load more...")
                 anchors.centerIn: parent
                 visible: newsList.count>1
-                color: newsList.isBusy?"#888":command.invertedTheme?"black":"#ccc"
-
-                MouseArea{
-                    anchors.fill: parent
-                    enabled: !newsList.isBusy
-                    onClicked: {
-                        utility.consoleLog("将要增加新闻")
-                        newsList.addMoreNews()//增加新闻
-                    }
-                }
+                color: newsList.isBusy?command.style.inactiveFontColor:command.style.newsTitleFontColor
+                font.pixelSize: command.newsTitleFontSize
             }
             //newsList对象在MainPage中，因为在compoentFooter中无法引用的root对象，所以这也是不得已而为之
+            MouseArea{
+                anchors.fill: parent
+                enabled: !newsList.isBusy
+                onClicked: {
+                    utility.consoleLog("将要增加新闻")
+                    newsList.addMoreNews()//增加新闻
+                }
+            }
         }
     }
 
@@ -223,7 +223,10 @@ ListView{
             }
         }
     }*/
+
     PullDownMenu{
+        id: pullDownMenu
+
         width: parent.width
         listView: root
         menuItemPixelSize: command.newsTitleFontSize
@@ -246,8 +249,24 @@ ListView{
 
         Component.onCompleted: {
             addMenu(qsTr("Popularity order"))
-            addMenu(qsTr("Immediate refresh"))
         }
+
+        Timer{
+            running: true
+            interval: 100
+            onTriggered: {
+                parent.addMenu(qsTr("Immediate refresh"))
+            }
+        }
+    }
+
+    ToTopIcon{
+        target: root
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
+        width: command.style.toUpIconWidth
+        z:1
     }
 
     Component.onCompleted: {
@@ -258,6 +277,7 @@ ListView{
         loadNewsList()//加载新闻
         contentY = listContentY
     }
+
     Component.onDestruction: {//当组件被销毁时
         parentListModel.setProperty(index, "listContentY", contentY)
         //设置model中存放的属于自己的属性
@@ -265,4 +285,12 @@ ListView{
         //将允许动画设置为false
     }
 
+    onMovementStarted: {
+        if(command.fullscreenMode)
+            main.showToolBar = false
+    }
+    onMovementEnded: {
+        if(command.fullscreenMode)
+            main.showToolBar = true
+    }
 }

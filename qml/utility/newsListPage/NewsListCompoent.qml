@@ -28,7 +28,7 @@ Item{
         anchors.rightMargin: 10
         anchors.top: loader_titleImage.top
         wrapMode: Text.WordWrap
-        color: command.invertedTheme?"black":"#ccc"
+        color: command.style.newsTitleFontColor
         font.pixelSize: command.newsTitleFontSize
     }
     MouseArea{
@@ -60,14 +60,14 @@ Item{
             id: newsSource
             anchors.verticalCenter: parent.verticalCenter
             font.pixelSize: command.style.newsInfosFontPixelSize
-            color: "#888"
+            color: command.style.newsInfoFontColor
         }
         Text{
             id: dateTime
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             font.pixelSize: newsSource.font.pixelSize
-            color: "#888"
+            color: newsSource.color
         }
     }
 
@@ -76,7 +76,8 @@ Item{
 
         Image{
             id: titleImage
-            source: imageUrl
+
+            source: command.showNewsImage?imageUrl:command.style.defaultImage
             sourceSize{
                 width: titleImage.width
                 height: titleImage.height
@@ -111,7 +112,7 @@ Item{
             spacing: 5
             delegate: Image{
                 id: listImage
-                source: imageUrl
+                source: command.showNewsImage?imageUrl:command.style.defaultImage
                 sourceSize.height: parent.height
 
                 NumberAnimation on y {
@@ -174,6 +175,6 @@ Item{
     CuttingLine{
         anchors.bottom: parent.bottom
         width: parent.width
-        invertedTheme: command.invertedTheme
+        visible: command.style.cuttingLineVisible
     }
 }

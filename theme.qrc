@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/theme/default.ini</file>
+        <file>qml/theme/default-inverse.ini</file>
+    </qresource>
+</RCC>

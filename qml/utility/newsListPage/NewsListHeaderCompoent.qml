@@ -78,7 +78,7 @@ Item{
     Component{
         id: compoentPathView
         Item{
-            width: parent.width
+            width: root.width
             height: parent.height
 
             Image {
@@ -127,20 +127,13 @@ Item{
         }
     }
 
-    PathView{
+    ListView{
         id: slideList
 
-        anchors.fill:parent
-
-        path:Path{
-            startX: -slideList.width*slideList.count/2
-            startY: slideList.height/2
-            PathLine{
-                x: slideList.width*slideList.count/2
-                y: slideList.height/2
-            }
-        }
-
+        anchors.fill: parent
+        orientation: ListView.Horizontal
+        snapMode :ListView.SnapOneItem
+        cacheBuffer: count*width
 
         model: ListModel{
             id:mymodel
@@ -183,12 +176,12 @@ Item{
 
             property int number: 0//记录改翻转到第几个大海报
 
-            interval: 400
+            interval: 300
 
             onTriggered: {
                 var temp = slideList.contentX/slideList.width
                 number = (temp+1)%slideList.count
-                slideList.incrementCurrentIndex ()
+                slideList.positionViewAtIndex(number, ListView.Beginning)
                 slideList.interactive = true
             }
         }

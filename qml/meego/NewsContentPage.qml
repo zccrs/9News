@@ -2,6 +2,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
 import "../utility"
+import "./customwidget"
 
 MyPage{
     id: root
@@ -9,20 +10,72 @@ MyPage{
     property int newsId: -1
     property string newsTitle
 
-    tools: ToolBarLayout{
-        ToolIcon{
-            iconId: "toolbar-back"
-            onClicked: {
-                pageStack.pop()
-            }
-        }
+    tools: ToolBarSwitch{
+        id: toolBarSwitch
+
+        toolBarComponent: compoentToolBarLayout
     }
 
     HeaderView{
         id: headerView
 
-        invertedTheme: command.invertedTheme
         height: newsPage.titleHeight
+    }
+
+    Component{
+        id: compoentToolBarLayout
+
+        MyToolBarLayout{
+            MyToolIcon{
+                iconId: "toolbar-back"
+                onClicked: {
+                    pageStack.pop()
+                }
+            }
+
+            MyToolIcon{
+                iconId: "toolbar-edit"
+                onClicked: {
+                    toolBarSwitch.toolBarComponent = compoentCommentToolBar
+                }
+            }
+
+            MyToolIcon{
+                iconSource: command.getIconSource(command.style.toolBarInverted, "comment")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("./comment/CommentPage.qml"),
+                                   {"newsId": newsId})
+                }
+            }
+
+            MyToolIcon{
+                iconId: "toolbar-view-menu"
+
+                onClicked: {
+                    mainMenu.open()
+                }
+            }
+        }
+    }
+
+    Component{
+        id: compoentCommentToolBar
+
+        TextAreaToolBar{
+            property string oldText: ""
+            //记录上次输入的内容
+
+            invertedTheme: command.style.toolBarInverted
+            rightButtonIconSource: command.getIconSource(invertedTheme, "message_send", "svg", true)
+
+            onLeftButtonClick: {
+                toolBarSwitch.toolBarComponent = compoentToolBarLayout
+            }
+            onRightButtonClick: {
+                if(textAreaContent=="")
+                    return//如果内容没有变化或者为空则不进行下一步
+            }
+        }
     }
 
     ReadNewsPage{
@@ -30,9 +83,50 @@ MyPage{
         anchors.fill: parent
         newsId: root.newsId
         newsTitle: root.newsTitle
+
+        MyBusyIndicator {
+            id: busyIndicator
+            running: visible
+            visible: newsPage.isBusy
+            anchors.centerIn: parent
+            width: 100
+            height: 100
+
+            platformStyle: BusyIndicatorStyle {
+                     period: 800
+                     size: "large"
+                 }
+        }
     }
 
-    onStatusChanged: {
-        newsPage.activePage = status===PageStatus.Active
+    MyScrollDecorator {
+        flickableItem: newsPage.contentList
+    }
+
+    MyMenu {
+        id: mainMenu
+        // define the items in the menu and corresponding actions
+        content: MenuLayout {
+            MyMenuItem {
+                text: qsTr("Use open browser")
+                MyToolButton{
+                    text: "Copy url"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: 10
+                    invertedTheme: mainMenu.invertedTheme
+                }
+
+                onClicked: {
+
+                }
+            }
+            MyMenuItem {
+                text: qsTr("Like")
+                onClicked: {
+
+                }
+            }
+        }
     }
 }

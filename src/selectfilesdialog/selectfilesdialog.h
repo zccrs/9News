@@ -27,6 +27,8 @@ class SelectFilesDialog : public QObject
     //记录当前所在的绝对路径
     Q_PROPERTY(bool showImageContent READ showImageContent WRITE setShowImageContent NOTIFY showImageContentChanged)
     //记录是否在管理器中把图片当做自己个图标显示（可能会导致滑动不流畅）
+    Q_PROPERTY(QString nameFilters READ nameFilters WRITE setNameFilters NOTIFY nameFiltersChanged)
+    //文件名的过滤器（只对文件名有效）
 
     Q_ENUMS(ChooseType)
     Q_ENUMS(ChooseMode)
@@ -118,10 +120,10 @@ public:
     bool inverseTheme() const;
     QString currentPath() const;
     bool showImageContent() const;
+    QString nameFilters() const;
 
 public Q_SLOTS:
-    int exec(const QString initPath="", const QString& nameFilters="",
-             Filters filters=NoFilter, SortFlags sortflags=NoSort);
+    int exec(const QString initPath="", Filters filters=NoFilter, SortFlags sortflags=NoSort);
 
     QVariant firstSelection() const;
     QVariant lastSelection() const;
@@ -146,8 +148,9 @@ public Q_SLOTS:
     //返回当前目录是否是根目录
     QVariantList getDrivesInfoList() const;
     void setShowImageContent(bool arg);
-
     void close();
+    void setNameFilters(QString arg);
+
 Q_SIGNALS:
     void closeLoop();
     void chooseTypeChanged(ChooseType arg);
@@ -156,6 +159,7 @@ Q_SIGNALS:
     void currentPathChanged();
     void selectionCountChanged();
     void showImageContentChanged(bool arg);
+    void nameFiltersChanged(QString arg);
 
 private Q_SLOTS:
 
@@ -177,11 +181,13 @@ private:
     bool isShow;//记录文件对话框是否正在显示中
     QString m_currentPath;//记录当前绝对路径
     bool m_showImageContent;//记录是否把图片资源当做自己的图标显示
+    QString m_nameFilters;
 
     bool dirIsEmpty(const QFileInfo& fileInfo) const;
     //判断一个文件夹是否为空的
     QString sizeConvert(const qint64& size) const;
     //将字节转化成更方便查看的单位，例如KB MB GB
+    bool containsNameFilters(const QString& fileName) const;
 };
 
 #endif // SELECTFILESDIALOG_H

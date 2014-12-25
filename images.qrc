@@ -2,20 +2,19 @@
     <qresource prefix="/">
         <file>images/shade.svg</file>
         <file>images/tab_active_normal_c_inverse.svg</file>
-        <file>images/toolbar.svg</file>
-        <file>images/toolbar_inverse.svg</file>
         <file>images/tab_active_normal_c.svg</file>
-        <file>images/skin.png</file>
-        <file>images/skin_invert.png</file>
         <file>images/mask.bmp</file>
         <file>images/loading.png</file>
         <file>images/save.svg</file>
         <file>images/shadow.png</file>
-        <file>images/back.svg</file>
-        <file>images/back_inverse.svg</file>
         <file>images/message_send.svg</file>
         <file>images/message_send_inverse.svg</file>
         <file>images/logo_grounding.png</file>
         <file>images/logo.svg</file>
+        <file>images/up.svg</file>
+        <file>images/cuttingLine.png</file>
+        <file>images/defaultImage.svg</file>
+        <file>images/indicator.svg</file>
+        <file>images/indicator_inverse.svg</file>
     </qresource>
 </RCC>

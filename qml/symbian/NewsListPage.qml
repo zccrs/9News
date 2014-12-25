@@ -9,14 +9,14 @@ NewsList{
     BusyIndicator {
         id: busyIndicator
         running: visible
-        visible: root.isBusy
+        visible: isBusy
         anchors.centerIn: parent
         width: 50
         height: 50
     }
 
     ScrollBar {
-        platformInverted: command.invertedTheme
+        platformInverted: command.style.scrollBarInverted
         flickableItem: root
         anchors {
             right: parent.right

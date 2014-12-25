@@ -10,10 +10,11 @@ Item{
     property int menuItemPixelSize: 22
     property int currentIndex: listMenu.currentIndex
     property int menuItemHeight: 30
+    property alias listModel: mymodel
 
     signal trigger(int index)
 
-    height: listMenu.count*(menuItemHeight+listMenu.spacing)
+    height: listMenu.count*(menuItemHeight+listMenu.spacing+10)
 
     function addMenu(menuText, iconSource){
         var obj = {
@@ -52,18 +53,26 @@ Item{
     ListView{
         id: listMenu
 
+        property int yDeviation: 0
+
         interactive: false
         width: parent.width
         height: parent.height
         spacing: 5
+        clip: true
 
-        y:{
-            if(listView.contentY<0){
-                return -listView.contentY-height-10
+        onHeightChanged: {
+            updateY()
+        }
+
+        function updateY(){
+            if(listView.atYBeginning){
+                y = -listView.contentY+yDeviation-height-10
             }else{
-                return -height
+                y = -height
             }
         }
+
         onYChanged:{
             if(y>height){
                 currentIndex = 0
@@ -77,16 +86,30 @@ Item{
             id: mymodel
         }
         delegate: listDelegate
+
+        Connections{
+            target: listView
+
+            onContentYChanged:{
+                listMenu.updateY()
+            }
+
+            onAtYBeginningChanged:{
+                if(listView.atYBeginning){
+                    listMenu.yDeviation = listView.contentY
+                }
+            }
+        }
     }
 
     Component{
         id: listDelegate
 
-        Item{
+            Item{
 
             property bool active: ListView.view.currentIndex == index
 
-            width: icon.implicitWidth+title.width+title.anchors.leftMargin
+            width: icon.implicitWidth+title.implicitWidth+title.anchors.leftMargin
             height: title.implicitHeight
             anchors.horizontalCenter: parent.horizontalCenter
 
@@ -98,12 +121,12 @@ Item{
             }
             Text{
                 id: title
-                anchors.verticalCenter: parent.verticalCenter
+
                 anchors.left: icon.right
                 anchors.leftMargin: iconSource!=""?10:0
-                wrapMode: Text.WordWrap
                 text: menuText
-                color: active?(invertedTheme?"white":"black"):"#888"
+                color: active?command.style.metroActiveTitleFontColor:
+                               command.style.metroInactiveTitleFontColor
                 scale: active?1.2:1
 
                 font{
@@ -119,9 +142,11 @@ Item{
             }
 
             Component.onCompleted: {
-                if(height>menuItemHeight){
-                    menuItemHeight = height
-                }
+                menuItemHeight = height
+            }
+
+            onHeightChanged: {
+                menuItemHeight = height
             }
         }
     }

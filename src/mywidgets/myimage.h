@@ -48,7 +48,8 @@ public:
     bool cache() const;
     bool grayscale() const;
     
-    void chromaticToGrayscale(QImage &image);
+    static void chromaticToGrayscale(QImage &image);
+    //将图片转化为黑白图
     static QString imageFormatToString(const QByteArray& array);
 
 #if(QT_VERSION>=0x050000)

@@ -1,8 +1,11 @@
 TARGET = 9News
 
+CONFIG += mobility
+MOBILITY += systeminfo
 # Add more folders to ship with the application, here
 
 # Additional import path used to resolve QML modules in Creator's code model
+QML_IMPORT_PATH =
 
 INCLUDEPATH += src
 
@@ -11,37 +14,32 @@ folder_02.target = qml
 folder_03.source = qml/js
 folder_03.target = qml
 
+
 symbian{
-    contains(QT_VERSION, 4.7.3){
-        DEFINES += Q_OS_S60V5
-        folder_01.source = qml/symbian1
-#        RESOURCES += Symbian1-res.qrc
-    } else {
-        folder_01.source = qml/symbian
-#        RESOURCES += Symbian3-res.qrc
-    }
-    folder_01.target = qml
-    DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03
+    QT += webkit
 
     TARGET.UID3 = 0xE2E87DAE
     TARGET.CAPABILITY += NetworkServices
 
+    folder_01.source = qml/symbian
+    folder_01.target = qml
+    folder_04.source = theme_symbian
+    folder_04.target = ./
+    DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03 folder_04
+
     RESOURCES += symbian.qrc
-
-    vendorinfo = "%{\"9Smart\"}" ":\"9Smart\""
-    my_deployment.pkg_prerules += vendorinfo
-    DEPLOYMENT.display_name = 久闻
-    DEPLOYMENT += my_deployment
-
-#    CONFIG += localize_deployment
 }
 
 contains(MEEGO_EDITION, harmattan){
+    QT += webkit
+
     CONFIG += qdeclarative-boostable
 
     folder_01.source = qml/meego
     folder_01.target = qml
-    DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03
+    folder_04.source = theme_meego
+    folder_04.target = ./
+    DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03 folder_04
 
     OTHER_FILES += \
         qtc_packaging/debian_harmattan/rules \
@@ -68,14 +66,16 @@ contains(QT_VERSION, 4.8.6){
     DISTFILES += \
         bar-descriptor.xml \
         qml/blackberry/main.qml
-
-    DEPLOYMENTFOLDERS += folder_03
 }
 
 simulator{
+    QT += webkit
+
     folder_01.source = qml
     folder_01.target = ./
-    DEPLOYMENTFOLDERS += folder_01
+    folder_04.source = theme_symbian
+    folder_04.target = ./
+    DEPLOYMENTFOLDERS += folder_01 folder_04
 
     RESOURCES += symbian.qrc
 }
@@ -111,21 +111,12 @@ qtcAddDeployment()
 include(src/utility/utility.pri)
 include(src/selectfilesdialog/selectfilesdialog.pri)
 include(src/mywidgets/mywidgets.pri)
-
+#include(src/yeatse/yeatse.pri)
 
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    theme.qrc
 
 HEADERS += \
-<<<<<<< HEAD
-    src/ncommand.h \
-
-DISTFILES += \
-    qml/blackberry/ListPage.qml
-
-OTHER_FILES += \
-    qml/blackberry/NewsPage.qml
-=======
     src/ncommand.h
->>>>>>> dev_AfterTheRainOfStars

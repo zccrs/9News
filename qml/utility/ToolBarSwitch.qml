@@ -8,9 +8,8 @@ Item{
     property Component toolBarComponent
     property bool enableAnimation: true
 
-    implicitWidth: screen.width
-    implicitHeight: qtObject.currentItem.height
-    y: parent?parent.height-implicitHeight:0
+    width: parent?parent.width:screen.width
+    height: Math.max(qtObject.currentItem.height, parent.height)
 
     onToolBarComponentChanged: {
         if(enableAnimation&&qtObject.currentItem){

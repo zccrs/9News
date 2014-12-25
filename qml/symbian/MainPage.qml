@@ -3,7 +3,7 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 import com.star.widgets 1.0
 import "../utility"
-import "../utility/metro"
+import "customwidget"
 import "../utility/newsListPage"
 import "../js/api.js" as Api
 
@@ -12,10 +12,10 @@ MyPage{
 
     property bool isQuit: false
     //判断此次点击后退键是否应该退出
-    signal refreshNewsList
-    //发射信号刷新当前新闻列表
     property bool isBusy: false
     //记录是否正在忙碌，例如正在获取新闻分类
+    signal refreshNewsList
+    //发射信号刷新当前新闻列表
 
     function getNewsCategorysFinished(error, data){
         isBusy = false
@@ -60,12 +60,12 @@ MyPage{
     Component{
         id: compoentToolBarLayout
 
-        CustomToolBarLayout{
-            invertedTheme: command.invertedTheme
+        MyToolBarLayout{
+            invertedTheme: command.style.toolBarInverted
 
             ToolButton{
                 iconSource: "toolbar-back"
-                platformInverted: command.invertedTheme
+                platformInverted: command.style.toolBarInverted
                 onClicked: {
                     if(isQuit){
                         Qt.quit()
@@ -77,14 +77,15 @@ MyPage{
                 }
             }
             ToolButton{
-                iconSource: command.getIconSource("skin", command.invertedTheme)
+                platformInverted: command.style.toolBarInverted
+                iconSource: command.getIconSource(command.style.toolBarInverted, "skin", "png")
                 onClicked: {
-                    command.invertedTheme =! command.invertedTheme
+                    command.themeSwitch()
                 }
             }
             ToolButton{
                 iconSource: "toolbar-search"
-                platformInverted: command.invertedTheme
+                platformInverted: command.style.toolBarInverted
                 onClicked: {
                     toolBarSwitch.toolBarComponent = compoentCommentToolBar
                     //搜索新闻
@@ -93,7 +94,7 @@ MyPage{
 
             ToolButton{
                 iconSource: "toolbar-menu"
-                platformInverted: command.invertedTheme
+                platformInverted: command.style.toolBarInverted
                 onClicked: {
                     mainMenu.open()
                 }
@@ -110,11 +111,10 @@ MyPage{
             property int currentNewsPage: 0
             //记录是在哪个新闻页面点击的搜索
 
-            invertedTheme: command.invertedTheme
+            invertedTheme: command.style.toolBarInverted
             rightButtonIconSource: "toolbar-search"
 
             onLeftButtonClick: {
-                textArea.closeSoftwareInputPanel()
                 metroView.pageInteractive = true
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
                 if(metroView.getTitle(metroView.currentPageIndex)==qsTr("Searched result")){
@@ -136,7 +136,6 @@ MyPage{
                     metroView.addItem(qsTr("Searched result"), "", textAreaContent)
                     metroView.activation(metroView.pageCount-1)
                     metroView.pageInteractive = false
-                    textArea.closeSoftwareInputPanel()
                 }
             }
 
@@ -150,7 +149,6 @@ MyPage{
     HeaderView{
         id: headerView
 
-        invertedTheme: command.invertedTheme
         height: metroView.titleBarHeight
     }
 
@@ -165,9 +163,9 @@ MyPage{
 
     MetroView{
         id: metroView
+
         anchors.fill: parent
-        //titleBarHeight: headerView.height
-        titleSpacing: 25
+        titleSpacing: 15
         titleMaxFontSize: command.style.metroTitleFontPixelSize
 
         function addItem(title, category, keyword, order){
@@ -215,39 +213,48 @@ MyPage{
     }
 
     // define the menu
-     Menu {
-         id: mainMenu
-         // define the items in the menu and corresponding actions
-         platformInverted: command.invertedTheme
-         content: MenuLayout {
-             MenuItem {
-                 text: qsTr("Personal Center")
-                 platformInverted: command.invertedTheme
-             }
-             MenuItem {
-                 text: qsTr("Refresh All News Categorys")
-                 platformInverted: command.invertedTheme
+    Menu {
+        id: mainMenu
+        // define the items in the menu and corresponding actions
+        platformInverted: command.style.menuInverted
+        content: MenuLayout {
+            MenuItem {
+                text: qsTr("Personal Center")
+                platformInverted: mainMenu.platformInverted
 
-                 onClicked: {
-                     updateAllNewsCategorys()
-                     //更新所有分类的新闻
-                 }
-             }
-             MenuItem {
-                 text: qsTr("Settings")
-                 platformInverted: command.invertedTheme
+                onClicked: {
+                    var auth = utility.value("auth", "")
+                    if(auth!=""){
+                        pageStack.push(Qt.resolvedUrl("./usercenter/UserCenterPage.qml"))
+                    }else{
+                        pageStack.push(Qt.resolvedUrl("./usercenter/LoginPage.qml"))
+                    }
+                }
+            }
+            MenuItem {
+                text: qsTr("Refresh All News Categorys")
+                platformInverted: mainMenu.platformInverted
 
-                 onClicked: {
-                     pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
-                 }
-             }
-             MenuItem {
-                 text: qsTr("About")
-                 platformInverted: command.invertedTheme
-                 onClicked: {
-                     pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
-                 }
-             }
-         }
-     }
+                onClicked: {
+                    updateAllNewsCategorys()
+                    //更新所有分类的新闻
+                }
+            }
+            MenuItem {
+                text: qsTr("Settings")
+                platformInverted: mainMenu.platformInverted
+
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
+                }
+            }
+            MenuItem {
+                text: qsTr("About")
+                platformInverted: mainMenu.platformInverted
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
+                }
+            }
+        }
+    }
 }
