@@ -6,14 +6,19 @@ import "JS/main.js" as Script
 Page {
     id: mainPage;
 
-    //property alias categoryIndex: 0;
+    property bool loading: false;
+
+    property alias currentCategoryIndex: header.selectedIndex;
+    onCurrentCategoryIndexChanged: {
+        Script.currentCategory = currentCategoryIndex;
+        internal.switchToNewsList(Script.newsList[currentCategoryIndex].categoryName);
+    }
 
     tools: ToolBarLayout {
         enabled: !header.selecting;
         ToolButton {
             iconSource: "toolbar-back";
             platformInverted: settings.invertedTheme;
-            //enabled: !header.selecting;
             onClicked: {
                 if (quitTimer.running)
                     Qt.quit();
@@ -42,36 +47,29 @@ Page {
 
         property variant viewComp: null;
 
-        function updateCategory() {
-            header.model = Script.categoryTitle;
-        }
-
-        function findNewsListByTitle(title) {
+        function findNewsListByName(cate) {
             for (var i = 0; i < newsListTabGroup.privateContents.length; i++) {
-                if (newsListTabGroup.privateContents[i].categoryTitle == title){
+                if (newsListTabGroup.privateContents[i].categoryName == cate){
                     return newsListTabGroup.privateContents[i];
                 }
             }
             return null;
         }
-        function addNewsList(title) {
-            var exist = findNewsListByTitle(title);
+        function switchToNewsList(cate) {
+            var exist = findNewsListByName(cate);
             if (exist) {
                 newsListTabGroup.currentTab = exist;
-                console.log("Tab is already existed: " + title);
                 return;
             }
-            console.log("Tab is not existed: " + title);
             if (!viewComp)
                 viewComp = Qt.createComponent("Main/NewsListListView.qml");
             var view = viewComp.createObject(newsListTabGroup);
-            if (title)
-                view.categoryTitle = title;
+            if (cate)
+                view.categoryName = cate;
             else
-                view.categoryTitle = "";
+                view.categoryName = "";
+            newsListTabGroup.currentTab = view;
         }
-
-
     }
 
     Header {
@@ -107,17 +105,30 @@ Page {
         }
     }
 
+    Rectangle {
+        id: isBusyMask;
+        anchors.fill: parent;
+        color: "Black";
+        opacity: loading ? constants.maskOpacity : 0.0;
+        BusyIndicator {
+            anchors.centerIn: parent;
+            width: constants.busyIndicatorSizeLarge;
+            height: width;
+            running: loading;
+        }
+        MouseArea {
+            anchors.fill: parent;
+            enabled: loading;
+        }
+    }
+
     Connections {
         target: signalCenter;
-        onCategoryChanged: {
-            internal.updateCategory();
-            Script.currentCategory = header.selectedIndex;
-            Script.currentcategoryTitle = header.model[header.selectedIndex];
-            //internal.getNews(Script.currentCategory);
-            internal.addNewsList(Script.currentCategoryTitle);
-        }
-        onNewsListChanged: {
-            internal.updateNewsList();
+        onCategoriesChanged: {
+            var arr = [];
+            for (var i = 0; i < Script.newsList.length; i++)
+                arr.push(Script.newsList[i].categoryTitle);
+            header.model = arr;
         }
     }
 

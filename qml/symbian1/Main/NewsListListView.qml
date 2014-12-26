@@ -5,24 +5,21 @@ import "../JS/main.js" as Script
 PullRefreshListView {
     id: newsListListView;
 
-    //property int categoryIndex: -1;
-    //onCategoryIndexChanged: internal.getNewsList();
-    property string categoryTitle: "";
-    onCategoryTitleChanged: {
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        internal.getNewsList(categoryTitle);
+    property string categoryName: "_";
+    onCategoryNameChanged: {
+        internal.getNewsList();
     }
 
     QtObject {
         id: internal;
 
-        function getNewsList(cate) {
-            var prop = { category: cate };
-            //Script.sendRequest("NEWSLIST", prop);
+        function getNewsList() {
+            var prop = { category: categoryName };
+            Script.sendRequest("NEWSLIST", prop);
         }
 
         function updateNewsList() {
-            newsListListView.model = Script.newsList[header.selectedIndex].articles;
+            newsListListView.model = Script.newsList[Script.currentCategory].articles;
         }
     }
 
@@ -37,4 +34,17 @@ PullRefreshListView {
             orientation: ListView.Horizontal;
         }
     }*/
+
+    onRefreshActivated: {
+        internal.getNewsList();
+    }
+
+    Connections {
+        target: signalCenter;
+        onNewsListChanged: {
+            if (p_category === categoryName) {
+                internal.updateNewsList();
+            }
+        }
+    }
 }

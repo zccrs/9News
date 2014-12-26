@@ -6,6 +6,9 @@ QtObject {
 
     // UI - Graphic size
     property int headerHeight: 60;
+    property int busyIndicatorSizeSmall: 40;
+    property int busyIndicatorSizeMedium: 70;
+    property int busyIndicatorSizeLarge: 10;
 
     // UI - Margins
     property real headerTitleLeftMargin: 15;

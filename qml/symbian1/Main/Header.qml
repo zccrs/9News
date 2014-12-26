@@ -8,10 +8,8 @@ ImplicitSizeItem {
 
     property alias selectedIndex: categoryList.currentIndex;
 
-    //property alias model: categoryList.model;
     property variant model: [];
     onModelChanged: {
-        //console.log(">>> Category Title Changed");
         categoryList.model = model;
         selectedIndex = 0;
     }
@@ -77,18 +75,8 @@ ImplicitSizeItem {
         height: 0;
         anchors.left: parent.left; anchors.right: parent.right;
         anchors.top: titleArea.bottom;
-        /*states: [
-            State {
-                name: "show";
-                PropertyChanges {
-                    target: categoryArea;
-
-                }
-            }
-        ]*/
         Behavior on height {
             NumberAnimation {
-                //target: categoryArea;
                 duration: constants.animationDurationNormal;
                 easing.type: Easing.InOutQuad;
             }
@@ -104,7 +92,7 @@ ImplicitSizeItem {
             enabled: selecting;
             model: model;
             delegate: categoryListDelegate;
-            currentIndex: 0;
+            currentIndex: -1;
             Component {
                 id: categoryListDelegate;
                 Item {

@@ -4,8 +4,8 @@ QtObject {
     id: signalCenter;
 
     // signals
-    signal categoryChanged;
-    signal newsListChanged;
+    signal categoriesChanged;
+    signal newsListChanged(string p_category);
 
     // functions
     function showMessage(icon, message) {
