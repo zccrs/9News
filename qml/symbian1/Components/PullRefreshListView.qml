@@ -1,22 +1,36 @@
 import QtQuick 1.0
-import com.stars.utility 1.0
+import com.nokia.symbian 1.1
+//import com.stars.utility 1.0
 
 ListView {
     id: listView;
 
-    Item {
-        id: pullDownItem
+    property bool pullRefreshActivated: pullRefreshIndicator.y > pullRefreshIndicator.implicitHeight * 1.5;
 
-        property bool active: y>implicitHeight*1.5
-
-        //text: active?qsTr("loosen refresh"):qsTr("pull down refresh")
-        //color: "#888"
-        anchors.horizontalCenter: parent.horizontalCenter
+    ImplicitSizeItem {
+        id: pullRefreshIndicator;
+        implicitHeight: row.height;
+        implicitWidth: row.width;
+        anchors.horizontalCenter: parent.horizontalCenter;
         y: {
-            if(root.contentY<0)
-                return -root.contentY-implicitHeight-10
+            if(listView.contentY < 0)
+                return -root.contentY - implicitHeight - 10;
             else
-                return -implicitHeight
+                return -implicitHeight;
         }
+        Row {
+            id: row;
+            Image {
+                id: arrow;
+                source: "file";
+            }
+            Text {
+                id: hint;
+                anchors.verticalCenter: arrow.verticalCenter;
+                color: "#888";
+                text: pullRefreshActivated ? qsTr("Release to refresh") : qsTr("Pull down to refresh");
+            }
+        }
+
     }
 }
