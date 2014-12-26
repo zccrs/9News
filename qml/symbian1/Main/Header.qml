@@ -11,7 +11,7 @@ ImplicitSizeItem {
     //property alias model: categoryList.model;
     property variant model: [];
     onModelChanged: {
-        console.log(">>> Category Title Changed")
+        //console.log(">>> Category Title Changed");
         categoryList.model = model;
         selectedIndex = 0;
     }
@@ -49,14 +49,19 @@ ImplicitSizeItem {
         Rectangle {
             anchors.fill: parent;
             color: "Black";
-            opacity: selecting ? 0.6 : 0.0;
+            opacity: selecting ? constants.maskOpacity : 0.0;
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: constants.animationDurationNormal;
+                }
+            }
         }
         Text {
             id: titleLabel;
             anchors.verticalCenter: parent.verticalCenter;
             anchors.left: parent.left;
             anchors.leftMargin: constants.headerTitleLeftMargin;
-            text: model[selectedIndex];
+            text: categoryList.count == 0 ? qsTr("Title") : (model[selectedIndex] == "" ? qsTr("All") : model[selectedIndex]);
         }
         MouseArea {
             id: titleMouseArea;
@@ -84,7 +89,8 @@ ImplicitSizeItem {
         Behavior on height {
             NumberAnimation {
                 //target: categoryArea;
-                duration: 300;
+                duration: constants.animationDurationNormal;
+                easing.type: Easing.InOutQuad;
             }
         }
         Rectangle {
@@ -98,6 +104,7 @@ ImplicitSizeItem {
             enabled: selecting;
             model: model;
             delegate: categoryListDelegate;
+            currentIndex: 0;
             Component {
                 id: categoryListDelegate;
                 Item {

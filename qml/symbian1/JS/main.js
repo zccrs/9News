@@ -3,13 +3,16 @@
 Qt.include("Service.js");
 
 var _signalCenter, _settings;
-var category, categoryTitle;
-var currentCategory;
-var newsList = new Array(30);
+var category = [""], categoryTitle = [""];
+var currentCategory, currentCategoryTitle;
+var newsList = [];
+//var categoryTitles = [];
 
 function initialize(sc, s) {
     _signalCenter = sc;
     _settings = s;
+    //categoryTitle.push("");
+    //category.push("");
 }
 
 // Common functions
@@ -64,12 +67,13 @@ function sendRequest(inte, prop) {
 
 // Category
 function getCategory(json) {
-    console.log(json);
+    //console.log(json);
     var obj = JSON.parse(json);
-    category = obj.categorys;
-    categoryTitle = obj.titles;
+    for (var i = 0; i < obj.categorys.length; i++) {
+        category.push(obj.categorys[i]);
+        categoryTitle.push(obj.titles[i]);
+    }
     _signalCenter.categoryChanged();
-    console.log(newsList[0]);
 }
 
 // News list
@@ -83,3 +87,4 @@ function getNewsList(json) {
     newsList[currentCategory].pager = obj.pager;
     _signalCenter.newsListChanged();
 }
+

@@ -23,6 +23,6 @@ function getUrl(inte, prop) {
     } else if (inte === "NEWSLIST") {
         url = HOST + "?" + aq("category", prop.category);
     }
-    console.log(url);
+    console.log("==Request URL==  " + url);
     return url;
 }

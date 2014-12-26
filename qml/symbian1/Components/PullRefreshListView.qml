@@ -1,11 +1,13 @@
 import QtQuick 1.0
 import com.nokia.symbian 1.1
-//import com.stars.utility 1.0
+import com.star.utility 1.0
 
 ListView {
     id: listView;
 
     property bool pullRefreshActivated: pullRefreshIndicator.y > pullRefreshIndicator.implicitHeight * 1.5;
+
+    signal refreshActivated;
 
     ImplicitSizeItem {
         id: pullRefreshIndicator;
@@ -14,7 +16,7 @@ ListView {
         anchors.horizontalCenter: parent.horizontalCenter;
         y: {
             if(listView.contentY < 0)
-                return -root.contentY - implicitHeight - 10;
+                return -listView.contentY - implicitHeight - 10;
             else
                 return -implicitHeight;
         }
@@ -22,7 +24,13 @@ ListView {
             id: row;
             Image {
                 id: arrow;
-                source: "file";
+                source: "../Resources/gfx/pull_down.svg";
+                rotation: pullRefreshActivated ? 180 : 0;
+                Behavior on rotation {
+                    NumberAnimation {
+                        duration: constants.animationDurationFast;
+                    }
+                }
             }
             Text {
                 id: hint;
@@ -31,6 +39,13 @@ ListView {
                 text: pullRefreshActivated ? qsTr("Release to refresh") : qsTr("Pull down to refresh");
             }
         }
-
+    }
+    MonitorMouseEvent {
+        id: mouseEventMonitor;
+        target: listView;
+        onMouseRelease: {
+            if (pullRefreshActivated)
+                refreshActivated();
+        }
     }
 }

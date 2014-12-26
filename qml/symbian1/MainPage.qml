@@ -1,7 +1,6 @@
 import QtQuick 1.0
 import com.nokia.symbian 1.1
 import "Main"
-import "Components"
 import "JS/main.js" as Script
 
 Page {
@@ -10,8 +9,11 @@ Page {
     //property alias categoryIndex: 0;
 
     tools: ToolBarLayout {
+        enabled: !header.selecting;
         ToolButton {
             iconSource: "toolbar-back";
+            platformInverted: settings.invertedTheme;
+            //enabled: !header.selecting;
             onClicked: {
                 if (quitTimer.running)
                     Qt.quit();
@@ -21,47 +23,87 @@ Page {
             }
         }
         ToolButton {
-            iconSource: "Resources/gfx/tem.svg";
+            iconSource: "Resources/gfx/skin" + (settings.invertedTheme ? "_inverted.png" : ".png");
+            platformInverted: settings.invertedTheme;
             onClicked: settings.invertedTheme = !settings.invertedTheme;
         }
         ToolButton {
             iconSource: "toolbar-search";
-            onClicked: header.model = listModel2;
+            platformInverted: settings.invertedTheme;
         }
         ToolButton {
             iconSource: "toolbar-menu";
+            platformInverted: settings.invertedTheme;
         }
     }
 
     QtObject {
         id: internal;
 
+        property variant viewComp: null;
+
         function updateCategory() {
             header.model = Script.categoryTitle;
         }
 
-        function getNews(cate) {
-            var prop = {
-                category: cate
+        function findNewsListByTitle(title) {
+            for (var i = 0; i < newsListTabGroup.privateContents.length; i++) {
+                if (newsListTabGroup.privateContents[i].categoryTitle == title){
+                    return newsListTabGroup.privateContents[i];
+                }
             }
-            Script.sendRequest("NEWSLIST", prop);
+            return null;
+        }
+        function addNewsList(title) {
+            var exist = findNewsListByTitle(title);
+            if (exist) {
+                newsListTabGroup.currentTab = exist;
+                console.log("Tab is already existed: " + title);
+                return;
+            }
+            console.log("Tab is not existed: " + title);
+            if (!viewComp)
+                viewComp = Qt.createComponent("Main/NewsListListView.qml");
+            var view = viewComp.createObject(newsListTabGroup);
+            if (title)
+                view.categoryTitle = title;
+            else
+                view.categoryTitle = "";
         }
 
-        function updateNewsList() {
-            //
-        }
+
     }
 
     Header {
         id: header;
+        z: 3;
     }
-    PullRefreshListView {
-        id: newsListListView;
+    Item {
+        id: newsListContainer;
         anchors.top: header.bottom;
         anchors.left: parent.left; anchors.right: parent.right;
         anchors.bottom: parent.bottom;
-        Component {
-            id: slidesListView
+        TabGroup {
+            id: newsListTabGroup;
+            anchors.fill: parent;
+        }
+    }
+
+    Rectangle {
+        id: titleSelectingMask;
+        anchors.fill: newsListContainer;
+        color: "Black";
+        opacity: header.selecting ? constants.maskOpacity : 0.0;
+        Behavior on opacity {
+            NumberAnimation {
+                duration: constants.animationDurationNormal;
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent;
+            enabled: header.selecting;
+            onClicked: header.selecting = !header.selecting;
         }
     }
 
@@ -70,7 +112,9 @@ Page {
         onCategoryChanged: {
             internal.updateCategory();
             Script.currentCategory = header.selectedIndex;
-            internal.getNews(Script.category[header.selectedIndex]);
+            Script.currentcategoryTitle = header.model[header.selectedIndex];
+            //internal.getNews(Script.currentCategory);
+            internal.addNewsList(Script.currentCategoryTitle);
         }
         onNewsListChanged: {
             internal.updateNewsList();

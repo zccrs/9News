@@ -115,4 +115,3 @@ qtcAddDeployment()
 #include(src/yeatse/yeatse.pri)
 
 
-
