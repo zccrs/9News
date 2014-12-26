@@ -1,47 +1,39 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
-import QtQuick 1.1
+import QtQuick 1.0
 import com.nokia.symbian 1.1
 import com.nokia.extras 1.1
+import "Modules"
 
-PageStackWindow{
-    id:main
-    showStatusBar:true
-    showToolBar: true
-    platformSoftwareInputPanelEnabled :true
-    platformInverted: command.invertedTheme
+PageStackWindow {
+    id: app;
+    platformInverted: settings.invertedTheme;
+    initialPage: mainPage;
 
-    initialPage: MainPage{}
-
-    function showBanner(string){
-        banner.text = string
-        banner.open()
+    // Pages
+    MainPage {
+        id: mainPage;
     }
 
+    // Modules
+    SignalCenter {
+        id: signalCenter;
+    }
+    Settings {
+        id: settings;
+    }
+    Constants {
+        id: constants;
+    }
+
+    // Components
     InfoBanner {
-        id: banner
-        timeout: 2000
-        platformInverted: main.platformInverted
+        id: infoBanner;
+        timeout: 3000;
+        interactive: false;
     }
-
-    Image{
-        anchors.top: parent.top
-        anchors.topMargin: privateStyle.statusBarHeight
-        anchors.left: parent.left
-        source: "qrc:/images/mask_leftTop.png"
-    }
-    Image{
-        anchors.top: parent.top
-        anchors.topMargin: privateStyle.statusBarHeight
-        anchors.right: parent.right
-        source: "qrc:/images/mask_rightTop.png"
-    }
-    Image{
-        anchors.bottom: parent.bottom
-        source: "qrc:/images/mask_leftBottom.png"
-    }
-    Image{
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        source: "qrc:/images/mask_rightBottom.png"
+    Timer {
+        id: quitTimer;
+        interval: 3000;
+        repeat: false;
+        running: false;
     }
 }
