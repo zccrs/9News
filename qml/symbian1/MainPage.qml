@@ -1,6 +1,7 @@
 import QtQuick 1.0
 import com.nokia.symbian 1.1
 import "Main"
+import "Components"
 import "JS/main.js" as Script
 
 Page {
@@ -54,7 +55,15 @@ Page {
     Header {
         id: header;
     }
-
+    PullRefreshListView {
+        id: newsListListView;
+        anchors.top: header.bottom;
+        anchors.left: parent.left; anchors.right: parent.right;
+        anchors.bottom: parent.bottom;
+        Component {
+            id: slidesListView
+        }
+    }
 
     Connections {
         target: signalCenter;
