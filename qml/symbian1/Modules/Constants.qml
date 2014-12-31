@@ -6,9 +6,23 @@ QtObject {
 
     // UI - Graphic size
     property int headerHeight: 60;
+    property int busyIndicatorSizeSmall: 40;
+    property int busyIndicatorSizeMedium: 70;
+    property int busyIndicatorSizeLarge: 10;
 
     // UI - Margins
     property real headerTitleLeftMargin: 15;
+    property real marginSmall: 5;
+    property real marginMedium: 10;
+    property real marginLarge: 20;
+
+    // UI - Mask Opacity
+    property real maskOpacity: 0.6;
+
+    // Animation - Duration
+    property int animationDurationFast: 100;
+    property int animationDurationNormal: 300;
+    property int animationDurationSlow: 500;
 
     // color
     //property color colorLight: platformStyle.colorNormalLight;

@@ -3,13 +3,16 @@
 Qt.include("Service.js");
 
 var _signalCenter, _settings;
-var category, categoryTitle;
-var currentCategory;
-var newsList = new Array(30);
+//var category = [""], categoryTitle = [""];
+var currentCategory = 0;
+//var currentCategoryName, currentCategoryTitle;
+var newsList = [];
+//var categoryTitles = [];
 
 function initialize(sc, s) {
     _signalCenter = sc;
     _settings = s;
+    newsList.push(createNewsListObject("", qsTr("All")));
 }
 
 // Common functions
@@ -25,12 +28,13 @@ function sendHttpRequest(method, url, data, onSucceed, onFail) {
         }
         case xhr.DONE: {
             if (xhr.status == 200) {
-                try {
+                //try {
                     onSucceed(xhr.responseText);
                     //signalcenter.loadFinished();
-                } catch (err) {
-                    onFail(qsTr("Loading error."));
-                }
+                //} catch (err) {
+                //    console.log("------------------LOADINGERROR??????!!!!!!");
+                //    onFail(qsTr("Loading error."));
+                //}
             } else {
                 onFail(qsTr("Error."));
             }
@@ -64,22 +68,27 @@ function sendRequest(inte, prop) {
 
 // Category
 function getCategory(json) {
-    console.log(json);
     var obj = JSON.parse(json);
-    category = obj.categorys;
-    categoryTitle = obj.titles;
-    _signalCenter.categoryChanged();
-    console.log(newsList[0]);
+    for (var i = 0; i < obj.categorys.length; i++) {
+        //category.push(obj.categorys[i]);
+        //categoryTitle.push(obj.titles[i]);
+        newsList.push(createNewsListObject(obj.categorys[i], obj.titles[i]));
+    }
+    _signalCenter.categoriesChanged();
+}
+
+function createNewsListObject(cate, titl) {
+    var obj = new Object();
+    obj.categoryName = cate;
+    obj.categoryTitle = titl;
+    return obj;
 }
 
 // News list
 function getNewsList(json) {
     console.log(json);
     var obj = JSON.parse(json);
-    if (newsList[currentCategory] === undefined) {
-        newsList[currentCategory] = new Object();
-    }
     newsList[currentCategory].articles = obj.articles;
     newsList[currentCategory].pager = obj.pager;
-    _signalCenter.newsListChanged();
+    _signalCenter.newsListChanged(newsList[currentCategory].categoryName);
 }

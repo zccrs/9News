@@ -1,17 +1,24 @@
 import QtQuick 1.0
 import com.nokia.symbian 1.1
 import "Main"
-import "Components"
 import "JS/main.js" as Script
 
 Page {
     id: mainPage;
 
-    //property alias categoryIndex: 0;
+    property bool loading: false;
+
+    property alias currentCategoryIndex: header.selectedIndex;
+    onCurrentCategoryIndexChanged: {
+        Script.currentCategory = currentCategoryIndex;
+        internal.switchToNewsList(Script.newsList[currentCategoryIndex].categoryName);
+    }
 
     tools: ToolBarLayout {
+        enabled: !header.selecting;
         ToolButton {
             iconSource: "toolbar-back";
+            platformInverted: settings.invertedTheme;
             onClicked: {
                 if (quitTimer.running)
                     Qt.quit();
@@ -21,59 +28,111 @@ Page {
             }
         }
         ToolButton {
-            iconSource: "Resources/gfx/tem.svg";
+            iconSource: "Resources/gfx/skin" + (settings.invertedTheme ? "_inverted.png" : ".png");
+            platformInverted: settings.invertedTheme;
             onClicked: settings.invertedTheme = !settings.invertedTheme;
         }
         ToolButton {
             iconSource: "toolbar-search";
-            onClicked: header.model = listModel2;
+            platformInverted: settings.invertedTheme;
         }
         ToolButton {
             iconSource: "toolbar-menu";
+            platformInverted: settings.invertedTheme;
         }
     }
 
     QtObject {
         id: internal;
 
-        function updateCategory() {
-            header.model = Script.categoryTitle;
-        }
+        property variant viewComp: null;
 
-        function getNews(cate) {
-            var prop = {
-                category: cate
+        function findNewsListByName(cate) {
+            console.log(newsListTabGroup.privateContents.length);
+            for (var i = 0; i < newsListTabGroup.privateContents.length; i++) {
+                console.log(newsListTabGroup.privateContents[i].categoryName);
+                if (newsListTabGroup.privateContents[i].categoryName == cate){
+                    return newsListTabGroup.privateContents[i];
+                }
             }
-            Script.sendRequest("NEWSLIST", prop);
+            return null;
         }
-
-        function updateNewsList() {
-            //
+        function switchToNewsList(cate) {
+            console.log("abc >> " + cate);
+            var exist = findNewsListByName(cate);
+            if (exist) {
+                newsListTabGroup.currentTab = exist;
+                return;
+            }
+            if (!viewComp)
+                viewComp = Qt.createComponent("Main/NewsListListView.qml");
+            var view = viewComp.createObject(newsListTabGroup);
+            if (cate)
+                view.categoryName = cate;
+            else
+                view.categoryName = "";
+            newsListTabGroup.currentTab = view;
+            console.log(newsListTabGroup.privateContents.length);
         }
     }
 
     Header {
         id: header;
+        z: 3;
     }
-    PullRefreshListView {
-        id: newsListListView;
+    Item {
+        id: newsListContainer;
         anchors.top: header.bottom;
         anchors.left: parent.left; anchors.right: parent.right;
         anchors.bottom: parent.bottom;
-        Component {
-            id: slidesListView
+        TabGroup {
+            id: newsListTabGroup;
+            anchors.fill: parent;
+        }
+    }
+
+    Rectangle {
+        id: titleSelectingMask;
+        anchors.fill: newsListContainer;
+        color: "Black";
+        opacity: header.selecting ? constants.maskOpacity : 0.0;
+        Behavior on opacity {
+            NumberAnimation {
+                duration: constants.animationDurationNormal;
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent;
+            enabled: header.selecting;
+            onClicked: header.selecting = !header.selecting;
+        }
+    }
+
+    Rectangle {
+        id: isBusyMask;
+        anchors.fill: parent;
+        color: "Black";
+        opacity: loading ? constants.maskOpacity : 0.0;
+        BusyIndicator {
+            anchors.centerIn: parent;
+            width: constants.busyIndicatorSizeLarge;
+            height: width;
+            running: loading;
+        }
+        MouseArea {
+            anchors.fill: parent;
+            enabled: loading;
         }
     }
 
     Connections {
         target: signalCenter;
-        onCategoryChanged: {
-            internal.updateCategory();
-            Script.currentCategory = header.selectedIndex;
-            internal.getNews(Script.category[header.selectedIndex]);
-        }
-        onNewsListChanged: {
-            internal.updateNewsList();
+        onCategoriesChanged: {
+            var arr = [];
+            for (var i = 0; i < Script.newsList.length; i++)
+                arr.push(Script.newsList[i].categoryTitle);
+            header.model = arr;
         }
     }
 
