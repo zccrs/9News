@@ -6,38 +6,38 @@ MOBILITY += systeminfo
 QML_IMPORT_PATH =
 INCLUDEPATH += src
 
-#General
+#通用qml组件文件
 folder_02.source = qml/utility
 folder_02.target = qml
 #js文件
 folder_03.source = qml/js
 folder_03.target = qml
 
-#Symbian
+#Symbian平台相关
 symbian{
     QT += webkit
 
     TARGET.UID3 = 0xE2E87DAE
     TARGET.CAPABILITY += NetworkServices
 
-    #Symbian qml files
+    #Symbian平台qml文件
     folder_01.source = qml/symbian
     folder_01.target = qml
     folder_04.source = theme_symbian
     folder_04.target = ./
     DEPLOYMENTFOLDERS += folder_01 folder_02 folder_03 folder_04
 
-    #Symbian resource files
+    #Symbian平台资源文件
     RESOURCES += symbian.qrc
 }
 
-#Meego
+#Meego平台相关
 contains(MEEGO_EDITION, harmattan){
     QT += webkit
 
     CONFIG += qdeclarative-boostable
 
-    #Meego qml files
+    #Meego平台qml文件
     folder_01.source = qml/meego
     folder_01.target = qml
     folder_04.source = theme_meego
@@ -53,11 +53,11 @@ contains(MEEGO_EDITION, harmattan){
         qtc_packaging/debian_harmattan/compat \
         qtc_packaging/debian_harmattan/changelog
 
-    #Meego resource files
+    #Meego平台资源文件
     RESOURCES += meego.qrc
 }
 
-#Blackberry
+#Blackberry平台相关
 contains(QT_VERSION, 4.8.6){
     DEFINES += Q_OS_BLACKBERRY
 
@@ -74,14 +74,14 @@ contains(QT_VERSION, 4.8.6){
         qml/blackberry/main.qml
 }
 
-#Sailfish
+#Sailfish平台相关
 contains(QT_VERSION,5.1.0){
     DEFINES += Q_OS_SAILFISH
 
 
 }
 
-#Symbian and meego simulator
+#Symbian和meego平台模拟器相关
 simulator{
     QT += webkit
 
@@ -94,24 +94,25 @@ simulator{
     RESOURCES += symbian.qrc
 }
 
-#General src files
+#公共源文件和头文件
 SOURCES += \
     src/main.cpp \
     src/ncommand.cpp
 HEADERS += \
     src/ncommand.h
 
-#General resource files
+#公用资源文件
 RESOURCES += \
     images.qrc \
     theme.qrc
 
-#sub-item
+#子项目
 include(src/utility/utility.pri)
 include(src/selectfilesdialog/selectfilesdialog.pri)
 include(src/mywidgets/mywidgets.pri)
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
+#include(src/yeatse/yeatse.pri)
 
 
 
