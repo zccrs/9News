@@ -226,7 +226,7 @@ MyPage{
             textColor: command.style.newsContentFontColor
             stepSize: 1
             KeyNavigation.up: titleFontSize
-            KeyNavigation.down: my_signature
+            KeyNavigation.down: selectionListItem
         }
 
         CuttingLine{
@@ -301,8 +301,14 @@ MyPage{
             anchors.leftMargin: 10
             anchors.rightMargin: 10
             anchors.topMargin: 20
+
+            KeyNavigation.up: contentFontSize
+            KeyNavigation.down: signature_input
+
             platformStyle: ToolButtonStyle{
-                inverted: command.style.selectionThemeButtonInverted
+                backgroundVisible: !selectionListItem.flat
+                inverted: command.style.selectionThemeButtonInverted!=true
+                textColor: command.style.newsContentFontColor
             }
             onClicked: {
                 selectionDialog.open()
@@ -348,7 +354,7 @@ MyPage{
         }
 
         TextField{
-            id:signature_input
+            id: signature_input
 
             placeholderText: command.signature==""?qsTr("Signature"):command.signature
             anchors.left: parent.left
@@ -358,7 +364,7 @@ MyPage{
             anchors.rightMargin: 10
             anchors.topMargin: 20
 
-            KeyNavigation.up: contentFontSize
+            KeyNavigation.up: selectionListItem
             KeyNavigation.down: show_image_off_on
         }
 

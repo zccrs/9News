@@ -1,13 +1,13 @@
 #ifndef MYNETWORKACCESSMANAGERFACTORY_H
 #define MYNETWORKACCESSMANAGERFACTORY_H
 
+#include <QtNetwork>
+#include <QSslConfiguration>
 #if(QT_VERSION>=0x050000)
 #include <QtQuick>
 #else
 #include <QtDeclarative>
 #endif
-#include <QtNetwork>
-#include <QSslConfiguration>
 
 #if(QT_VERSION>=0x050000)
 class MyNetworkAccessManagerFactory : public QObject,public QQmlNetworkAccessManagerFactory

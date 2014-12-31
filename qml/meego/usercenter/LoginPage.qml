@@ -1,27 +1,24 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.nokia.symbian 1.1
-import "../../js/api.js" as Api
-import "../"
+import com.nokia.meego 1.1
 import "../customwidget"
 import "../../utility"
+import "../../js/api.js" as Api
 
-MyPage{
+Page{
     id: root
 
     tools: MyToolBarLayout{
-        invertedTheme: command.style.toolBarInverted
+        MyToolIcon{
+            iconId: "toolbar-back"
 
-        ToolButton{
-            iconSource: "toolbar-back"
-            platformInverted: command.style.toolBarInverted
             onClicked: {
                 pageStack.pop()
             }
         }
-        ToolButton{
-            iconSource: "toolbar-menu"
-            platformInverted: command.style.toolBarInverted
+        MyToolIcon{
+            iconId: "toolbar-view-menu"
+
             onClicked: {
                 mainMenu.open()
             }
@@ -34,15 +31,14 @@ MyPage{
         textColor: command.style.newsContentFontColor
         font.pixelSize: command.style.metroTitleFontPixelSize
         title: qsTr("Login")
-        height: screen.currentOrientation===Screen.Portrait?
-                     privateStyle.tabBarHeightPortrait:privateStyle.tabBarHeightLandscape
+        height: screen.currentOrientation===Screen.Portrait?72:56
     }
 
     Image{
         id: imageLogo
 
         source: "qrc:/images/logo.svg"
-        width: 100
+        width: 150
         height: width
         anchors.top: header.bottom
         anchors.topMargin: 10
@@ -57,8 +53,8 @@ MyPage{
                 }
                 PropertyChanges {
                     target: imageLogo
-                    width: 50
-                    sourceSize.width: 50
+                    width: 60
+                    sourceSize.width: 60
                 }
             },
             State {
@@ -69,8 +65,8 @@ MyPage{
                 }
                 PropertyChanges {
                     target: imageLogo
-                    width: 100
-                    sourceSize.width: 100
+                    width: 150
+                    sourceSize.width: 150
                 }
             }
         ]
@@ -89,8 +85,8 @@ MyPage{
 
         Connections{
             target: root.status==PageStatus.Active?inputContext:null
-            onVisibleChanged:{
-                if(inputContext.visible){
+            onSoftwareInputPanelVisibleChanged:{
+                if(inputContext.softwareInputPanelVisible){
                     imageLogo.state = "logining"
                 }else{
                     timerStateChange.start()
@@ -134,7 +130,6 @@ MyPage{
         placeholderText: qsTr("email")
         anchors.top: imageLogo.bottom
         anchors.topMargin: 20
-        platformInverted: command.style.textInputInverted
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width*0.8
         KeyNavigation.down: inputPassword
@@ -145,7 +140,6 @@ MyPage{
         id: inputPassword
 
         placeholderText: qsTr("password")
-        platformInverted: command.style.textInputInverted
         anchors.top: inputEmail.bottom
         anchors.topMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
@@ -156,7 +150,7 @@ MyPage{
         echoMode: TextInput.Password
     }
 
-    Button{
+    MyButton{
         id: buttonLogin
 
         enabled: inputEmail.text!=""&&inputPassword.text!=""
@@ -165,7 +159,6 @@ MyPage{
         anchors.top: inputPassword.bottom
         anchors.topMargin: 20
         width: parent.width*0.6
-        platformInverted: command.style.buttonInverted
         anchors.horizontalCenter: parent.horizontalCenter
         KeyNavigation.down: inputEmail
         KeyNavigation.up: inputPassword
@@ -176,22 +169,19 @@ MyPage{
         }
     }
 
-    Menu {
+    MyMenu {
         id: mainMenu
         // define the items in the menu and corresponding actions
-        platformInverted: command.style.menuInverted
         content: MenuLayout {
-            MenuItem {
+            MyMenuItem {
                 text: qsTr("Register account")
-                platformInverted: mainMenu.platformInverted
 
                 onClicked: {
                     pageStack.push(Qt.resolvedUrl("RegisterAccount.qml"))
                 }
             }
-            MenuItem {
+            MyMenuItem {
                 text: qsTr("Retrieve password")
-                platformInverted: mainMenu.platformInverted
 
                 onClicked: {
                     pageStack.push(Qt.resolvedUrl("RetrievePassword.qml"))

@@ -194,7 +194,12 @@ MyPage{
              MyMenuItem {
                  text: qsTr("Personal Center")
                  onClicked: {
-                     pageStack.push(Qt.resolvedUrl("./usercenter/UserCenterPage.qml"))
+                     var auth = utility.value("auth", "")
+                     if(auth!=""){
+                         pageStack.push(Qt.resolvedUrl("./usercenter/UserCenterPage.qml"))
+                     }else{
+                         pageStack.push(Qt.resolvedUrl("./usercenter/LoginPage.qml"))
+                     }
                  }
              }
              MyMenuItem {
