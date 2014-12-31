@@ -9,7 +9,7 @@ INCLUDEPATH += src
 #General
 folder_02.source = qml/utility
 folder_02.target = qml
-#js文件
+#js
 folder_03.source = qml/js
 folder_03.target = qml
 
