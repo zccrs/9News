@@ -6,6 +6,7 @@ ListView {
     id: listView;
 
     property bool pullRefreshActivated: pullRefreshIndicator.y > pullRefreshIndicator.implicitHeight * 1.5;
+    property bool loading: false;
 
     signal refreshActivated;
 
@@ -25,6 +26,7 @@ ListView {
             Image {
                 id: arrow;
                 source: "../Resources/gfx/pull_down.svg";
+                visible: !loading;
                 rotation: pullRefreshActivated ? 180 : 0;
                 Behavior on rotation {
                     NumberAnimation {
@@ -32,11 +34,17 @@ ListView {
                     }
                 }
             }
+            BusyIndicator {
+                id: busy;
+                anchors.fill: arrow;
+                visible: loading;
+                running: visible;
+            }
             Text {
                 id: hint;
                 anchors.verticalCenter: arrow.verticalCenter;
                 color: "#888";
-                text: pullRefreshActivated ? qsTr("Release to refresh") : qsTr("Pull down to refresh");
+                text: loading ? qsTr("Refreshing") : pullRefreshActivated ? qsTr("Release to refresh") : qsTr("Pull down to refresh");
             }
         }
     }
@@ -44,7 +52,7 @@ ListView {
         id: mouseEventMonitor;
         target: listView;
         onMouseRelease: {
-            if (pullRefreshActivated)
+            if (!loading && pullRefreshActivated)
                 refreshActivated();
         }
     }

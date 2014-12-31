@@ -14,12 +14,14 @@ PullRefreshListView {
         id: internal;
 
         function getNewsList() {
+            loading = true;
             var prop = { category: categoryName };
             Script.sendRequest("NEWSLIST", prop);
         }
 
         function updateNewsList() {
             newsListListView.model = Script.newsList[Script.currentCategory].articles;
+            loading = false;
         }
     }
 

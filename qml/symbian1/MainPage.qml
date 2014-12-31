@@ -48,7 +48,9 @@ Page {
         property variant viewComp: null;
 
         function findNewsListByName(cate) {
+            console.log(newsListTabGroup.privateContents.length);
             for (var i = 0; i < newsListTabGroup.privateContents.length; i++) {
+                console.log(newsListTabGroup.privateContents[i].categoryName);
                 if (newsListTabGroup.privateContents[i].categoryName == cate){
                     return newsListTabGroup.privateContents[i];
                 }
@@ -56,6 +58,7 @@ Page {
             return null;
         }
         function switchToNewsList(cate) {
+            console.log("abc >> " + cate);
             var exist = findNewsListByName(cate);
             if (exist) {
                 newsListTabGroup.currentTab = exist;
@@ -69,6 +72,7 @@ Page {
             else
                 view.categoryName = "";
             newsListTabGroup.currentTab = view;
+            console.log(newsListTabGroup.privateContents.length);
         }
     }
 
