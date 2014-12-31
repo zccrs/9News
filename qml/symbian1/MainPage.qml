@@ -47,32 +47,32 @@ Page {
 
         property variant viewComp: null;
 
-        function findNewsListByName(cate) {
-            console.log(newsListTabGroup.privateContents.length);
-            for (var i = 0; i < newsListTabGroup.privateContents.length; i++) {
-                console.log(newsListTabGroup.privateContents[i].categoryName);
-                if (newsListTabGroup.privateContents[i].categoryName == cate){
-                    return newsListTabGroup.privateContents[i];
-                }
-            }
+        function findNewsListIndexByName(cate) {
+            if (cate == undefined)
+                var cat = "";
+            else
+                var cat = cate;
+            for (var i = 0; i < Script.newsList.length; i++)
+                if (Script.newsList[i].categoryName == cat)
+                    return i;
             return null;
         }
         function switchToNewsList(cate) {
-            console.log("abc >> " + cate);
-            var exist = findNewsListByName(cate);
-            if (exist) {
-                newsListTabGroup.currentTab = exist;
+            //console.log(findNewsListByName(cate));
+            var ind = findNewsListIndexByName(cate);
+            if (Script.newsList[ind].tab) {
+                newsListTabGroup.currentTab = Script.newsList[ind].tab;
                 return;
             }
             if (!viewComp)
                 viewComp = Qt.createComponent("Main/NewsListListView.qml");
-            var view = viewComp.createObject(newsListTabGroup);
+            Script.newsList[ind].tab = viewComp.createObject(newsListTabGroup);
             if (cate)
-                view.categoryName = cate;
+                Script.newsList[ind].tab.categoryName = cate;
             else
-                view.categoryName = "";
-            newsListTabGroup.currentTab = view;
-            console.log(newsListTabGroup.privateContents.length);
+                Script.newsList[ind].tab.categoryName = "";
+            newsListTabGroup.currentTab = Script.newsList[ind].tab;
+            //console.log(newsListTabGroup.privateContents.length);
         }
     }
 

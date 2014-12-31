@@ -81,6 +81,7 @@ function createNewsListObject(cate, titl) {
     var obj = new Object();
     obj.categoryName = cate;
     obj.categoryTitle = titl;
+    obj.tab = null;
     return obj;
 }
 
