@@ -17,6 +17,7 @@ Page {
     tools: ToolBarLayout {
         enabled: !header.selecting;
         ToolButton {
+            id: quitToolButton;
             iconSource: "toolbar-back";
             platformInverted: settings.invertedTheme;
             onClicked: {
@@ -37,8 +38,10 @@ Page {
             platformInverted: settings.invertedTheme;
         }
         ToolButton {
+            id: moreToolButton;
             iconSource: "toolbar-menu";
             platformInverted: settings.invertedTheme;
+            onClicked: pageStack.push(Qt.resolvedUrl("MorePage.qml"));
         }
     }
 
@@ -76,7 +79,7 @@ Page {
         }
     }
 
-    Header {
+    MainHeader {
         id: header;
         z: 3;
     }

@@ -4,6 +4,9 @@ import com.nokia.symbian 1.1
 QtObject {
     id: constants;
 
+    // Version
+    property string version: "0.0.1";
+
     // UI - Graphic size
     property int headerHeight: 60;
     property int busyIndicatorSizeSmall: 40;
