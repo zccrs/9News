@@ -18,12 +18,13 @@
 #include <QDeclarativeEngine>
 #endif
 
-class QTimer;
-class UtilityPrivate : public QObject
+class MyHttpRequest;
+class DownloadImage;
+class Utility : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString appVersion READ appVersion CONSTANT)
     Q_ENUMS(ProxyType)
-    Q_ENUMS(SystemType)
 public:
     enum ProxyType{
         DefaultProxy,
@@ -33,16 +34,7 @@ public:
         HttpCachingProxy,
         FtpCachingProxy
     };
-};
 
-class MyHttpRequest;
-class DownloadImage;
-class Utility : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QString appVersion READ appVersion CONSTANT)
-
-public:
     static Utility *createUtilityClass();
     
 private:
@@ -55,8 +47,6 @@ private:
 #else
     QPointer<QDeclarativeEngine> engine;
 #endif
-    QPoint old_pos;//记录鼠标上次的位置，判断鼠标位置是否改变
-    QTimer *mouse_timer;//检测鼠标位置是否变化的定时器
     QPointer<QSettings> mysettings;
     
     MyHttpRequest *http_request;
@@ -72,9 +62,6 @@ private:
     //按一定的规律解密字符串(只包含数字和字母的字符串)
     QByteArray fillContent(const QByteArray &str, int length);
     //将字符串填充到一定的长度
-
-private Q_SLOTS:
-    void emitDesktopPosChanged();
 public:
     Q_INVOKABLE void consoleLog(QString str);//输出调试信息
     Q_INVOKABLE QString getCookie( QString cookieName );
@@ -96,13 +83,7 @@ public:
     void initUtility(QSettings *settings=0, QDeclarativeEngine *qmlEngine=0);
     void setQmlEngine( QDeclarativeEngine *new_engine );
 #endif
-    QPoint mouseDesktopPos();
-
     void setQSettings(QSettings *settings);
-
-Q_SIGNALS:
-    void mouseDesktopPosChanged(QPoint arg);
-    void networkOnlineStateChanged(bool isOnline);
 public Q_SLOTS:
     void setValue( const QString & key, const QVariant & value);
     QVariant value(const QString & key, const QVariant & defaultValue = QVariant()) const;

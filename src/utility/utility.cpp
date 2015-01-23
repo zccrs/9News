@@ -22,18 +22,10 @@ Utility *Utility::createUtilityClass()
 Utility::Utility(QObject *parent) :
     QObject(parent)
 {
-    qmlRegisterType<UtilityPrivate>("utility", 1, 0, "Utility");
+    qmlRegisterUncreatableType<Utility>("utility", 1, 0, "Utility", "Error,Utility Cannot be instantiated!");
 
     http_request = new MyHttpRequest(this);
     download_image = new DownloadImage(this);
-    old_pos = QPoint(-1,-1);
-    
-    mouse_timer = new QTimer(this);
-    connect (mouse_timer, SIGNAL(timeout()), SLOT(emitDesktopPosChanged()));//连接定时器
-    mouse_timer->start (20);//启动定时器，用来定时判断鼠标位置是否改变
-    
-    connect (&networkConfigurationManager, SIGNAL(onlineStateChanged(bool)),
-             this, SIGNAL(networkOnlineStateChanged(bool)));
 }
 
 Utility::~Utility()
@@ -101,15 +93,6 @@ QByteArray Utility::fillContent(const QByteArray &str, int length)
         return fill_size+str;
     }else{
         return "000"+str;
-    }
-}
-
-void Utility::emitDesktopPosChanged()
-{
-    QPoint temp = QCursor::pos ();
-    if( old_pos!= temp){
-        old_pos = temp;
-        emit mouseDesktopPosChanged (temp);
     }
 }
 
@@ -186,11 +169,6 @@ void Utility::initUtility(QSettings *settings, QDeclarativeEngine *qmlEngine)
     setQmlEngine (qmlEngine);
 }
 #endif
-
-QPoint Utility::mouseDesktopPos()
-{
-    return QCursor::pos ();
-}
 
 void Utility::setQSettings(QSettings *settings)
 {
