@@ -11,7 +11,6 @@ using namespace bb::cascades;
 #include <QDebug>
 #include <QSettings>
 #include <QWebSettings>
-//#include "qwebviewitem.h"
 #include "qmlapplicationviewer.h"
 #include "selectfilesdialog.h"
 #include "ncommand.h"
