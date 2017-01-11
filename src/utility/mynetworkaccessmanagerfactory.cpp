@@ -35,15 +35,21 @@ NetworkAccessManager::NetworkAccessManager(QObject *parent) :
 QNetworkReply *NetworkAccessManager::createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
     QNetworkRequest req(request);
-    QSslConfiguration config;
 
-    config.setPeerVerifyMode(QSslSocket::VerifyNone);
-#if(QT_VERSION>=0x050000)
-    config.setProtocol(QSsl::TlsV1_0);
-#else
-    config.setProtocol(QSsl::TlsV1);
+#ifndef Q_WS_SIMULATOR
+    if (QSslSocket::supportsSsl()) {
+        QSslConfiguration config;
+
+        config.setPeerVerifyMode(QSslSocket::VerifyNone);
+    #if(QT_VERSION>=0x050000)
+        config.setProtocol(QSsl::TlsV1_0);
+    #else
+        config.setProtocol(QSsl::TlsV1);
+    #endif
+        req.setSslConfiguration(config);
+    }
 #endif
-    req.setSslConfiguration(config);
+
     // set user-agent
     if (op == PostOperation){
         req.setRawHeader("User-Agent", "IDP");

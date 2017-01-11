@@ -7,7 +7,7 @@ import "../"
 Item{
     id: root
 
-    property int newsId: -1
+    property string newsId
     //此属性记录新闻Id
 
     width: parent.width
@@ -149,19 +149,20 @@ Item{
 
     Component.onCompleted: {
         var article = componentData
+
         if(article){
-            newsId = article.aid
+            newsId = article._id
             titleText.text = article.topic
-            newsSource.text = article.source
+            newsSource.text = article.category
             dateTime.text = command.fromTime_t(article.dateline)
 
-            var thumbs = article.thumbs
+            var thumbs = article.attachments
             if(thumbs){
                 if(thumbs.length==1){
                     loader_titleImage.x = 10
                     loader_titleImage.width = command.style.titleImageWidth
                     loader_titleImage.height = command.style.titleImageWidth
-                    loader_titleImage.imageUrl = thumbs[0].thumburl
+                    loader_titleImage.imageUrl = thumbs[0].thumb
                     loader_titleImage.sourceComponent = compoent_titleImage
                 }else{
                     loader_imageList.height = command.style.titleImagesListHeight

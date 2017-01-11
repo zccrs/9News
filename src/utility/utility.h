@@ -65,6 +65,7 @@ private:
 public:
     Q_INVOKABLE void consoleLog(QString str);//输出调试信息
     Q_INVOKABLE QString getCookie( QString cookieName );
+    Q_INVOKABLE QString fromUtf8(const QByteArray &data) const;
 #if(QT_VERSION>=0x050000)
     QQmlApplicationEngine *qmlEngine();
 #else

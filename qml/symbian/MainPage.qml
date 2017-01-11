@@ -27,10 +27,11 @@ MyPage{
             return
         }
 
-        data = JSON.parse(data)
-        if(data.error==0){
+        data = JSON.parse(data);
+
+        if(!data.error){
             for(var i in data.categorys){
-                metroView.addItem(data.titles[i], data.categorys[i])
+                metroView.addItem(utility.fromUtf8(data.categorys[i]), utility.fromUtf8(data.categorys[i]))
             }
         }else{
             command.showBanner(data.error)

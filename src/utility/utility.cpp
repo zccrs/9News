@@ -111,6 +111,11 @@ QString Utility::getCookie(QString cookieName)
     return "";
 }
 
+QString Utility::fromUtf8(const QByteArray &data) const
+{
+    return QString::fromUtf8(data);
+}
+
 #if(QT_VERSION>=0x050000)
 QQmlApplicationEngine *Utility::qmlEngine()
 #else

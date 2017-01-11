@@ -9,7 +9,7 @@ ListView{
 
     property ListModel parentListModel: ListView.view.model
     property bool isBusy: false
-    property int lastNewsId: 0
+    property string lastNewsId
     //记录列表中最后一个新闻条目的新闻id
 
     delegate: listDelegate
@@ -39,7 +39,7 @@ ListView{
                                "contentComponent": componentListItem})
             //model_enableAnimation属性是记录是否开启图片动画
         }
-        lastNewsId = articles[i].aid//保存最后一个新闻的id
+        lastNewsId = articles[i]._id//保存最后一个新闻的id
     }
 
     function updateList(){//更新新闻列表
@@ -70,9 +70,9 @@ ListView{
             command.showBanner(qsTr("News update failed, will try again."))
             return
         }
-        data = JSON.parse(data)
+        data = JSON.parse(utility.fromUtf8(data))
 
-        if(data.error==0){
+        if(!data.error){
             parentListModel.setProperty(index, "articles", data.articles)
             loadNewsList()
             var message = qsTr("Update completed ")+data.pager.pagesize+qsTr(" news")
