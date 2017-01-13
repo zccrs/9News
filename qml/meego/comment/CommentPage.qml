@@ -9,7 +9,7 @@ import "../../utility"
 MyPage{
     id: root
 
-    property int newsId: -1
+    property string newsId
 
     tools: ToolBarSwitch{
         id: toolBarSwitch

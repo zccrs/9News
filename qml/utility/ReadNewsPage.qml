@@ -7,7 +7,7 @@ import "../js/api.js" as Api
 Item{
     id: root
 
-    property int newsId: -1
+    property string newsId
     //记录新闻id
     property alias newsTitle: textTitle.text
     //记录新闻标题
@@ -30,29 +30,35 @@ Item{
             //如果网络请求过程中出错了就直接return
         }
 
-        data = JSON.parse(data)
-        if(data.error==0){
+        data = JSON.parse(utility.fromUtf8(data))
+
+        if(!data.error){
             //如果服务器没有返回错误
-            var reg = /\[img=\d+,\d+\][^\[]+\[\/img\]/g
-            var content = data.article.content.replace(/\r/g, "")
+            var reg = /\[img[^[]*?\].+?\[\/img\]/g
+            var content = data.article.content.replace(/[\n\r]/g, "")
+
+            content = content.replace(/\[p\]/g, "<p>").replace(/\[\/p\]/g, "</p>");
 
             newsSource.text = data.article.source
             dateTime.text = command.fromTime_t(data.article.dateline)
 
             var pos = 0
             var imgs = content.match(reg)
+
             if(imgs){
                 for(var i=0; i<imgs.length; ++i){
                     var img_pos = content.indexOf(imgs[i])
                     var text = content.substring(pos, img_pos)
+
                     if(text!=""){
                         mymodel.append({
                                     "contentComponent": componentText,
-                                    "contentData": text
+                                     "contentData": text
                                     })
                     }
 
-                    var img_url = imgs[i].substring(13, imgs[i].length-6)
+                    var url_pos = imgs[i].indexOf("http");
+                    var img_url = imgs[i].substring(url_pos, imgs[i].length - 6)
 
                     mymodel.append({
                                 "contentComponent": componentImage,

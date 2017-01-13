@@ -7,7 +7,7 @@ import "customwidget"
 MyPage{
     id: root
 
-    property int newsId: -1
+    property string newsId
     property string newsTitle
 
     tools: ToolBarSwitch{

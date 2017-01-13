@@ -63,7 +63,7 @@ public:
     bool showNewsImage();
 
 signals:
-    void getNews(int newsId, const QString& title);
+    void getNews(const QString &newsId, const QString& title);
     //发送信号告诉qml端用户要阅读第新闻Id为newsId的新闻,title是新闻标题
     void newsContentFontSizeChanged(int arg);
     void newsTitleFontSizeChanged(int arg);

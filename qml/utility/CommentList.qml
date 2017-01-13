@@ -6,7 +6,7 @@ import "../js/api.js" as Api
 Item{
     id: root
 
-    property int newsId: -1
+    property string newsId
     //记录新闻的aid
     property alias listView: commentList
     property bool isBusy: false
