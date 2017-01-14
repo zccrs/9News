@@ -206,17 +206,17 @@ MyPage{
                 platformInverted: mainMenu.platformInverted
 
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("RegisterAccount.qml"))
+                    pageStack.replace(Qt.resolvedUrl("RegisterAccount.qml"))
                 }
             }
-            MenuItem {
-                text: qsTr("Retrieve password")
-                platformInverted: mainMenu.platformInverted
+//            MenuItem {
+//                text: qsTr("Retrieve password")
+//                platformInverted: mainMenu.platformInverted
 
-                onClicked: {
-                    pageStack.push(Qt.resolvedUrl("RetrievePassword.qml"))
-                }
-            }
+//                onClicked: {
+//                    pageStack.replace(Qt.resolvedUrl("RetrievePassword.qml"))
+//                }
+//            }
         }
     }
 }

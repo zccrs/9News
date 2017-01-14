@@ -31,8 +31,19 @@ function setUserData(uid, auth) {
 function logion(email, password, callback) {
     var data = "";
 
-    data += "email=" + email;
-    data += "&password=" + password;
+    data += "email=" + escape(email);
+    data += "&password=" + escape(password);
 
     utility.httpPost(callback, loginUrl, data);
+}
+
+function register(email, nickname, password1, password2, callback) {
+    var data = "";
+
+    data += "email=" + escape(email);
+    data += "&nickname=" + escape(nickname);
+    data += "&password=" + escape(password1);
+    data += "&repassword=" + escape(password2);
+
+    utility.httpPost(callback, registerUrl, data);
 }
