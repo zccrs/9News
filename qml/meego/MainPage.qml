@@ -1,11 +1,12 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 import com.nokia.meego 1.1
-import com.star.widgets 1.0
+import com.zccrs.widgets 1.0
 import "../utility"
 import "./customwidget"
 import "../utility/newsListPage"
 import "../js/api.js" as Api
+import "../js/server.js" as Server
 
 MyPage{
     id: root
@@ -195,8 +196,7 @@ MyPage{
              MyMenuItem {
                  text: qsTr("Personal Center")
                  onClicked: {
-                     var auth = utility.value("auth", "")
-                     if(auth!=""){
+                     if(Server.userData.auth){
                          pageStack.push(Qt.resolvedUrl("./usercenter/UserCenterPage.qml"))
                      }else{
                          pageStack.push(Qt.resolvedUrl("./usercenter/LoginPage.qml"))

@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.1
 import com.nokia.extras 1.1
 import "./customwidget"
+import "../js/server.js" as Server
 
 MyPageStackWindow
 {
@@ -17,6 +18,13 @@ MyPageStackWindow
                         "image://theme/meegotouch-applicationpage-background"+__invertedString
         portraitBackground: command.style.backgroundImage
         landscapeBackground: command.style.backgroundImage
+    }
+
+    Component.onCompleted: {
+        Server.initServer(utility);
+    }
+    Component.onDestroyed: {
+        Server.aboutDestory();
     }
 
     function updateStyle(){

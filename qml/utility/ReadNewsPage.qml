@@ -1,7 +1,7 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.star.utility 1.0
-import com.star.widgets 1.0
+import com.zccrs.utility 1.0
+import com.zccrs.widgets 1.0
 import "../js/api.js" as Api
 
 Item{
@@ -217,7 +217,7 @@ Item{
     Component{
         id: componentImage
 
-        MyImage{
+        MaskImage{
             id: myimage
 
             source: command.showNewsImage?

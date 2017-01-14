@@ -13,9 +13,9 @@
 #endif
 
 #if(QT_VERSION>=0x050000)
-class MyImage : public QQuickPaintedItem
+class MaskImage : public QQuickPaintedItem
 #else
-class MyImage : public QDeclarativeItem
+class MaskImage : public QDeclarativeItem
 #endif
 {
     Q_OBJECT
@@ -37,11 +37,11 @@ public:
     };
 
 #if(QT_VERSION>=0x050000)
-    explicit MyImage(QQuickItem *parent = 0);
+    explicit MaskImage(QQuickItem *parent = 0);
 #else
-    explicit MyImage(QDeclarativeItem *parent = 0);
+    explicit MaskImage(QDeclarativeItem *parent = 0);
 #endif
-    ~MyImage();
+    ~MaskImage();
 
     QUrl source() const;
     QUrl maskSource() const;

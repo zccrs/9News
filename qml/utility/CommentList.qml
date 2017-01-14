@@ -1,6 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
-import com.star.widgets 1.0
+import com.zccrs.widgets 1.0
 import "../js/api.js" as Api
 
 Item{
@@ -104,7 +104,7 @@ Item{
             width: parent.width
             height: imageAvatar.height+textContent.implicitHeight+20
 
-            MyImage{
+            MaskImage{
                 id: imageAvatar
 
                 width: command.style.commentAvatarWidth

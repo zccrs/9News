@@ -2,10 +2,12 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
 import QtWebKit 1.0
+import com.zccrs.widgets 1.0
 import "../../js/api.js" as Api
 import "../"
 import "../customwidget"
 import "../../utility"
+import "../../js/server.js" as Server
 
 MyPage{
 
@@ -28,43 +30,79 @@ MyPage{
     }
 
 
-    Flickable{
-        id:aboutFlick
-        anchors.top: header.bottom
-        anchors.bottom: parent.bottom
-        width: parent.width
-        clip: true
-        maximumFlickVelocity: 3000
-        pressDelay:200
-        flickableDirection:Flickable.VerticalFlick
-        contentHeight: myhtml.height
-
-        WebView{
-            id:myhtml
-
-            width: parent.width
-            preferredWidth: width
-            settings{
-                javascriptEnabled: true
+    Component.onCompleted: {
+        function onGetUserInfoFinished(error, data) {
+            if (error) {
+                command.showBanner(qsTr("Network error, will try again."))
+                return
             }
 
-            anchors.verticalCenter: parent.verticalCenter
-            url: Api.loginUrl
+            data = JSON.parse(utility.fromUtf8(data))
 
-            function setHtmlTheme(inverted){
-                var color = inverted?"#f1f1f1":"#000"
-                myhtml.evaluateJavaScript('document.body.style.setProperty("background-color","'+color+'");')
-                var font_color = inverted?"#000":"#888"
-                myhtml.evaluateJavaScript('document.body.style.setProperty("color","'+font_color+'");')
-            }
-            function setBodyWidth(width){
-                myhtml.evaluateJavaScript('document.body.style.setProperty("width", "'+String(width)+'");')
+            if (data.error) {
+                command.showBanner(data.error);
+                return;
             }
 
-            onLoadFinished: {
-                setHtmlTheme(command.invertedTheme)
-                setBodyWidth(width-20)
-            }
+            privateData.userInfos = data;
+        }
+
+        utility.httpGet(onGetUserInfoFinished, Api.getUserInfoUrl(uid));
+    }
+
+    QtObject {
+        id: privateData
+
+        property variant userInfos: null
+    }
+
+    Column {
+        anchors {
+            top: header.bottom
+            topMargin: 50
+            left: parent.left
+            right: parent.right
+        }
+
+        MaskImage {
+            source: privateData.userInfos.member.avatar
+            anchors.horizontalCenter: parent.horizontalCenter
+            maskSource: "qrc:///images/mask.bmp"
+        }
+
+        Item {
+            width: 1
+            height: 50
+        }
+
+        Text {
+            color: command.style.newsContentFontColor
+            font.pixelSize: 22
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Nickname: ") + privateData.userInfos.member.nickname
+        }
+
+        Text {
+            color: command.style.newsContentFontColor
+            font.pixelSize: 22
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Group: ") + privateData.userInfos.member.group
+        }
+    }
+
+    MyButton {
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            bottom: parent.bottom
+            bottomMargin: 20
+        }
+
+        platformInverted: command.style.buttonInverted
+        text: qsTr("Logout");
+
+        onClicked: {
+            Server.setUserData("", "");
+            pageStack.replace(Qt.resolvedUrl("LoginPage.qml"));
         }
     }
 }

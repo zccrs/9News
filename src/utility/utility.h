@@ -53,15 +53,7 @@ private:
     DownloadImage *download_image;
 
     QNetworkConfigurationManager networkConfigurationManager;
-    
-    char numToStr(int num);
-    //将数字按一定的规律换算成字母
-    QByteArray strZoarium(const QByteArray &str);
-    //按一定的规律加密字符串(只包含数字和字母的字符串)
-    QByteArray unStrZoarium(const QByteArray &str);
-    //按一定的规律解密字符串(只包含数字和字母的字符串)
-    QByteArray fillContent(const QByteArray &str, int length);
-    //将字符串填充到一定的长度
+
 public:
     Q_INVOKABLE void consoleLog(QString str);//输出调试信息
     Q_INVOKABLE QString getCookie( QString cookieName );

@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 import com.nokia.extras 1.1
 import QtMobility.systeminfo 1.2
+import "../js/server.js" as Server
 
 PageStackWindow{
     id:main
@@ -13,6 +14,13 @@ PageStackWindow{
     platformInverted: command.style.invertedTheme
 
     initialPage: MainPage{}
+
+    Component.onCompleted: {
+        Server.initServer(utility);
+    }
+    Component.onDestruction: {
+        Server.aboutDestory();
+    }
 
     Image {
         id: backgroundImage

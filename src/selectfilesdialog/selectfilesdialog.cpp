@@ -15,7 +15,7 @@
 SelectFilesDialog::SelectFilesDialog() :
     QObject(0)
 {
-    qmlRegisterType<SelectFilesDialog>("com.star.utility", 1, 0, "FilesDialog");
+    qmlRegisterType<SelectFilesDialog>("com.zccrs.utility", 1, 0, "FilesDialog");
 
     m_chooseType = FileType;
     m_chooseMode = MultipleChoice;

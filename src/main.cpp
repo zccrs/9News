@@ -37,7 +37,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QScopedPointer<QApplication> app(createApplication(argc, argv));
 
     app->setApplicationName ("9News");
-    app->setOrganizationName ("9smart");
+    app->setOrganizationName ("zccrs");
     app->setApplicationVersion ("0.0.1");
 
 #if defined(Q_WS_SIMULATOR)
@@ -49,20 +49,20 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QNetworkProxy::setApplicationProxy(proxy);
 #endif
 
-    qmlRegisterType<SelectFilesDialog>("com.star.widgets", 1, 0, "FilesDialog");
-    qmlRegisterType<MyImage>("com.star.widgets", 1, 0, "MyImage");
-    qmlRegisterType<MySvgView>("com.star.widgets", 1, 0, "MySvgView");
+    qmlRegisterType<SelectFilesDialog>("com.zccrs.widgets", 1, 0, "FilesDialog");
+    qmlRegisterType<MaskImage>("com.zccrs.widgets", 1, 0, "MaskImage");
+    qmlRegisterType<MySvgView>("com.zccrs.widgets", 1, 0, "MySvgView");
     qmlRegisterType<NCommand>("com.news.utility", 1, 0, "NCommand");
-    qmlRegisterType<MonitorMouseEvent>("com.star.utility", 1, 0, "MonitorMouseEvent");
+    qmlRegisterType<MonitorMouseEvent>("com.zccrs.utility", 1, 0, "MonitorMouseEvent");
     //qmlRegisterType<QWebViewItem>("com.yeatse.widgets", 1, 0, "WebView");
 
     QWebSettings::globalSettings ()->setAttribute (QWebSettings::LocalContentCanAccessRemoteUrls,true);
     QmlApplicationViewer viewer;
     //viewer.setOrientation(QmlApplicationViewer::ScreenOrientationLockPortrait);
 
-    QSettings settings;
+    QSettings *settings = new QSettings;
     Utility *utility = Utility::createUtilityClass();
-    utility->initUtility(&settings, viewer.engine());
+    utility->initUtility(settings, viewer.engine());
 
     viewer.engine()->rootContext()->setContextProperty("fileDialog", new SelectFilesDialog());
     viewer.engine()->rootContext()->setContextProperty("command", new NCommand());

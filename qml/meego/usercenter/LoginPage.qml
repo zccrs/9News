@@ -4,6 +4,7 @@ import com.nokia.meego 1.1
 import "../customwidget"
 import "../../utility"
 import "../../js/api.js" as Api
+import "../../js/server.js" as Server
 
 Page{
     id: root
@@ -165,7 +166,26 @@ Page{
         KeyNavigation.tab: inputEmail
 
         onClicked: {
+            function onLoginFinished(error, data) {
+                if (error) {//如果网络请求出错
+                    command.showBanner(qsTr("Network error, will try again."))
+                    return
+                }
 
+                data = JSON.parse(utility.fromUtf8(data));
+
+                if (data.error) {
+                    command.showBanner(data.error);
+                    return
+                }
+
+
+                Server.setUserData(data.uid, data.auth);
+                command.showBanner(data.message);
+                pageStack.replace(Qt.resolvedUrl("UserCenterPage.qml"));
+            }
+
+            Server.logion(inputEmail.text, inputPassword.text, onLoginFinished);
         }
     }
 

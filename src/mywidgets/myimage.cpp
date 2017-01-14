@@ -6,14 +6,14 @@
 #include <QPixmapCache>
 #include <cmath>
 
-QCache<QString, QPixmap> MyImage::pixmapCache;
+QCache<QString, QPixmap> MaskImage::pixmapCache;
 
 #if(QT_VERSION>=0x050000)
-MyImage::MyImage(QQuickItem *parent) :
+MaskImage::MaskImage(QQuickItem *parent) :
     QQuickPaintedItem(parent)
 #else
 #include <QGraphicsBlurEffect>
-MyImage::MyImage(QDeclarativeItem *parent) :
+MaskImage::MaskImage(QDeclarativeItem *parent) :
     QDeclarativeItem(parent)
 #endif
 {
@@ -36,33 +36,33 @@ MyImage::MyImage(QDeclarativeItem *parent) :
     connect(&manager, SIGNAL(finished(QNetworkReply*)), SLOT(onDownImageFinished(QNetworkReply*)));
 }
 
-MyImage::~MyImage()
+MaskImage::~MaskImage()
 {
     if(pixmap!=NULL)
         delete pixmap;
 }
 
-QUrl MyImage::source() const
+QUrl MaskImage::source() const
 {
     return m_source;
 }
 
-QUrl MyImage::maskSource() const
+QUrl MaskImage::maskSource() const
 {
     return m_maskSource;
 }
 
-bool MyImage::cache() const
+bool MaskImage::cache() const
 {
     return m_cache;
 }
 
-bool MyImage::grayscale() const
+bool MaskImage::grayscale() const
 {
     return m_grayscale;
 }
 
-void MyImage::chromaticToGrayscale(QImage &image)
+void MaskImage::chromaticToGrayscale(QImage &image)
 {
     if(image.isNull()||image.isGrayscale ())
         return;
@@ -77,7 +77,7 @@ void MyImage::chromaticToGrayscale(QImage &image)
     }
 }
 
-QString MyImage::imageFormatToString(const QByteArray &array)
+QString MaskImage::imageFormatToString(const QByteArray &array)
 {
     QByteArray str = array.toHex ();
     if(str.mid (2,6)=="504e47")
@@ -91,7 +91,7 @@ QString MyImage::imageFormatToString(const QByteArray &array)
     return "";
 }
 
-void MyImage::downloadImage(const QUrl &url)
+void MaskImage::downloadImage(const QUrl &url)
 {
     setStatus(Loading);
 
@@ -105,7 +105,7 @@ void MyImage::downloadImage(const QUrl &url)
     reply = manager.get(request);
 }
 
-void MyImage::setImage(QImage &image)
+void MaskImage::setImage(QImage &image)
 {
     setDefaultSize(image.size());
 
@@ -162,7 +162,7 @@ void MyImage::setImage(QImage &image)
     emit loadReady();
 }
 
-void MyImage::onDownImageFinished(QNetworkReply *reply)
+void MaskImage::onDownImageFinished(QNetworkReply *reply)
 {
     if(reply->error() == QNetworkReply::NoError){
         QImage image;
@@ -179,9 +179,9 @@ void MyImage::onDownImageFinished(QNetworkReply *reply)
 }
 
 #if(QT_VERSION>=0x050000)
-void MyImage::paint(QPainter *painter)
+void MaskImage::paint(QPainter *painter)
 #else
-void MyImage::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void MaskImage::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 #endif
 {
     if(pixmap==NULL||pixmap->isNull())
@@ -192,27 +192,27 @@ void MyImage::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
     painter->drawPixmap (boundingRect().toRect(), *pixmap);
 }
 
-MyImage::State MyImage::status() const
+MaskImage::State MaskImage::status() const
 {
     return m_status;
 }
 
-QSize MyImage::sourceSize() const
+QSize MaskImage::sourceSize() const
 {
     return m_sourceSize;
 }
 
-QSize MyImage::defaultSize() const
+QSize MaskImage::defaultSize() const
 {
     return m_defaultSize;
 }
 
-const QPixmap *MyImage::getPixmap() const
+const QPixmap *MaskImage::getPixmap() const
 {
     return pixmap;
 }
 
-void MyImage::setSource(QUrl arg)
+void MaskImage::setSource(QUrl arg)
 {
     if (!m_cache||m_source != arg) {
         setStatus(Loading);
@@ -225,7 +225,7 @@ void MyImage::setSource(QUrl arg)
     }
 }
 
-void MyImage::setMaskSource(QUrl arg)
+void MaskImage::setMaskSource(QUrl arg)
 {
     if (m_maskSource != arg) {
         m_maskSource = arg;
@@ -235,7 +235,7 @@ void MyImage::setMaskSource(QUrl arg)
     }
 }
 
-void MyImage::setCache(bool arg)
+void MaskImage::setCache(bool arg)
 {
     if (m_cache != arg) {
         m_cache = arg;
@@ -249,7 +249,7 @@ void MyImage::setCache(bool arg)
     }
 }
 
-void MyImage::setGrayscale(bool arg)
+void MaskImage::setGrayscale(bool arg)
 {
     if(m_grayscale!=arg){
         m_grayscale = arg;
@@ -267,7 +267,7 @@ void MyImage::setGrayscale(bool arg)
     }
 }
 
-void MyImage::setStatus(MyImage::State arg)
+void MaskImage::setStatus(MaskImage::State arg)
 {
     if (m_status != arg) {
         m_status = arg;
@@ -275,7 +275,7 @@ void MyImage::setStatus(MyImage::State arg)
     }
 }
 
-void MyImage::reLoad()
+void MaskImage::reLoad()
 {
     QString str = m_source.toLocalFile();
     if(str == ""){
@@ -316,7 +316,7 @@ void MyImage::reLoad()
     setImage(image);
 }
 
-void MyImage::setSourceSize(QSize arg)
+void MaskImage::setSourceSize(QSize arg)
 {
     if (m_sourceSize != arg) {
         m_sourceSize = arg;
@@ -326,7 +326,7 @@ void MyImage::setSourceSize(QSize arg)
     }
 }
 
-void MyImage::setDefaultSize(QSize arg)
+void MaskImage::setDefaultSize(QSize arg)
 {
     if (m_defaultSize != arg) {
         m_defaultSize = arg;
@@ -334,7 +334,7 @@ void MyImage::setDefaultSize(QSize arg)
     }
 }
 
-bool MyImage::save(const QString& fileName) const
+bool MaskImage::save(const QString& fileName) const
 {
     if(pixmap!=NULL){
         return pixmap->save(fileName);

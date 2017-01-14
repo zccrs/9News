@@ -2,12 +2,15 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
 import QtWebKit 1.0
+import com.zccrs.widgets 1.0
 import "../../js/api.js" as Api
 import "../"
 import "../customwidget"
 import "../../utility"
+import "../../js/server.js" as Server
 
 MyPage{
+    property string uid: Server.userData.uid
 
     tools: MyToolBarLayout{
         invertedTheme: command.style.toolBarInverted
@@ -21,6 +24,32 @@ MyPage{
         }
     }
 
+    Component.onCompleted: {
+        function onGetUserInfoFinished(error, data) {
+            if (error) {
+                command.showBanner(qsTr("Network error, will try again."))
+                return
+            }
+
+            data = JSON.parse(utility.fromUtf8(data))
+
+            if (data.error) {
+                command.showBanner(data.error);
+                return;
+            }
+
+            privateData.userInfos = data;
+        }
+
+        utility.httpGet(onGetUserInfoFinished, Api.getUserInfoUrl(uid));
+    }
+
+    QtObject {
+        id: privateData
+
+        property variant userInfos: null
+    }
+
     HeaderView{
         id: header
 
@@ -31,4 +60,53 @@ MyPage{
                      privateStyle.tabBarHeightPortrait:privateStyle.tabBarHeightLandscape
     }
 
+    Column {
+        anchors {
+            top: header.bottom
+            topMargin: 50
+            left: parent.left
+            right: parent.right
+        }
+
+        MaskImage {
+            source: privateData.userInfos.member.avatar
+            anchors.horizontalCenter: parent.horizontalCenter
+            maskSource: "qrc:///images/mask.bmp"
+        }
+
+        Item {
+            width: 1
+            height: 50
+        }
+
+        Text {
+            color: command.style.newsContentFontColor
+            font.pixelSize: 22
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Nickname: ") + privateData.userInfos.member.nickname
+        }
+
+        Text {
+            color: command.style.newsContentFontColor
+            font.pixelSize: 22
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Group: ") + privateData.userInfos.member.group
+        }
+    }
+
+    Button {
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            bottom: parent.bottom
+            bottomMargin: 20
+        }
+
+        platformInverted: command.style.buttonInverted
+        text: qsTr("Logout");
+
+        onClicked: {
+            Server.setUserData("", "");
+            pageStack.replace(Qt.resolvedUrl("LoginPage.qml"));
+        }
+    }
 }
