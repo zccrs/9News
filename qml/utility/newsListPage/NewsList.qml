@@ -9,7 +9,7 @@ ListView{
 
     property ListModel parentListModel: ListView.view.model
     property bool isBusy: false
-    property string lastNewsId
+    property string lastNewsDateline
     //记录列表中最后一个新闻条目的新闻id
 
     delegate: listDelegate
@@ -39,7 +39,7 @@ ListView{
                                "contentComponent": componentListItem})
             //model_enableAnimation属性是记录是否开启图片动画
         }
-        lastNewsId = articles[i]._id//保存最后一个新闻的id
+        lastNewsDateline = articles[i].dateline//保存最后一个新闻的dateline, 用于加载下一页
     }
 
     function updateList(){//更新新闻列表
@@ -91,9 +91,9 @@ ListView{
             command.showBanner(qsTr("News load failed, will try again."))
             return
         }
-        data = JSON.parse(data)
+        data = JSON.parse(utility.fromUtf8(data))
 
-        if(data.error==0){
+        if(!data.error){
             for(var i in data.articles){
                 mymodel.append({"model_componentData": data.articles[i],
                                    "model_enableAnimation": enableAnimation,
@@ -102,7 +102,7 @@ ListView{
             }
             parentListModel.setProperty(index, "articles", articles.concat(data.articles))
             //合并两个数组，储存新获取的新闻
-            lastNewsId = data.articles[i].aid//保存最后一个新闻的id
+            lastNewsDateline = data.articles[i].dateline//保存最后一个新闻的dateline
 
             var message = qsTr("Add completed ")+data.pager.pagesize+qsTr(" news")
             command.showBanner(message)
@@ -118,11 +118,9 @@ ListView{
         }
         isBusy = true
         //设置为忙碌的
-        var newUrl = Api.getMoreNewsUrlByCurrentUrl(newsUrl, lastNewsId)
-        parentListModel.setProperty(index, "newsUrl", newUrl)
-        //设置新的url
+        var newUrl = Api.getMoreNewsUrlByCurrentUrl(newsUrl, lastNewsDateline)
 
-        utility.httpGet(root, "getMoreNewsFinished(QVariant,QVariant)", newsUrl)
+        utility.httpGet(root, "getMoreNewsFinished(QVariant,QVariant)", newUrl)
         //去获取更多新闻
     }
 
@@ -178,7 +176,7 @@ ListView{
             height: textLoadMoreNews.implicitHeight+40
             Text{
                 id: textLoadMoreNews
-                text: qsTr("load more...")
+                text: qsTr("Load more...")
                 anchors.centerIn: parent
                 visible: newsList.count>1
                 color: newsList.isBusy?command.style.inactiveFontColor:command.style.newsTitleFontColor
