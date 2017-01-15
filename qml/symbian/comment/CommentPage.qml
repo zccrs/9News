@@ -5,6 +5,7 @@ import "../../js/api.js" as Api
 import "../"
 import "../customwidget"
 import "../../utility"
+import "../../js/server.js" as Server
 
 MyPage{
     id: root
@@ -82,8 +83,29 @@ MyPage{
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
             }
             onRightButtonClick: {
-                if(textAreaContent=="")
+                if(!textAreaContent)
                     return//如果内容没有变化或者为空则不进行下一步
+
+                if (!Server.userData.auth) {
+                    command.showBanner(qsTr("You are not logged in"));
+                    return;
+                }
+
+                function onCommentFinished(error, data) {
+                    if (error) {
+                        command.showBanner(qsTr("Network error, Will try again."));
+                        return;
+                    }
+
+                    if (data.error) {
+                        command.showBanner(data.error);
+                        return;
+                    }
+
+                    command.showBanner(data.message);
+                }
+
+                Server.sendComment(newsId, textAreaContent, "Test By zccrs", onCommentFinished);
             }
         }
     }

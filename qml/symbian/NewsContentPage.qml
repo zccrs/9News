@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.symbian 1.1
 import "../utility"
 import "customwidget"
+import "../js/server.js" as Server
 
 MyPage{
     id: root
@@ -81,8 +82,29 @@ MyPage{
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
             }
             onRightButtonClick: {
-                if(textAreaContent=="")
+                if (!textAreaContent)
                     return//如果内容没有变化或者为空则不进行下一步
+
+                if (!Server.userData.auth) {
+                    command.showBanner(qsTr("You are not logged in"));
+                    return;
+                }
+
+                function onCommentFinished(error, data) {
+                    if (error) {
+                        command.showBanner(qsTr("Network error, Will try again."));
+                        return;
+                    }
+
+                    if (data.error) {
+                        command.showBanner(data.error);
+                        return;
+                    }
+
+                    command.showBanner(data.message);
+                }
+
+                Server.sendComment(newsId, textAreaContent, "Test By zccrs", onCommentFinished);
             }
         }
     }

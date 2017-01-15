@@ -31,8 +31,8 @@ function setUserData(uid, auth) {
 function logion(email, password, callback) {
     var data = "";
 
-    data += "email=" + escape(email);
-    data += "&password=" + escape(password);
+    data += "email=" + encodeURIComponent(email);
+    data += "&password=" + encodeURIComponent(password);
 
     utility.httpPost(callback, loginUrl, data);
 }
@@ -40,10 +40,20 @@ function logion(email, password, callback) {
 function register(email, nickname, password1, password2, callback) {
     var data = "";
 
-    data += "email=" + escape(email);
-    data += "&nickname=" + escape(nickname);
-    data += "&password=" + escape(password1);
-    data += "&repassword=" + escape(password2);
+    data += "email=" + encodeURIComponent(email);
+    data += "&nickname=" + encodeURIComponent(nickname);
+    data += "&password=" + encodeURIComponent(password1);
+    data += "&repassword=" + encodeURIComponent(password2);
 
     utility.httpPost(callback, registerUrl, data);
+}
+
+function sendComment(newsId, message, phoneModel, callback) {
+    var url = getCommentUrl(newsId) + "?auth=" + decodeURI(userData.auth);
+    var data = "";
+
+    data += "type=news&content=" + encodeURIComponent(message);
+    data += "&model=" + encodeURIComponent(phoneModel);
+
+    utility.httpPost(callback, url, data);
 }

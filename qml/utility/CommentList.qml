@@ -10,6 +10,7 @@ Item{
     //记录新闻的aid
     property alias listView: commentList
     property bool isBusy: false
+    property string lastCommentDateline
 
     onNewsIdChanged: {
         objApi.loadComment()
@@ -46,30 +47,37 @@ Item{
                 return
             }
 
-            data = JSON.parse(data)
-            if(data.error==0){
-                var comments = data.comments
-
-                if(data.pager.count==0){
-                    command.showBanner(qsTr("Nobody comments, Come and grab the sofa now!"))
+            data = JSON.parse(utility.fromUtf8(data))
+            if(!data.error){
+                if (data.pager.count==0){
+                    if (mymodel.count == 0)
+                        command.showBanner(qsTr("Nobody comments, Come and grab the sofa now!"))
+                    else
+                        command.showBanner(qsTr("No more"));
                     return
                 }
+
+                var comments = data.comments
 
                 for(var i in comments){
                     var comment = comments[i]
 
                     var obj={
-                        "uid": comment.uin,
-                        "avatarUrl": comment.avatar,
-                        "nickName": comment.nickname,
+                        "uid": comment.uid,
+                        "avatarUrl": comment.user.avatar,
+                        "nickName": comment.user.nickname,
                         "date": command.fromTime_t(comment.dateline),
-                        "message": comment.message,
-                        "score": comment.score,
+                        "message": comment.content,
+                        "agree_count": comment.agrees,
+                        "against_count": comment.againsts,
                         "phoneName": comment.model?comment.model:qsTr("unknown")
                     }
 
                     mymodel.append(obj)
                 }
+
+                if (comments.length > 0)
+                    lastCommentDateline = comments[comments.length - 1].dateline;
             }else{
                 command.showBanner(data.error)
             }
@@ -94,6 +102,7 @@ Item{
             }
 
             delegate: listComponent
+            footer: componentFooter
         }
     }
 
@@ -102,7 +111,7 @@ Item{
 
         Item{
             width: parent.width
-            height: imageAvatar.height+textContent.implicitHeight+20
+            height: imageAvatar.height+textContent.implicitHeight+ 50
 
             MaskImage{
                 id: imageAvatar
@@ -141,8 +150,8 @@ Item{
                 id: textDate
 
                 text: date
-                anchors.left: textNick.left
-                anchors.bottom: imageAvatar.bottom
+                anchors.left: textPhoneName.right
+                anchors.leftMargin: 10
                 color: command.style.newsInfoFontColor
                 font.pixelSize: command.style.newsInfosFontPixelSize
             }
@@ -158,9 +167,35 @@ Item{
                 color: command.style.newsContentFontColor
                 font.pixelSize: command.newsContentFontSize
             }
+
+            Row {
+                id: rightBottomRow
+
+                anchors {
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+
+                spacing: 10
+
+                Text {
+                    text: "<a href='http'>%1(%2)</a>".replace("%1", qsTr("Agree")).replace("%2", agree_count);
+                    font.pixelSize: command.style.newsInfosFontPixelSize
+                }
+                Text {
+                    text: "<a href='http'>%1(%2)</a>".replace("%1", qsTr("Against")).replace("%2", against_count);
+                    font.pixelSize: command.style.newsInfosFontPixelSize
+                }
+            }
+
             CuttingLine{
-                anchors.bottom: parent.bottom
-                width: parent.width
+                anchors {
+                    left: parent.left
+                    right: rightBottomRow.left
+                    rightMargin: 10
+                    verticalCenter: rightBottomRow.verticalCenter
+                }
+
                 visible: command.style.cuttingLineVisible
             }
         }
@@ -173,5 +208,31 @@ Item{
         anchors.margins: 10
         width: command.style.toUpIconWidth
         z:1
+    }
+
+    Component{
+        id: componentFooter
+
+        Item{
+            width: commentList.width
+            height: textLoadMoreNews.implicitHeight+40
+            Text{
+                id: textLoadMoreNews
+                text: qsTr("Load more...")
+                anchors.centerIn: parent
+                visible: commentList.count>1
+                color: command.style.newsTitleFontColor
+                font.pixelSize: command.newsTitleFontSize
+            }
+            //newsList对象在MainPage中，因为在compoentFooter中无法引用的root对象，所以这也是不得已而为之
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    var newUrl = Api.getMoreCommentUrlByNewsId(newsId, lastCommentDateline)
+
+                    utility.httpGet(objApi, "getCommentFinished(QVariant,QVariant)", newUrl)
+                }
+            }
+        }
     }
 }
