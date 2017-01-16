@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QtFeedback/QFeedbackHapticsEffect>
 #include <QtFeedback/QFeedbackActuator>
+#include <QClipboard>
 
 #include "mynetworkaccessmanagerfactory.h"
 #include "downloadimage.h"
@@ -301,6 +302,11 @@ void Utility::vibrationDevice(qreal intensity, int duration)
     m_rumble->setIntensity(intensity);
     m_rumble->setDuration(duration);
     m_rumble->start();
+}
+
+void Utility::setClipboardText(const QByteArray &data) const
+{
+    qApp->clipboard()->setText(data);
 }
 
 void Utility::ensureVibraRumble()

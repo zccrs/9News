@@ -118,7 +118,9 @@ public Q_SLOTS:
     QUrl addEncodedQueryItem(const QUrl &url, const QByteArray &key, const QByteArray &value) const;
 
     /// duration unit is msec
-    Q_INVOKABLE void vibrationDevice(qreal intensity = 0.1, int duration = 100);
+    void vibrationDevice(qreal intensity = 0.1, int duration = 100);
+
+    void setClipboardText(const QByteArray &data) const;
 
 private:
     void ensureVibraRumble();

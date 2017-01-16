@@ -139,18 +139,23 @@ MyPage{
                     anchors.right: parent.right
                     anchors.rightMargin: 10
                     invertedTheme: mainMenu.invertedTheme
+
+                    onClicked: {
+                        utility.setClipboardText(Server.getNewsBrowserUrl(newsId));
+                        mainMenu.close();
+                    }
                 }
 
                 onClicked: {
-
+                    Qt.openUrlExternally(Server.getNewsBrowserUrl(newsId))
                 }
             }
-            MyMenuItem {
-                text: qsTr("Like")
-                onClicked: {
+//            MyMenuItem {
+//                text: qsTr("Like")
+//                onClicked: {
 
-                }
-            }
+//                }
+//            }
         }
     }
 }

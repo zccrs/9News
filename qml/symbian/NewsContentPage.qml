@@ -154,20 +154,24 @@ MyPage{
                     anchors.rightMargin: 10
                     platformInverted: mainMenu.platformInverted
 
+                    onClicked: {
+                        utility.setClipboardText(Server.getNewsBrowserUrl(newsId));
+                        mainMenu.close();
+                    }
                 }
 
                 onClicked: {
-
+                    Qt.openUrlExternally(Server.getNewsBrowserUrl(newsId))
                 }
             }
-            MenuItem {
-                text: qsTr("Like")
-                platformInverted: mainMenu.platformInverted
+//            MenuItem {
+//                text: qsTr("Like")
+//                platformInverted: mainMenu.platformInverted
 
-                onClicked: {
+//                onClicked: {
 
-                }
-            }
+//                }
+//            }
         }
     }
 }

@@ -70,3 +70,7 @@ function againstComment(newsId, callback) {
 
     utility.httpGet(callback, url);
 }
+
+function getNewsBrowserUrl(newsId) {
+    return "http://www.9smart.cn/article/" + newsId;
+}
