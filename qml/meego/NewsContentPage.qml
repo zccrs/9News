@@ -97,7 +97,7 @@ MyPage{
                     command.showBanner(data.message);
                 }
 
-                Server.sendComment(newsId, textAreaContent, "Test By zccrs", onCommentFinished);
+                Server.sendComment(newsId, textAreaContent, main.deviceModel, onCommentFinished);
             }
         }
     }

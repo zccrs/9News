@@ -2,12 +2,15 @@
 import QtQuick 1.1
 import com.nokia.meego 1.1
 import com.nokia.extras 1.1
+import QtMobility.systeminfo 1.2
 import "./customwidget"
 import "../js/server.js" as Server
 
 MyPageStackWindow
 {
     id:main
+
+    property string deviceModel: deviceInfo.model
 
     showStatusBar:true
     initialPage: MainPage{}
@@ -63,5 +66,9 @@ MyPageStackWindow
         toolBar_backImage.source = ""
         toolBar_backImage.height = 72
         updateStyle()
+    }
+
+    DeviceInfo {
+        id: deviceInfo
     }
 }

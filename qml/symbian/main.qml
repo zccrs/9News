@@ -8,6 +8,8 @@ import "../js/server.js" as Server
 PageStackWindow{
     id:main
 
+    property string deviceModel: deviceInfo.model
+
     showStatusBar:true
     showToolBar: true
     platformSoftwareInputPanelEnabled :true
@@ -88,5 +90,9 @@ PageStackWindow{
         target: pageStack.toolBar.children[0]
         property: "visible"
         value: false
+    }
+
+    DeviceInfo {
+        id: deviceInfo
     }
 }
