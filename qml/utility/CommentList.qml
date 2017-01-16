@@ -71,6 +71,7 @@ Item{
                         "message": comment.content,
                         "agree_count": comment.agrees,
                         "against_count": comment.againsts,
+                        "comment_replys": JSON.stringify(comment.replys),
                         "phoneName": comment.model?comment.model:qsTr("unknown")
                     }
 
@@ -112,7 +113,7 @@ Item{
 
         Item{
             width: parent.width
-            height: imageAvatar.height+textContent.implicitHeight+ 50
+            height: imageAvatar.height + textContent.implicitHeight + subList.contentHeight + 50
 
             MaskImage{
                 id: imageAvatar
@@ -167,6 +168,41 @@ Item{
                 wrapMode: Text.WordWrap
                 color: command.style.newsContentFontColor
                 font.pixelSize: command.newsContentFontSize
+            }
+
+            ListView {
+                id: subList
+
+                delegate: subCommentComponent
+                anchors {
+                    top: textContent.bottom
+                    bottom: rightBottomRow.top
+                    left: imageAvatar.right
+                    right: parent.right
+                    rightMargin: 10
+                }
+                model: ListModel{}
+
+                Component.onCompleted: {
+                    var replys = JSON.parse(comment_replys);
+
+                    for (var i in replys) {
+                        var comment = replys[i]
+
+                        var obj={
+                            "uid": comment.uid,
+                            "avatarUrl": comment.user.avatar,
+                            "nickName": comment.user.nickname,
+                            "date": command.fromTime_t(comment.dateline),
+                            "message": comment.content,
+                            "phoneName": comment.model?comment.model:qsTr("unknown")
+                        }
+
+                        model.append(obj);
+
+                        height = contentHeight;
+                    }
+                }
             }
 
             Row {
@@ -240,6 +276,70 @@ Item{
                 }
 
                 visible: command.style.cuttingLineVisible
+            }
+        }
+    }
+
+    Component {
+        id: subCommentComponent
+
+        Item {
+            width: parent.width
+            height: imageAvatar.height+textContent.implicitHeight+ 50
+
+            MaskImage{
+                id: imageAvatar
+
+                width: command.style.commentAvatarWidth / 1.5
+                height: width
+                maskSource: "qrc:/images/mask.bmp"
+                sourceSize.width: width
+                source: command.showNewsImage?
+                            command.style.loadingImage:command.style.defaultImage
+
+                Component.onCompleted: {
+                    source = avatarUrl
+                }
+            }
+
+            Text{
+                id: textNick
+
+                text: nickName
+                anchors.left: imageAvatar.right
+                anchors.leftMargin: 10
+                color: command.style.newsInfoFontColor
+                font.pixelSize: command.style.newsInfosFontPixelSize
+            }
+            Text{
+                id: textPhoneName
+
+                text: phoneName
+                anchors.left: textNick.right
+                anchors.leftMargin: 10
+                color: command.style.newsInfoFontColor
+                font.pixelSize: command.style.newsInfosFontPixelSize
+            }
+            Text{
+                id: textDate
+
+                text: date
+                anchors.left: textPhoneName.right
+                anchors.leftMargin: 10
+                color: command.style.newsInfoFontColor
+                font.pixelSize: command.style.newsInfosFontPixelSize
+            }
+
+            Text{
+                id: textContent
+
+                anchors.top: imageAvatar.bottom
+                anchors.topMargin: 10
+                text: message
+                width: parent.width
+                wrapMode: Text.WordWrap
+                color: command.style.newsContentFontColor
+                font.pixelSize: command.newsContentFontSize / 1.2
             }
         }
     }
