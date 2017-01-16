@@ -1,7 +1,7 @@
 TARGET = 9News
 
 CONFIG += mobility
-MOBILITY += systeminfo
+MOBILITY += systeminfo feedback
 
 QML_IMPORT_PATH =
 INCLUDEPATH += src

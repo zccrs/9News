@@ -2,55 +2,61 @@
 import QtQuick 1.1
 import com.zccrs.utility 1.0
 
-Item{
+Item {
     id: root
 
-    property ListView listView
+    property Flickable flickableItem
     property bool invertedTheme: false
     property int menuItemPixelSize: 22
-    property int currentIndex: listMenu.currentIndex
+    property int currentIndex: flickableItem.contentY < 0 ? listMenu.currentIndex : -1
     property int menuItemHeight: 30
-    property alias listModel: mymodel
+    property alias listModel: listMenu.model
 
-    signal trigger(int index)
+    signal trigger(int index, string text)
 
-    height: listMenu.count*(menuItemHeight+listMenu.spacing+10)
+    height: listMenu.count * (menuItemHeight + listMenu.spacing)
 
-    function addMenu(menuText, iconSource){
+    onCurrentIndexChanged: {
+        if (currentIndex >= 0 && listMenu.count > 0)
+            utility.vibrationDevice();
+    }
+
+    function addMenu(menuText, iconSource) {
         var obj = {
-            "iconSource": iconSource?iconSource:"",
+            "iconSource": iconSource ? iconSource : "",
             "menuText": menuText
         }
 
-        mymodel.append(obj)
+        listModel.append(obj)
     }
 
-    function removeMenu(index){
-        mymodel.remove(index)
+    function removeMenu(index) {
+        listModel.remove(index)
     }
 
-    function clearMenu(){
-        mymodel.clear()
+    function clearMenu() {
+        listModel.clear()
     }
 
-    function insertMenu(index, menuText, iconSource){
+    function insertMenu(index, menuText, iconSource) {
         var obj = {
-            "iconSource": iconSource?iconSource:"",
+            "iconSource": iconSource ? iconSource: "",
             "menuText": menuText
         }
-        mymodel.insert(index, obj)
+
+        listModel.insert(index, obj)
     }
 
-    function setMenuText(index, value){
-        if(index<mymodel.count)
-            mymodel.get(index).menuText = value
+    function setMenuText(index, value) {
+        if(index < listModel.count)
+            listModel.get(index).menuText = value
     }
 
-    function getMenuText(index){
-        return mymodel.get(index).menuText
+    function getMenuText(index) {
+        return listModel.get(index).menuText
     }
 
-    ListView{
+    ListView {
         id: listMenu
 
         property int yDeviation: 0
@@ -65,77 +71,70 @@ Item{
             updateY()
         }
 
-        function updateY(){
-            if(listView.atYBeginning){
-                y = -listView.contentY+yDeviation-height-10
-            }else{
+        function updateY() {
+            if (flickableItem.atYBeginning) {
+                y = -flickableItem.contentY + yDeviation - height - 10
+            } else {
                 y = -height
             }
         }
 
-        onYChanged:{
-            if(y>height){
+        onYChanged: {
+            if (y > height) {
                 currentIndex = 0
-            }else{
-                var index = listMenu.indexAt(width/2, root.height-y)
+            } else {
+                var index = listMenu.indexAt(width / 2, root.height / 2 - y)
                 currentIndex = index
             }
         }
 
-        model: ListModel{
-            id: mymodel
-        }
+        model: ListModel{}
         delegate: listDelegate
 
-        Connections{
-            target: listView
+        Connections {
+            target: flickableItem
 
-            onContentYChanged:{
+            onContentYChanged: {
                 listMenu.updateY()
             }
 
-            onAtYBeginningChanged:{
-                if(listView.atYBeginning){
-                    listMenu.yDeviation = listView.contentY
+            onAtYBeginningChanged: {
+                if (flickableItem.atYBeginning) {
+                    listMenu.yDeviation = flickableItem.contentY
                 }
             }
         }
     }
 
-    Component{
+    Component {
         id: listDelegate
 
-            Item{
-
+        Row {
             property bool active: ListView.view.currentIndex == index
 
-            width: icon.implicitWidth+title.implicitWidth+title.anchors.leftMargin
-            height: title.implicitHeight
+            height: menuItemHeight
             anchors.horizontalCenter: parent.horizontalCenter
 
-            Image{
+            Image {
                 id: icon
-                anchors.verticalCenter: parent.verticalCenter
-                sourceSize.height: parent.height-10
+                sourceSize.height: parent.height
                 source: iconSource
             }
-            Text{
+
+            Text {
                 id: title
 
-                anchors.left: icon.right
-                anchors.leftMargin: iconSource!=""?10:0
                 text: menuText
-                color: active?command.style.metroActiveTitleFontColor:
-                               command.style.metroInactiveTitleFontColor
-                scale: active?1.2:1
+                color: active ? command.style.metroActiveTitleFontColor : command.style.metroInactiveTitleFontColor
+                scale: active ? 1.2 : 1
 
-                font{
+                font {
                     bold: active
                     pixelSize: menuItemPixelSize
                 }
 
-                Behavior on scale{
-                    NumberAnimation{
+                Behavior on scale {
+                    NumberAnimation {
                         duration: 300
                     }
                 }
@@ -151,13 +150,13 @@ Item{
         }
     }
 
-    MonitorMouseEvent{
-        target: listView
+    MonitorMouseEvent {
+        target: flickableItem
         anchors.fill: parent
 
         onMouseRelease: {
-            if(currentIndex>=0){
-                trigger(currentIndex)
+            if (currentIndex >= 0) {
+                trigger(currentIndex, listModel.get(currentIndex).menuText);
             }
         }
     }

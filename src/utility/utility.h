@@ -18,6 +18,16 @@
 #include <QDeclarativeEngine>
 #endif
 
+#include <qmobilityglobal.h>
+
+QT_BEGIN_NAMESPACE
+class QNetworkAccessManager;
+class QSettings;
+QTM_BEGIN_NAMESPACE
+class QFeedbackHapticsEffect;
+QTM_END_NAMESPACE
+QT_END_NAMESPACE
+
 class MyHttpRequest;
 class DownloadImage;
 class Utility : public QObject
@@ -106,6 +116,14 @@ public Q_SLOTS:
 
     QUrl stringToUrl(const QString &str, QUrl::ParsingMode mode = QUrl::TolerantMode) const;
     QUrl addEncodedQueryItem(const QUrl &url, const QByteArray &key, const QByteArray &value) const;
+
+    /// duration unit is msec
+    Q_INVOKABLE void vibrationDevice(qreal intensity = 0.1, int duration = 100);
+
+private:
+    void ensureVibraRumble();
+
+    QPointer<QTM_NAMESPACE::QFeedbackHapticsEffect> m_rumble;
 };
 
 #endif // UTILITY_H

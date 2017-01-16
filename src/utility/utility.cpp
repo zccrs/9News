@@ -1,8 +1,12 @@
 #include "utility.h"
+
 #include <QDebug>
 #include <QtCore>
 #include <QApplication>
 #include <QTimer>
+#include <QtFeedback/QFeedbackHapticsEffect>
+#include <QtFeedback/QFeedbackActuator>
+
 #include "mynetworkaccessmanagerfactory.h"
 #include "downloadimage.h"
 #include "myhttprequest.h"
@@ -288,5 +292,29 @@ QUrl Utility::addEncodedQueryItem(const QUrl &url, const QByteArray &key, const 
     newUrl.addEncodedQueryItem(key, value);
 
     return newUrl;
+}
+
+void Utility::vibrationDevice(qreal intensity, int duration)
+{
+    ensureVibraRumble();
+
+    m_rumble->setIntensity(intensity);
+    m_rumble->setDuration(duration);
+    m_rumble->start();
+}
+
+void Utility::ensureVibraRumble()
+{
+    if (m_rumble)
+        return;
+
+    m_rumble = new QTM_NAMESPACE::QFeedbackHapticsEffect(this);
+
+    foreach (QTM_NAMESPACE::QFeedbackActuator *actuator, QTM_NAMESPACE::QFeedbackActuator::actuators()) {
+        if (actuator->name() == "Vibra") {
+            m_rumble->setActuator(actuator);
+            break;
+        }
+    }
 }
 

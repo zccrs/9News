@@ -226,7 +226,7 @@ ListView{
         id: pullDownMenu
 
         width: parent.width
-        listView: root
+        flickableItem: root
         menuItemPixelSize: command.newsTitleFontSize
 
         onTrigger: {
