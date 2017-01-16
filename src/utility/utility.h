@@ -103,6 +103,9 @@ public Q_SLOTS:
     void removePath(QString dirPath ,bool deleteHidden = true, bool deleteSelf = true );
 
     QString homePath() const;
+
+    QUrl stringToUrl(const QString &str, QUrl::ParsingMode mode = QUrl::TolerantMode) const;
+    QUrl addEncodedQueryItem(const QUrl &url, const QByteArray &key, const QByteArray &value) const;
 };
 
 #endif // UTILITY_H

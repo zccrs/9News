@@ -2,6 +2,7 @@
 import QtQuick 1.1
 import com.zccrs.widgets 1.0
 import "../js/api.js" as Api
+import "../js/server.js" as Server
 
 Item{
     id: root
@@ -178,13 +179,55 @@ Item{
 
                 spacing: 10
 
+                function onAgreeOrAgainstFinished(error, data) {
+                    if (error) {
+                        command.showBanner(qsTr("Network error, Will try again."));
+                        return;
+                    }
+
+                    data = JSON.parse(utility.fromUtf8(data))
+
+                    if (data.error) {
+                        command.showBanner(data.error);
+                        return;
+                    }
+
+                    command.showBanner(data.message);
+
+                    return true;
+                }
+
                 Text {
-                    text: "<a href='http'>%1(%2)</a>".replace("%1", qsTr("Agree")).replace("%2", agree_count);
+                    property int agreeCount: agree_count
+
+                    text: "<a href='http://www.9smart.cn'>%1(%2)</a>".replace("%1", qsTr("Agree")).replace("%2", agreeCount);
                     font.pixelSize: command.style.newsInfosFontPixelSize
+
+                    onLinkActivated: {
+                        function onAgreeFinished(error, data) {
+                            if (rightBottomRow.onAgreeOrAgainstFinished(error, data)) {
+                                ++agreeCount
+                            }
+                        }
+
+                        Server.agreeComment(newsId, onAgreeFinished);
+                    }
                 }
                 Text {
-                    text: "<a href='http'>%1(%2)</a>".replace("%1", qsTr("Against")).replace("%2", against_count);
+                    property int againstCount: against_count
+
+                    text: "<a href='http//www.9smart.cn'>%1(%2)</a>".replace("%1", qsTr("Against")).replace("%2", againstCount);
                     font.pixelSize: command.style.newsInfosFontPixelSize
+
+                    onLinkActivated: {
+                        function onAgainstFinished(error, data) {
+                            if (rightBottomRow.onAgreeOrAgainstFinished(error, data)) {
+                                ++againstCount;
+                            }
+                        }
+
+                        Server.againstComment(newsId, onAgainstFinished);
+                    }
                 }
             }
 

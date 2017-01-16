@@ -83,7 +83,7 @@ MyPage{
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
             }
             onRightButtonClick: {
-                if(!textAreaContent)
+                if (!textAreaContent)
                     return//如果内容没有变化或者为空则不进行下一步
 
                 if (!Server.userData.auth) {
@@ -96,6 +96,8 @@ MyPage{
                         command.showBanner(qsTr("Network error, Will try again."));
                         return;
                     }
+
+                    data = JSON.parse(utility.fromUtf8(data))
 
                     if (data.error) {
                         command.showBanner(data.error);

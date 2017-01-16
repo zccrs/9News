@@ -275,3 +275,18 @@ QString Utility::homePath() const
 {
     return QDir::homePath();
 }
+
+QUrl Utility::stringToUrl(const QString &str, QUrl::ParsingMode mode) const
+{
+    return QUrl(str, mode);
+}
+
+QUrl Utility::addEncodedQueryItem(const QUrl &url, const QByteArray &key, const QByteArray &value) const
+{
+    QUrl newUrl = url;
+
+    newUrl.addEncodedQueryItem(key, value);
+
+    return newUrl;
+}
+

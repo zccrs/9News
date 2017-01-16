@@ -49,11 +49,24 @@ function register(email, nickname, password1, password2, callback) {
 }
 
 function sendComment(newsId, message, phoneModel, callback) {
-    var url = getCommentUrl(newsId) + "?auth=" + decodeURI(userData.auth);
+    var url = utility.stringToUrl(getCommentUrl(newsId));
     var data = "";
 
     data += "type=news&content=" + encodeURIComponent(message);
     data += "&model=" + encodeURIComponent(phoneModel);
+    url = utility.addEncodedQueryItem(url, "auth", userData.auth);
 
     utility.httpPost(callback, url, data);
+}
+
+function agreeComment(newsId, callback) {
+    var url = getCommentUrl(newsId) + "/action?type=同意";
+
+    utility.httpGet(callback, url);
+}
+
+function againstComment(newsId, callback) {
+    var url = getCommentUrl(newsId) + "/action?type=反对";
+
+    utility.httpGet(callback, url);
 }

@@ -96,6 +96,8 @@ MyPage{
                         return;
                     }
 
+                    data = JSON.parse(utility.fromUtf8(data))
+
                     if (data.error) {
                         command.showBanner(data.error);
                         return;
