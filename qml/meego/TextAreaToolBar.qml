@@ -15,6 +15,7 @@ Item{
     property alias rightButtonIconId: rightButton.iconId
     property alias textAreaContent: contentField.text
     property alias textArea: contentField
+    property alias placeholderText: contentField.placeholderText
 
     signal leftButtonClick
     signal rightButtonClick

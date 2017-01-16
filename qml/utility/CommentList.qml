@@ -13,6 +13,8 @@ Item{
     property bool isBusy: false
     property string lastCommentDateline
 
+    signal replyComment(string commentId, string targetUserName)
+
     onNewsIdChanged: {
         objApi.loadComment()
     }
@@ -65,6 +67,7 @@ Item{
 
                     var obj={
                         "uid": comment.uid,
+                        "comment_id": comment._id,
                         "avatarUrl": comment.user.avatar,
                         "nickName": comment.user.nickname,
                         "date": command.fromTime_t(comment.dateline),
@@ -174,6 +177,7 @@ Item{
                 id: subList
 
                 delegate: subCommentComponent
+                enabled: false
                 anchors {
                     top: textContent.bottom
                     bottom: rightBottomRow.top
@@ -263,6 +267,15 @@ Item{
                         }
 
                         Server.againstComment(newsId, onAgainstFinished);
+                    }
+                }
+
+                Text {
+                    text: "<a href='http//www.9smart.cn'>%1(%2)</a>".replace("%1", qsTr("Reply")).replace("%2", subList.count);
+                    font.pixelSize: command.style.newsInfosFontPixelSize
+
+                    onLinkActivated: {
+                        replyComment(comment_id, nickName);
                     }
                 }
             }

@@ -59,6 +59,18 @@ function sendComment(newsId, message, phoneModel, callback) {
     utility.httpPost(callback, url, data);
 }
 
+// 回复楼中楼
+function sendSubComment(commentId, message, phoneModel, callback) {
+    var url = utility.stringToUrl(getCommentUrl(commentId) + "/reply");
+    var data = "";
+
+    data += "content=" + encodeURIComponent(message);
+    data += "&model=" + encodeURIComponent(phoneModel);
+    url = utility.addEncodedQueryItem(url, "auth", userData.auth);
+
+    utility.httpPost(callback, url, data);
+}
+
 function agreeComment(newsId, callback) {
     var url = getCommentUrl(newsId) + "/action?type=同意";
 

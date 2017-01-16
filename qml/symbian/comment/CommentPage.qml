@@ -77,10 +77,15 @@ MyPage{
             //记录上次输入的内容
 
             invertedTheme: command.style.toolBarInverted
+            placeholderText: commentList.willReplyCommentId ? (qsTr("Reply") + " " + commentList.willReplyUserName)
+                                                            : qsTr("Plase input text")
 
             onLeftButtonClick: {
                 textArea.closeSoftwareInputPanel()
                 toolBarSwitch.toolBarComponent = compoentToolBarLayout
+
+                commentList.willReplyCommentId = "";
+                commentList.willReplyUserName = "";
             }
             onRightButtonClick: {
                 if (!textAreaContent)
@@ -107,7 +112,10 @@ MyPage{
                     command.showBanner(data.message);
                 }
 
-                Server.sendComment(newsId, textAreaContent, main.deviceModel, onCommentFinished);
+                if (commentList.willReplyCommentId)
+                    Server.sendSubComment(commentList.willReplyCommentId, textAreaContent, main.deviceModel, onCommentFinished);
+                else
+                    Server.sendComment(newsId, textAreaContent, main.deviceModel, onCommentFinished);
             }
         }
     }
@@ -115,6 +123,9 @@ MyPage{
 
     CommentList{
         id: commentList
+
+        property string willReplyCommentId
+        property string willReplyUserName
 
         width: parent.width-20
         anchors{
@@ -124,6 +135,12 @@ MyPage{
             bottom: parent.bottom
         }
         newsId: root.newsId
+
+        onReplyComment: {
+            willReplyCommentId = commentId
+            willReplyUserName = targetUserName
+            toolBarSwitch.toolBarComponent = compoentCommentToolBar
+        }
     }
 
     ScrollBar {
