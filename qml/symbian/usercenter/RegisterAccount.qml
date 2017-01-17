@@ -143,7 +143,7 @@ MyPage{
 
                 Server.setUserData(data.uid, data.auth);
                 command.showBanner(data.message);
-                pageStack.replace(Qt.resolvedUrl("UserCenterPage.qml"));
+                pageStack.replace(Qt.resolvedUrl("UserCenterPage.qml"), {"uid": Server.userData.uid});
             }
 
             Server.register(input_email.text, input_nickname.text,

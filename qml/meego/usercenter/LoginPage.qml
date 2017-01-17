@@ -182,7 +182,7 @@ Page{
 
                 Server.setUserData(data.uid, data.auth);
                 command.showBanner(data.message);
-                pageStack.replace(Qt.resolvedUrl("UserCenterPage.qml"));
+                pageStack.replace(Qt.resolvedUrl("UserCenterPage.qml"), {"uid": Server.userData.uid});
             }
 
             Server.logion(inputEmail.text, inputPassword.text, onLoginFinished);

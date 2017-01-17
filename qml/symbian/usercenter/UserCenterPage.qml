@@ -10,7 +10,7 @@ import "../../utility"
 import "../../js/server.js" as Server
 
 MyPage{
-    property string uid: Server.userData.uid
+    property string uid
 
     tools: MyToolBarLayout{
         invertedTheme: command.style.toolBarInverted
@@ -24,7 +24,7 @@ MyPage{
         }
     }
 
-    Component.onCompleted: {
+    onUidChanged: {
         function onGetUserInfoFinished(error, data) {
             if (error) {
                 command.showBanner(qsTr("Network error, will try again."))
@@ -95,6 +95,8 @@ MyPage{
     }
 
     Button {
+        visible: uid === Server.userData.uid
+
         anchors {
             horizontalCenter: parent.horizontalCenter
             bottom: parent.bottom

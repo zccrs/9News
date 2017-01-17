@@ -14,6 +14,7 @@ Item{
     property string lastCommentDateline
 
     signal replyComment(string commentId, string targetUserName)
+    signal userAvatarClicked(string userId)
 
     onNewsIdChanged: {
         objApi.loadComment()
@@ -130,6 +131,14 @@ Item{
 
                 Component.onCompleted: {
                     source = avatarUrl
+                }
+            }
+
+            MouseArea {
+                anchors.fill: imageAvatar
+
+                onClicked:  {
+                    userAvatarClicked(uid);
                 }
             }
 

@@ -226,7 +226,7 @@ MyPage{
 
                 onClicked: {
                     if (Server.userData.auth) {
-                        pageStack.push(Qt.resolvedUrl("./usercenter/UserCenterPage.qml"))
+                        pageStack.push(Qt.resolvedUrl("./usercenter/UserCenterPage.qml"), {"uid": Server.userData.uid})
                     } else {
                         pageStack.push(Qt.resolvedUrl("./usercenter/LoginPage.qml"))
                     }

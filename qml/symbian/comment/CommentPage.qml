@@ -141,6 +141,10 @@ MyPage{
             willReplyUserName = targetUserName
             toolBarSwitch.toolBarComponent = compoentCommentToolBar
         }
+
+        onUserAvatarClicked: {
+            pageStack.push(Qt.resolvedUrl("../usercenter/UserCenterPage.qml"), {"uid": userId});
+        }
     }
 
     ScrollBar {
