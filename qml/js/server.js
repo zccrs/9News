@@ -86,3 +86,9 @@ function againstComment(newsId, callback) {
 function getNewsBrowserUrl(newsId) {
     return "http://www.9smart.cn/article/" + newsId;
 }
+
+function getAppInfoById(appId, callback) {
+    var url = BASE_URL + "app/" + appId;
+
+    utility.httpGet(callback, url);
+}

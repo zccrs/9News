@@ -4,6 +4,7 @@ import com.nokia.symbian 1.1
 import com.zccrs.utility 1.0
 import "../utility"
 import "customwidget"
+import "../js/server.js" as Server
 
 MyPage{
     id: root
@@ -370,12 +371,33 @@ MyPage{
             text: qsTr("Check for updates")
             width: parent.width*0.6
 
-            Component.onCompleted: {
+            function checkUpdate() {
+                function onCheckFinished(error, data) {
+                    if (error) {
+                        return;
+                    }
 
+                    data = JSON.parse(data);
+
+                    if (data.error) {
+                        command.showBanner(data.error);
+                        return;
+                    }
+
+                    if (data.app.version && data.app.version != utility.appVersion) {
+                        command.showBanner(qsTr("Found a new version: %1, Please go to 9Store download").replace("%1", data.app.version));
+                    }
+                }
+
+                Server.getAppInfoById("587e12fde9e53962563d2f32", onCheckFinished);
+            }
+
+            Component.onCompleted: {
+                checkUpdate();
             }
 
             onClicked: {
-
+                checkUpdate();
             }
         }
     }

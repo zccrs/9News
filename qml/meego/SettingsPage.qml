@@ -388,12 +388,33 @@ MyPage{
             text: qsTr("Check for updates")
             width: parent.width*0.6
 
-            Component.onCompleted: {
+            function checkUpdate() {
+                function onCheckFinished(error, data) {
+                    if (error) {
+                        return;
+                    }
 
+                    data = JSON.parse(data);
+
+                    if (data.error) {
+                        command.showBanner(data.error);
+                        return;
+                    }
+
+                    if (data.app.version && data.app.version != utility.appVersion) {
+                        command.showBanner(qsTr("Found a new version: %1, Please go to 9Store download").replace("%1", data.app.version));
+                    }
+                }
+
+                Server.getAppInfoById("586af64ede24789fdf8ae478", onCheckFinished);
+            }
+
+            Component.onCompleted: {
+                checkUpdate();
             }
 
             onClicked: {
-
+                checkUpdate();
             }
         }
     }
