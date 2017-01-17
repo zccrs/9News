@@ -4,8 +4,8 @@
 #include <QtCore>
 #include <QApplication>
 #include <QTimer>
-#include <QtFeedback/QFeedbackHapticsEffect>
-#include <QtFeedback/QFeedbackActuator>
+#include <QFeedbackHapticsEffect>
+#include <QFeedbackActuator>
 #include <QClipboard>
 
 #include "mynetworkaccessmanagerfactory.h"
