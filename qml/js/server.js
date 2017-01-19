@@ -3,9 +3,11 @@
 Qt.include("api.js")
 
 var utility;
+var command;
 
-function initServer(u) {
+function initServer(u, c) {
     utility = u;
+    command = c;
 
     userData.uid = utility.value("uid");
     userData.auth = utility.stringUncrypt(utility.value("auth"), userData.uid);
@@ -52,7 +54,7 @@ function sendComment(newsId, message, phoneModel, callback) {
     var url = utility.stringToUrl(getCommentUrl(newsId));
     var data = "";
 
-    data += "type=news&content=" + encodeURIComponent(message);
+    data += "type=news&content=" + encodeURIComponent(message + command.signature);
     data += "&model=" + encodeURIComponent(phoneModel);
     url = utility.addEncodedQueryItem(url, "auth", userData.auth);
 
@@ -64,7 +66,7 @@ function sendSubComment(commentId, message, phoneModel, callback) {
     var url = utility.stringToUrl(getCommentUrl(commentId) + "/reply");
     var data = "";
 
-    data += "content=" + encodeURIComponent(message);
+    data += "content=" + encodeURIComponent(message + command.signature);
     data += "&model=" + encodeURIComponent(phoneModel);
     url = utility.addEncodedQueryItem(url, "auth", userData.auth);
 

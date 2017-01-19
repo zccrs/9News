@@ -18,7 +18,7 @@ PageStackWindow{
     initialPage: MainPage{}
 
     Component.onCompleted: {
-        Server.initServer(utility);
+        Server.initServer(utility, command);
     }
     Component.onDestruction: {
         Server.aboutDestory();

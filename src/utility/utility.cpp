@@ -16,16 +16,15 @@ Utility *Utility::me=NULL;
 Utility *Utility::createUtilityClass()
 {
     if(me==NULL){
-        if(me==NULL){
-            me = new Utility();
-        }
+        me = new Utility();
     }
 
     return me;
 }
 
-Utility::Utility(QObject *parent) :
-    QObject(parent)
+Utility::Utility(QObject *parent)
+    : QObject(parent)
+    , m_rumble(0)
 {
     qmlRegisterUncreatableType<Utility>("utility", 1, 0, "Utility", "Error,Utility Cannot be instantiated!");
 
@@ -297,6 +296,8 @@ QUrl Utility::addEncodedQueryItem(const QUrl &url, const QByteArray &key, const 
 
 void Utility::vibrationDevice(qreal intensity, int duration)
 {
+    return;
+
     ensureVibraRumble();
 
     m_rumble->setIntensity(intensity);

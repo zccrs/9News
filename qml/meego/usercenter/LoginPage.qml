@@ -9,6 +9,8 @@ import "../../js/server.js" as Server
 Page{
     id: root
 
+    property bool backWhenLoginFinished: false
+
     tools: MyToolBarLayout{
         MyToolIcon{
             iconId: "toolbar-back"
@@ -182,7 +184,11 @@ Page{
 
                 Server.setUserData(data.uid, data.auth);
                 command.showBanner(data.message);
-                pageStack.replace(Qt.resolvedUrl("UserCenterPage.qml"), {"uid": Server.userData.uid});
+
+                if (backWhenLoginFinished)
+                    pageStack.pop();
+                else
+                    pageStack.replace(Qt.resolvedUrl("UserCenterPage.qml"), {"uid": Server.userData.uid});
             }
 
             Server.logion(inputEmail.text, inputPassword.text, onLoginFinished);
@@ -200,13 +206,13 @@ Page{
                     pageStack.push(Qt.resolvedUrl("RegisterAccount.qml"))
                 }
             }
-            MyMenuItem {
-                text: qsTr("Retrieve password")
+//            MyMenuItem {
+//                text: qsTr("Retrieve password")
 
-                onClicked: {
-                    pageStack.push(Qt.resolvedUrl("RetrievePassword.qml"))
-                }
-            }
+//                onClicked: {
+//                    pageStack.push(Qt.resolvedUrl("RetrievePassword.qml"))
+//                }
+//            }
         }
     }
 }

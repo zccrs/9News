@@ -24,9 +24,14 @@ MyPageStackWindow
     }
 
     Component.onCompleted: {
-        Server.initServer(utility);
+        Server.initServer(utility, command);
+
+        var toolBar_backImage = pageStack.toolBar.children[4]
+        toolBar_backImage.source = ""
+        toolBar_backImage.height = 72
+        updateStyle()
     }
-    Component.onDestroyed: {
+    Component.onDestruction: {
         Server.aboutDestory();
     }
 
@@ -59,13 +64,6 @@ MyPageStackWindow
         onStyleChanged:{
             updateStyle()
         }
-    }
-
-    Component.onCompleted: {
-        var toolBar_backImage = pageStack.toolBar.children[4]
-        toolBar_backImage.source = ""
-        toolBar_backImage.height = 72
-        updateStyle()
     }
 
     DeviceInfo {

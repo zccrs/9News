@@ -10,6 +10,8 @@ import "../../js/server.js" as Server
 MyPage{
     id: root
 
+    property bool backWhenLoginFinished: false
+
     tools: MyToolBarLayout{
         invertedTheme: command.style.toolBarInverted
 
@@ -189,7 +191,10 @@ MyPage{
 
                 Server.setUserData(data.uid, data.auth);
                 command.showBanner(data.message);
-                pageStack.replace(Qt.resolvedUrl("UserCenterPage.qml"), {"uid": Server.userData.uid});
+                if (backWhenLoginFinished)
+                    pageStack.pop();
+                else
+                    pageStack.replace(Qt.resolvedUrl("UserCenterPage.qml"), {"uid": Server.userData.uid});
             }
 
             Server.logion(inputEmail.text, inputPassword.text, onLoginFinished);

@@ -4,6 +4,7 @@ Version=1.0
 Type=Application
 Terminal=false
 Name=9News
+Name[zh]=久闻
 Exec=/usr/bin/invoker --type=d -s /opt/9News/bin/9News
 Icon=/usr/share/icons/hicolor/80x80/apps/9News80.png
 X-Window-Icon=

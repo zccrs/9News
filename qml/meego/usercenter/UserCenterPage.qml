@@ -10,6 +10,7 @@ import "../../utility"
 import "../../js/server.js" as Server
 
 MyPage{
+    property string uid
 
     tools: MyToolBarLayout{
         MyToolIcon{
@@ -97,7 +98,6 @@ MyPage{
             bottomMargin: 20
         }
 
-        platformInverted: command.style.buttonInverted
         text: qsTr("Logout");
 
         onClicked: {

@@ -4,6 +4,7 @@ import com.nokia.meego 1.1
 import com.zccrs.utility 1.0
 import "../utility"
 import "./customwidget"
+import "../js/server.js" as Server
 
 MyPage{
     id: root
@@ -403,6 +404,8 @@ MyPage{
 
                     if (data.app.version && data.app.version != utility.appVersion) {
                         command.showBanner(qsTr("Found a new version: %1, Please go to 9Store download").replace("%1", data.app.version));
+                    } else {
+                        command.showBanner(qsTr("Already the latest version"));
                     }
                 }
 

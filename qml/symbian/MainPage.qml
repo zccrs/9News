@@ -28,11 +28,11 @@ MyPage{
             return
         }
 
-        data = JSON.parse(data);
+        data = JSON.parse(utility.fromUtf8(data));
 
         if(!data.error){
             for(var i in data.categorys){
-                metroView.addItem(utility.fromUtf8(data.categorys[i]), utility.fromUtf8(data.categorys[i]))
+                metroView.addItem(data.categorys[i], data.categorys[i])
             }
         }else{
             command.showBanner(data.error)
@@ -89,8 +89,9 @@ MyPage{
                 iconSource: "toolbar-search"
                 platformInverted: command.style.toolBarInverted
                 onClicked: {
-                    toolBarSwitch.toolBarComponent = compoentCommentToolBar
+//                    toolBarSwitch.toolBarComponent = compoentCommentToolBar
                     //搜索新闻
+                    command.showBanner(qsTr("This feature is not yet implemented"));
                 }
             }
 

@@ -26,11 +26,11 @@ MyPage{
             return
         }
 
-        data = JSON.parse(data)
+        data = JSON.parse(utility.fromUtf8(data))
 
         if (!data.error) {
             for(var i in data.categorys){
-                metroView.addItem(data.titles[i], data.categorys[i])
+                metroView.addItem(data.categorys[i], data.categorys[i])
             }
         } else {
             command.showBanner(data.error)
@@ -81,7 +81,8 @@ MyPage{
             MyToolIcon{
                 iconId: "toolbar-search"
                 onClicked: {
-                    toolBarSwitch.toolBarComponent = compoentCommentToolBar
+//                    toolBarSwitch.toolBarComponent = compoentCommentToolBar
+                    command.showBanner(qsTr("This feature is not yet implemented"));
                 }
             }
             MyToolIcon{

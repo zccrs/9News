@@ -86,7 +86,8 @@ MyPage{
                     return//如果内容没有变化或者为空则不进行下一步
 
                 if (!Server.userData.auth) {
-                    command.showBanner(qsTr("You are not logged in"));
+                    command.showBanner(qsTr("Plase login"));
+                    pageStack.push(Qt.resolvedUrl("usercenter/LoginPage.qml"), {"backWhenLoginFinished": true});
                     return;
                 }
 
@@ -104,6 +105,7 @@ MyPage{
                     }
 
                     command.showBanner(data.message);
+                    leftButtonClick();
                 }
 
                 Server.sendComment(newsId, textAreaContent, main.deviceModel, onCommentFinished);

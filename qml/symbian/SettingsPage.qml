@@ -386,6 +386,8 @@ MyPage{
 
                     if (data.app.version && data.app.version != utility.appVersion) {
                         command.showBanner(qsTr("Found a new version: %1, Please go to 9Store download").replace("%1", data.app.version));
+                    } else {
+                        command.showBanner(qsTr("Already the latest version"));
                     }
                 }
 
