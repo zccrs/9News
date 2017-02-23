@@ -55,6 +55,14 @@ contains(MEEGO_EDITION, harmattan){
 
     #Meego resource files
     RESOURCES += meego.qrc
+
+    splash.files = images/splash.png
+    splash.path = /opt/$${TARGET}/data
+
+    export(splash.files)
+    export(splash.path)
+
+    INSTALLS += splash
 }
 
 #Blackberry
